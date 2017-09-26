@@ -1,15 +1,21 @@
-The CPython Developer's Guide
-=============================
+The Jython Developer's Guide
+============================
 
-.. image:: https://readthedocs.org/projects/cpython-devguide/badge/
+.. This will be wrong now, but we need something similar:
+   image:: https://readthedocs.org/projects/python-devguide/badge/
    :target: https://devguide.python.org
    :alt: Documentation Status
 
+This guide is a straight copy of the CPython Developer's Guide, with
+the idea of adapting it to describe Jython development processes
+using GitHub.
+The difference is made by adding files for chapters that need to be
+different from the CPython edition,
+keeping the disused CPython files,
+and changing other files as little as possible.
+That way may continue to pull changes from CPython's devguide.
 
-This guide covers how to contribute to CPython. It is known by the
-nickname of "the devguide" by the Python core developers.
-
-The official home of this guide is https://devguide.python.org.
+The official home of this guide is still to be chosen.
 
 Compilation
 -----------
