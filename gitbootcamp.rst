@@ -1,9 +1,14 @@
+.. This file is derived from a file of the same name in the CPython devguide
+   and will receive updates from the CPython guide by merging.
+
 .. highlight:: console
 
 .. _gitbootcamp:
 
 Git Bootcamp and Cheat Sheet
 ============================
+
+.. warning:: At present, this is not much modified from the CPython base.
 
 In this section, we'll go over some commonly used Git commands that are
 relevant to CPython's workflow.
@@ -77,7 +82,7 @@ Enabling ``autocrlf`` on Windows
 The *autocrlf* option will fix automatically any Windows-specific line endings.
 This should be enabled on Windows, since the public repository has a hook which
 will reject all changesets having the wrong line endings.
-::
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     $ git config --global core.autocrlf input
 

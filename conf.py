@@ -46,7 +46,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Python Developer\'s Guide'
+project = u'Jython Developer\'s Guide'
 copyright = u'2011-%s, Python Software Foundation' % time.strftime('%Y')
 
 # The version info for the project you're documenting, acts as replacement for
@@ -179,7 +179,7 @@ html_static_path = ['tools/static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'PythonDevelopersGuidedoc'
+htmlhelp_basename = 'JythonDevelopersGuidedoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -193,8 +193,8 @@ htmlhelp_basename = 'PythonDevelopersGuidedoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'PythonDevelopersGuide.tex', u'Python Developer\'s Guide Documentation',
-   u'Brett Cannon', 'manual'),
+  ('index', 'JythonDevelopersGuide.tex', u'Jython Developer\'s Guide Documentation',
+   u'The Jython & Python Developers', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -226,6 +226,6 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'pythondevelopersguide', u"Python Developer's Guide Documentation",
-     [u'Brett Cannon'], 1)
+    ('index', 'jythondevelopersguide', u"Jython Developer's Guide Documentation",
+     [u'The Jython & Python Developers'], 1)
 ]

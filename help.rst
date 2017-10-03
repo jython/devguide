@@ -1,7 +1,12 @@
+.. This file is derived from a file of the same name in the CPython devguide
+   and will receive updates from the CPython guide by merging.
+
 .. _help:
 
 Where to Get Help
 =================
+
+.. warning:: At present, this is not much modified from the CPython base.
 
 If you are working on Python it is very possible you will come across an issue
 where you need some assistance to solve it (this happens to core developers

@@ -1,7 +1,12 @@
+.. This file is derived from a file of the same name in the CPython devguide
+   and will receive updates from the CPython guide by merging.
+
 .. _devcycle:
 
 Development Cycle
 =================
+
+.. warning:: At present, this is not much modified from the CPython base.
 
 The responsibilities of a core developer shift based on what kind of branch of
 Python a developer is working on and what stage the branch is in.

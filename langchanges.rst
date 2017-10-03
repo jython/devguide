@@ -1,7 +1,13 @@
+.. This file is derived from a file of the same name in the CPython devguide
+   and will receive updates from the CPython guide by merging.
+
 .. _langchanges:
 
 Changing the Python Language
 ============================
+
+.. warning:: At present, this is not much modified from the CPython base.
+
 On occasion people come up with an idea on how to change or improve Python as a
 programming language. This document is meant to explain exactly what changes
 have a reasonable chance of being considered and what the process is to propose

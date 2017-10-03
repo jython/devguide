@@ -1,7 +1,12 @@
+.. This file is derived from a file of the same name in the CPython devguide
+   and will receive updates from the CPython guide by merging.
+
 .. _fixingissues:
 
 Fixing "easy" Issues (and Beyond)
 =================================
+
+.. warning:: At present, this is not much modified from the CPython base.
 
 When you feel comfortable enough to want to help tackle issues by trying to
 create a patch to fix an issue, you can start by looking at the `"easy"

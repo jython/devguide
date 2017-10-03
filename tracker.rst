@@ -1,3 +1,6 @@
+.. This file is derived from a file of the same name in the CPython devguide
+   and will receive updates from the CPython guide by merging.
+
 ==============
 Issue Tracking
 ==============
@@ -6,6 +9,8 @@ Issue Tracking
 
 Using the Issue Tracker
 =======================
+
+.. warning:: At present, this is not much modified from the CPython base.
 
 If you think you found a bug in Python, you can report it to the
 `issue tracker`_.  Documentation bugs can also be reported there.

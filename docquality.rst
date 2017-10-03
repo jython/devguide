@@ -1,7 +1,12 @@
+.. This file is derived from a file of the same name in the CPython devguide
+   and will receive updates from the CPython guide by merging.
+
 .. _docquality:
 
 Helping with Documentation
 ==========================
+
+.. warning:: At present, this is not much modified from the CPython base.
 
 Python is known for having good documentation. But maintaining all of it and
 keeping a high level of quality takes a lot of effort. Help is always
