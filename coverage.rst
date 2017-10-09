@@ -1,7 +1,23 @@
+.. This file is derived from a file of the same name in the CPython devguide
+   and will receive updates from the CPython guide by merging.
+
 .. _coverage:
+
 
 Increase Test Coverage
 ======================
+
+Jython adopts the Python Standard Library practically wholesale.
+Its quality is taken care of almost entirely by the CPython project,
+while Jython tries to minimise the amount of Jython-specific code either
+in the standard library and our tests,
+or added to the Jython code base to supersede standard modules.
+Improvements to the library and its test coverage may emerge from Jython,
+but the strategy requires they be contributes upstream to CPython.
+
+.. note:: A lot of this section is identical to the CPython guide and not
+   validated in a Jython context. The section on C is not relevant to Java,
+   and we need to write one that is.
 
 Python development follows a practice that all semantic changes and additions
 to the language and :abbr:`stdlib (standard library)` are accompanied by
@@ -81,8 +97,8 @@ provided by the stdlib then you can :ref:`use test.regrtest
 Install Coverage
 ''''''''''''''''
 
-By default, pip will not install into the in-development version of Python you 
-just built, and this built version of Python will not see packages installed 
+By default, pip will not install into the in-development version of Python you
+just built, and this built version of Python will not see packages installed
 into your default version of Python. One option is to use a virtual environment
 to install coverage::
 
@@ -91,22 +107,22 @@ to install coverage::
     pip install coverage
 
 On :ref:`most <mac-python.exe>` Mac OS X systems, replace :file:`./python`
-with :file:`./python.exe`.  On Windows, use :file:`python.bat`.  
+with :file:`./python.exe`.  On Windows, use :file:`python.bat`.
 
-You can now use python without the ./ for the rest of these instructions, as 
+You can now use python without the ./ for the rest of these instructions, as
 long as your venv is activated. For more info on venv see `Virtual Envrionment
 <https://docs.python.org/3/tutorial/venv.html>`_ documentation.
- 
-If this does not work for you for some reason, you should try using the 
-in-development version of coverage.py to see if it has been updated as needed. 
+
+If this does not work for you for some reason, you should try using the
+in-development version of coverage.py to see if it has been updated as needed.
 To do this you should clone/check out the development version of coverage.py:
 
     hg clone https://bitbucket.org/ned/coveragepy
 
 You will need to use the full path to the installation.
 
-Another option is to use an installed copy of coverage.py, if you already have 
-it. For this, you will again need to use the full path to that installation. 
+Another option is to use an installed copy of coverage.py, if you already have
+it. For this, you will again need to use the full path to that installation.
 
 .. _coverage_usage:
 
@@ -241,12 +257,21 @@ times.
 
 Filing the Issue
 """"""""""""""""
-Once you have increased coverage, you need to create an issue on the 
-`issue tracker`_ and submit a :doc:`pull request <pullrequest>`. On the
-issue set the "Components" to "Test" and "Versions" to the version of Python you
+Once you have increased coverage, you need to create an issue on the
+`Jython issue tracker`_ and submit a :doc:`pull request <pullrequest>`. On the
+issue set the "Components" to "Test" and "Versions" to the version of Jython you
 worked on (i.e., the in-development version).
 
-.. _issue tracker: https://bugs.python.org
+.. _Jython issue tracker: http://bugs.jython.org
+
+
+
+Measuring coverage of Java code
+"""""""""""""""""""""""""""""""
+
+TODO
+
+
 
 
 Measuring coverage of C code with gcov and lcov
@@ -278,3 +303,5 @@ about 20 to 30 minutes on a modern computer.
 
 .. _gcov: http://gcc.gnu.org/onlinedocs/gcc/Gcov.html
 .. _lcov: http://ltp.sourceforge.net/coverage/lcov.php
+
+

@@ -16,6 +16,22 @@ mailing lists, but also other forms.
 Mailing Lists
 -------------
 
+The primary mailing list for discussion of Jython's development is jython-dev_.
+The list is open to the public and all core developers subscribe,
+and others interested in Jython's development.
+Technical support questions should not be asked here but on jython-users_.
+
+Jython-checkins_ sends out an email for every commit to Jython's various
+repositories from http://hg.python.org. All core developers
+subscribe to this list and are known to reply to these emails to make comments
+about various issues they catch in the commit.
+There is a mailing list related to issues on the `Jython issue tracker`_.
+Subscribe to jython-bugs_ if you want  an email for all changes made to any
+issue.
+
+Developers working on Jython will be interested in the developement of Python
+(the language) and its reference implementation.
+
 python-dev_ is the primary mailing list for discussions about Python's
 development. The list is open to the public and is subscribed to by all core
 developers plus many people simply interested in following Python's
@@ -48,11 +64,6 @@ subscribe to this list and are known to reply to these emails to make comments
 about various issues they catch in the commit. Replies get redirected to
 python-dev.
 
-There are two mailing lists related to issues on the `issue tracker`_. If you
-only want an email for when a new issue is open, subscribe to
-new-bugs-announce_. If you would rather receive an email for all changes made
-to any issue, subscribe to python-bugs-list_.
-
 General Python questions should go to `python-list`_ or `tutor`_
 or similar resources, such as StackOverflow_ or the ``#python`` IRC channel
 on Freenode_.
@@ -78,6 +89,13 @@ RSS feed readers.
 .. _tutor: https://mail.python.org/mailman/listinfo/tutor
 .. _StackOverflow: https://stackoverflow.com/
 .. _Freenode: http://freenode.net/
+
+
+.. _Jython issue tracker: http://bugs.jython.org
+.. _jython-bugs: https://lists.sourceforge.net/lists/listinfo/jython-bugs
+.. _jython-checkins: https://lists.sourceforge.net/lists/listinfo/jython-checkins
+.. _jython-dev: https://lists.sourceforge.net/lists/listinfo/jython-dev
+.. _jython-users: https://lists.sourceforge.net/lists/listinfo/jython-users
 
 
 IRC

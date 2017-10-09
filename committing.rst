@@ -35,8 +35,9 @@ merging (details of various steps can be found later in this document):
 .. note::
    If you want to share your work-in-progress code on a feature or bugfix,
    either open a ``WIP``-prefixed PR, publish patches on the
-   `issue tracker`_ or create a public fork of the repository.
+   `Jython issue tracker`_ or create a public fork of the repository.
 
+.. _Jython issue tracker: https://bugs.jython.org
 .. _issue tracker: https://bugs.python.org
 
 

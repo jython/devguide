@@ -8,6 +8,11 @@ Helping with Documentation
 
 .. warning:: At present, this is not much modified from the CPython base.
 
+.. I've not pulled in the old devguide Python to Jython changes as the section
+   is about Python, not CPython. The original (as improved upstream) is valid.
+   And we don't really produce much documentation. (Javadoc is a different
+   kettle of fish.)
+
 Python is known for having good documentation. But maintaining all of it and
 keeping a high level of quality takes a lot of effort. Help is always
 appreciated with the documentation, and it requires little programming

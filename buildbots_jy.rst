@@ -8,11 +8,16 @@ Continuous Integration
 .. warning:: At present, this is not much more than a copy of the CPython original
    with the obviously inapplicable crudely hacked out.
 
+.. note:: This description, while aimed at the future process, is applicable to
+   PRs raised today, as far as test goes, but we merge the PR by a round-about
+   route using Mercurial. It is also fair to point out that we have difficulty
+   keeping these buildbots green.
+
 To assert that there are no regressions in the :doc:`development and maintenance
-branches <devcycle>`, Jython uses continuous integration services.
-When a new change is pushed
-to a PR on the public GitHub repository, all corresponding builders
-will schedule a new build to be run as soon as possible.
+branches <devcycle>`, Jython uses continuous integration services, integrated
+into GitHub.
+When a new commit appears in a PR on, all corresponding builders
+will build and run the regression tests.
 
 The build steps run by the buildbots are the following:
 
@@ -45,13 +50,9 @@ to show failures that are due to configuration errors or transient failures.
 
 The rule is that all stable builders must be free of
 persistent failures when the release is cut.  It is absolutely **vital**
-that core developers fix any issue they introduce on the stable buildbots,
+that core developers fix any issue they introduce on the buildbots,
 as soon as possible.
 
-This does not mean that other builders' test results can be taken lightly,
-either.  Some of them are known for having platform-specific issues that
-prevent some tests from succeeding (or even terminating at all), but
-introducing additional failures should generally not be an option.
 
 Flags-dependent failures
 ------------------------

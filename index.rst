@@ -10,24 +10,45 @@ Jython Developer's Guide
 ========================
 
 This guide is a comprehensive resource for :ref:`contributing <contributing>`
-to Jython_ -- for both new and experienced contributors,
-and assuming we use GitHub for the master repositories.
+to Jython_ -- for both new and experienced contributors.
 It has been adapted from the CPython Developer's Guide and the reader should
 bear in mind that:
 
-*  The process is based on GitHub that CPython uses
-   but not yet Jython.
-*  The adaptation is imperfect: parts of the guide will say CPython.
-*  When the guide says Python, sometimes it just means CPython.
+*  The CPython process is PR-based on GitHub and this guide anticipates our
+   adoption of that for Jython.
+*  The existing Jython process uses Mercurial hosted at ``python.org``, and
+   patches via the bug-tracker: you will find that in this guide too.
+*  When the guide says "Python", that section is true for Jython too.
+*  The adaptation is imperfect: parts of the guide will say (or mean) CPython.
 
 This guide is :ref:`maintained <helping-with-the-developers-guide>` by the same
 community that maintains CPython and Jython.
-We welcome your contributions to those implementations of Python!
+We welcome your contributions to both these implementations of Python!
 
 
 Quick Reference
 ---------------
 
+Mercurial
+^^^^^^^^^
+
+1. :ref:`Get the source code <checkout>`::
+
+      hg clone http://hg.python.org/jython
+
+2. :ref:`Build Jython <compiling>`::
+
+      ant
+
+3. :doc:`Run the tests <runtests>`::
+
+      ant regrtest
+
+4. Make the :doc:`patch <patch_hg_jy>`.
+5. Submit it to the `Jython issue tracker`_.
+
+GitHub
+^^^^^^
 .. highlight:: bash
 
 Here are the basic steps needed to get :ref:`set up <setup>` and contribute a
@@ -89,6 +110,7 @@ instructions please see the :ref:`setup guide <setup>`.
    Agreement (CLA) as described in the :ref:`Licensing <cla>` section of
    this guide.
 
+
 Quick Links
 -----------
 
@@ -96,7 +118,6 @@ Here are some links that you probably will reference frequently while
 contributing to Jython:
 
 * `Jython issue tracker`_
-* `Buildbot status`_
 * :doc:`help`
 * PEPs_ (Python Enhancement Proposals)
 * :doc:`gitbootcamp`
@@ -106,7 +127,8 @@ contributing to Jython:
 Status of Jython branches
 -------------------------
 
-.. note:: Maybe how it should look in a process based on GitHub. Not how it is.
+.. note:: Maybe how it should look in a process based on GitHub,
+   and for Jython 3. Not how it is.
 
 +--------+----------+-------------+---------------+-------------+-----------------------------------------------------------------------------------------------------------------+
 | Branch | Schedule | Status      | First release | End-of-life | Comment                                                                                                         |
@@ -156,6 +178,7 @@ Contributing
 ------------
 
 We encourage everyone to contribute to Python and that's why we have put up this
+We encourage everyone to contribute to Jython and that's why we have put up this
 developer's guide.  If you still have questions after reviewing the material in
 this guide, then the `Python Mentors`_ group is available to help guide new
 contributors through the process.
@@ -168,11 +191,12 @@ Core developers and contributors alike will find the following guides useful:
 * `How to Contribute to Open Source <https://opensource.guide/how-to-contribute/>`_
 * `Building Welcoming Communities <https://opensource.guide/building-community/>`_
 
-Guide for contributing to Python:
+Guide for contributing to Jython:
 
 * :doc:`setup`
 * :doc:`help`
 * :doc:`pullrequest`
+* :doc:`patch_hg_jy`
 * :doc:`runtests`
 * Beginner tasks to become familiar with the development process
     * :doc:`docquality`
@@ -187,6 +211,7 @@ Guide for contributing to Python:
 * :doc:`communication`
 * :doc:`coredev`
     * :doc:`committing`
+    * :doc:`committing_hg_jy`
     * :doc:`devcycle`
     * :doc:`buildbots`
     * :doc:`coverity`
@@ -230,7 +255,7 @@ Jython, they always have more things they would like to do than they have
 developers to work on them.  Some major example that may be of interest are:
 
 * CPython_: The reference implementation of Python implemented in C,
-  and the main focus of language developement.
+  and the main focus of language development.
 * PyPy_: A Python interpreter focused on high speed (JIT-compiled) operation
   on major platforms
 * IronPython_: A Python interpreter focused on good integration with the
@@ -246,12 +271,14 @@ Key Resources
 * Coding style guides
     * Jython's `Java coding standard <https://wiki.python.org/jython/CodingStandards>`_
     * :PEP:`8` (Style Guide for Python Code)
-* `Issue tracker`_
+* `Jython issue tracker`_
     * `Meta tracker <http://psf.upfronthosting.co.za/roundup/meta>`_ (issue
       tracker for the issue tracker)
     * :doc:`experts`
 * Source code
-    * `Browse online <https://github.com/jython/jython/>`_
+    * `Browse online <http://hg.python.org/jython/file/default/>`_
+      <https://github.com/jython/jython/>`_
+
 * PEPs_ (Python Enhancement Proposals)
 * :doc:`help`
 
@@ -290,11 +317,11 @@ Full Table of Contents
 ----------------------
 
 .. toctree::
-   :maxdepth: 1
    :numbered:
 
    setup_jy
    help
+   patch_hg_jy
    pullrequest
    runtests
    docquality
@@ -305,16 +332,19 @@ Full Table of Contents
    triaging_jy
    communication
    coredev
+   committing_hg_jy
    committing
    devcycle
    buildbots_jy
    stdlibchanges
    langchanges
    experts
+   release_jy
    exploring_jy
    grammar_jy
    compiler_jy
    gitbootcamp
+   faq_hg_jy
 
 Specific to CPython_
 --------------------
@@ -358,4 +388,6 @@ understand the Jython one.
 .. _IronPython: http://ironpython.net/
 .. _Stackless: http://www.stackless.com/
 .. _Issue tracker: https://bugs.python.org/
+
 .. _Jython issue tracker: https://bugs.jython.org/
+.. _Style Guide for Java code: http://www.oracle.com/technetwork/java/codeconvtoc-136057.html

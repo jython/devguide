@@ -13,22 +13,21 @@ Running & Writing Tests
 
     This document assumes you are working from an
     :ref:`in-development <indevbranch>` checkout of Python. If you
+    :ref:`in-development <indevbranch>` checkout of Jython. If you
     are not then some things presented here may not work as they may depend
-    on new features not available in earlier versions of Python.
+    on new features not available in earlier versions of Jython.
 
 Running
 -------
 
 The shortest, simplest way of running the test suite is the following command
-from the root directory of your checkout (after you have
-:ref:`built Python <compiling>`)::
+from the root directory of your checkout::
 
-    ./python -m test
+    ant regrtest
 
-You may need to change this command as follows throughout this section.
-On :ref:`most <mac-python.exe>` Mac OS X systems, replace :file:`./python`
-with :file:`./python.exe`.  On Windows, use :file:`python.bat`.  If using
-Python 2.7, replace ``test`` with ``test.regrtest``.
+.. Jython should enable this:
+
+.. warning:: From here on needs modification from CPython base.
 
 If you don't have easy access to a command line, you can run the test suite from
 a Python or IDLE shell::

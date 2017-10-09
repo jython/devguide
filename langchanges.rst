@@ -7,6 +7,7 @@ Changing the Python Language
 ============================
 
 .. warning:: At present, this is not much modified from the CPython base.
+   As it is about Python the language, this may be entirely appropriate.
 
 On occasion people come up with an idea on how to change or improve Python as a
 programming language. This document is meant to explain exactly what changes

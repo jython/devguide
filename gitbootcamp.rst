@@ -15,6 +15,8 @@ relevant to CPython's workflow.
 
 .. contents::
 
+.. Keep the cpython target for setup.rst.
+.. _fork-jython:
 .. _fork-cpython:
 
 Forking CPython GitHub Repository

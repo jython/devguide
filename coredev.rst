@@ -6,16 +6,18 @@
 How to Become a Core Developer
 ==============================
 
-.. warning:: At present, this is not much modified from the CPython base.
+.. warning:: This is the merge of the hg-era Jython devguide with the current
+   CPython devguide.
 
 What it Takes
 -------------
 
 When you have consistently contributed patches which meet quality standards
 without requiring extensive rewrites prior to being committed,
-you may qualify for commit privileges and become a core developer of Python.
-You must also work well with other core developers (and people in general)
-as you become an ambassador for the Python project.
+you may qualify for
+commit privileges and become a core developer of Jython. You must also work
+well with other core developers (and people in general) as you become an
+ambassador for the Jython project.
 
 Typically a core developer will offer you the chance to gain commit privilege.
 The person making the offer will become your mentor and watch your commits for
@@ -65,21 +67,20 @@ in the :ref:`experts` and :ref:`developers`).
 Gaining Commit Privileges
 -------------------------
 
-When you have been extended an official offer to become a Python core
+When you have been extended an official offer to become a Jython core
 developer, there are several things you must do.
 
 Mailing Lists
 '''''''''''''
 
-You are expected to subscribe to python-committers, python-dev,
-python-checkins, and one of new-bugs-announce or python-bugs-list. See
-:ref:`communication` for links to these mailing lists.
-
+You are expected to subscribe to jython-dev, jython-checkins, and
+jython-bugs. See :ref:`communication` for links to these mailing lists.
 
 Issue Tracker
 '''''''''''''
 
-If you did not gain the Developer role in the `issue tracker`_ before gaining
+If you did not gain the Developer role in
+the `Jython issue tracker`_ before gaining
 commit privileges, please say so. This will allow issues to be assigned to you.
 A tracker admin should also flip your "is committer" bit in the tracker's
 account screen.
@@ -89,15 +90,36 @@ It is expected that on the issue tracker you have a username in the form of
 form, please change it. This is so that it is easier to assign issues to the
 right person.
 
+.. _Jython issue tracker: https://bugs.jython.org/
+
+SSH (Mercurial)
+'''''''''''''''
+
+You need to generate an SSH 2 RSA key to be able to commit code. You may have
+multiple keys if you wish (e.g., for work and home). Send your key as an
+attachment in an email to hgaccounts@python.org. Help in generating an SSH key
+can be found in the :ref:`faq`.
+
+Your SSH key will be set to a username in the form of "first_name.last_name".
+This should match your username on the issue tracker.
+
+You can verify your commit access by looking at
+http://hg.python.org/committers.txt which lists all core developers by
+username.  If you want to practice, there is a `test repository
+<http://hg.python.org/test/>`_ where you can freely commit and push any
+changes you like::
+
+   hg clone ssh://hg@hg.python.org/test/ hgtest
+
 
 GitHub
 ''''''
 
-You will be added to the ``Python core team`` on GitHub. This will give you
-rights to commit to various repositories under the `Python organization`_
+You will be added to the ``Jython core team`` on GitHub. This will give you
+rights to commit to various repositories under the `Jython organization`_
 on GitHub. When you are initially added you will be emailed by GitHub with
 an invitation to join the team. Please accept the invite in the email or
-go to https://github.com/python and accept the invite there.
+go to https://github.com/jython and accept the invite there.
 
 An entry in the :ref:`developers` should also be entered for you.
 Typically the person who sponsored your application to become a core developer
@@ -105,6 +127,7 @@ makes sure an entry is created for you.
 
 .. _Python organization: https://github.com/python
 
+.. _Jython organization: https://github.com/jython
 
 .. _contributor_agreement:
 
@@ -122,13 +145,29 @@ done this yet, it is best to do this ASAP, probably before you even do your
 first commit so as to not forget. Also do not forget to enter your GitHub
 username into your details on the issue tracker.
 
+.. _contributor form for Python: http://www.python.org/psf/contrib/
 
-.. _contributor form for Python: https://www.python.org/psf/contrib/
+Read/Write Checkout (Mercurial)
+'''''''''''''''''''''''''''''''
+
+With your commit privileges working and your contributor form submitted, you
+can now get a read/write checkout of the code. URLs for read/write checkouts
+are different than those for read-only checkouts as SSH is used instead of
+HTTP.
+
+You can clone the repository (which contains all active branches) with::
+
+   hg clone ssh://hg@hg.python.org/jython
+
+The default branch in that repository is the current development branch.
+You can of course switch your working copy to one of the maintenance branches,
+for example::
+
+   hg update 2.7
 
 
-
-Pull Request merging
-''''''''''''''''''''
+Pull Request merging (GitHub)
+'''''''''''''''''''''''''''''
 
 Once you have your commit privileges on GitHub you will be able to accept
 pull requests on GitHub. You should plan to continue to submit your own
@@ -143,8 +182,8 @@ Responsibilities
 As a core developer, there are certain things that are expected of you.
 
 First and foremost, be a good person. This might sound melodramatic, but you
-are now a member of the Python project and thus represent the project and your
-fellow core developers whenever you discuss Python with anyone. We have a
+are now a member of the Jython project and thus represent the project and your
+fellow core developers whenever you discuss Jython with anyone. We have a
 reputation for being a very nice group of people and we would like to keep it
 that way.  Core developers responsibilities include following the `PSF Code of
 Conduct`_.

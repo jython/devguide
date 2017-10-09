@@ -1,13 +1,12 @@
+.. Jython companion to setup.rst
+
 ===============
 Getting Started
 ===============
 
-.. warning:: At present, this is not much more than a copy of the CPython original
-   with the obviously inapplicable crudely hacked out.
-
 These instructions cover how to get a working copy of the source code and a
 compiled version of the Jython interpreter (Jython is the version of Python
-available from https://www.jython.org/). It also gives an overview of the
+available from http://www.jython.org/). It also gives an overview of the
 directory structure of the Jython source code.
 
 .. warning:: They mean CPython
@@ -26,8 +25,17 @@ Getting Set Up
 
 .. _vcsetup-jy:
 
-Version Control Setup
----------------------
+Version Control Setup (Mercurial)
+---------------------------------
+
+Jython is developed using `Mercurial <http://hg-scm.org/>`_. The Mercurial
+command line program is named ``hg``; this is also used to refer to Mercurial
+itself. Mercurial is easily available for common Unix systems by way of the
+standard package manager; under Windows, you might want to use the
+`TortoiseHg <http://tortoisehg.org/>`_ graphical client.
+
+Version Control Setup (GitHub)
+------------------------------
 
 CPython is developed using `git <https://git-scm.com>`_. The git
 command line program is named ``git``; this is also used to refer to git
@@ -52,21 +60,46 @@ and password each time you execute a command, such as ``git pull``,
 Getting the Source Code
 -----------------------
 
+Mercurial
+^^^^^^^^^
+One should always work from a working copy of the Jython source code.
+While it may
+be tempting to work from the copy of Jython you already have installed on your
+machine, it is very likely that you will be working from out-of-date code as
+the Jython core developers are constantly updating and fixing things in their
+:abbr:`VCS (version control system)`. It also means you will have better tool
+support through the VCS as it will provide a diff tool, etc.
+
+To get a working copy of the :ref:`in-development <indevbranch>` branch of
+Jython (core developers use a different URL as outlined in :ref:`coredev`),
+run::
+
+    hg clone http://hg.python.org/jython
+
+If you want a working copy of an already-released version of Jython,
+i.e., a version in :ref:`maintenance mode <maintbranch>`, you can update your
+
+working copy. For instance, to update your working copy to Jython 2.5, do::
+
+   hg update 2.5
+
+GitHub
+^^^^^^
 In order to get a copy of the source code you should first :ref:`fork the
-Python repository on GitHub <fork-cpython>` and then :ref:`create a local
+Jython repository on GitHub <fork-jython>` and then :ref:`create a local
 clone of your private fork and configure the remotes <clone-your-fork>`.
 
 If you want a working copy of an already-released version of Python,
 i.e., a version in :ref:`maintenance mode <maintbranch>`, you can checkout
-a release branch. For instance, to checkout a working copy of Python 3.5,
-do ``git checkout 3.5``.
+a release branch. For instance, to checkout a working copy of Jython 2.5,
+do ``git checkout 2.5``.
 
-You will need to re-compile CPython when you do such an update.
+You will need to re-compile Jython when you do such an update.
 
-Do note that CPython will notice that it is being run from a working copy.
-This means that if you edit CPython's source code in your working copy,
+Do note that Jython will notice that it is being run from a working copy.
+This means that if you edit Jython's source code in your working copy,
 changes to Python code will be picked up by the interpreter for immediate
-use and testing.  (If you change C code, you will need to recompile the
+use and testing.  (If you change Java code, you will need to recompile the
 affected files as described below.)
 
 Patches for the documentation can be made from the same repository; see
@@ -74,63 +107,29 @@ Patches for the documentation can be made from the same repository; see
 
 .. _compiling-jy:
 
-Compiling (for debugging)
--------------------------
+Compiling
+---------
 
-CPython provides several compilation flags which help with debugging various
-things. While all of the known flags can be found in the
-``Misc/SpecialBuilds.txt`` file, the most critical one is the ``Py_DEBUG`` flag
-which creates what is known as a "pydebug" build. This flag turns on various
-extra sanity checks which help catch common issues. The use of the flag is so
-common that turning on the flag is a basic compile option.
+Compiling Jython is fairly simple, from the top level of a source checkout do::
 
-You should always develop under a pydebug build of CPython (the only instance of
-when you shouldn't is if you are taking performance measurements). Even when
-working only on pure Python code the pydebug build provides several useful
-checks that one should not skip.
-
+    ant
 
 .. _build-dependencies-jy:
 
 Build dependencies
-''''''''''''''''''
+^^^^^^^^^^^^^^^^^^
 
-.. note::
+The core Jython interpreter depends on a number of jars.
+TODO: jars
+TODO: jython dev build
 
-   Must talk here about git, ant ... what else? IDEs maybe?
-   And must we explain how to install them?
+Once Jython is done building you will then have a working build
+that can be run in-place; ``./dist/bin/jython``
+There is normally no need to install your built copy
+of Jython! The interpreter will realize where it is being run from
+and thus use the files found in the working copy.
 
-
-.. _unix-compiling-jy:
-
-
-UNIX
-''''
-
-The basic steps for building Jython for development is to configure it and
-then compile it.
-
-
-.. _issue tracker: https://bugs.jython.org
-
-
-
-
-.. _windows-compiling-jy:
-
-Windows
-'''''''
-
-
-
-.. _build-troubleshooting-jy:
-
-Troubleshooting the build
--------------------------
-
-This section lists some of the common problems that may arise during the
-compilation of Python, with proposed solutions.
-
+.. _issue tracker: http://bugs.jython.org
 
 Editors and Tools
 =================
@@ -139,6 +138,13 @@ Python is used widely enough that practically all code editors have some form
 of support for writing Python code. Various coding tools also include Python
 support.
 
+Jython specific support is less common but supported in several IDEs. Many of
+the core developers do pretty well with Emacs or Vim :)
+
+TODO: Eclipse
+
+TODO: Netbeans
+
 For editors and tools which the core developers have felt some special comment
 is needed for coding *in* Python, see :ref:`resources`.
 
@@ -146,22 +152,58 @@ is needed for coding *in* Python, see :ref:`resources`.
 Directory Structure
 ===================
 
-There are several top-level directories in the CPython source tree. Knowing what
+There are several top-level directories in the Jython source tree. Knowing what
 each one is meant to hold will help you find where a certain piece of
 functionality is implemented. Do realize, though, there are always exceptions to
 every rule.
 
+``Demo``
+     Outdated Jython demo code.
+     TODO: fix this to make it current.
+
+``Doc``
+     Outdated Jython website docs.
+
+     TODO: Jython should put our fork of the CPython directory (the official
+     documentation) in an official hg repo in the python.org infrastructure.
+     The official documentation. This is what http://jython.org/docs uses.
+     To build the docs, see TODO.
 
 ``Lib``
-     The part of the standard library implemented in pure Python.
+     The part of the standard library implemented in pure Python. A future goal
+     is to do a way with this and exclusively use the CPython Lib with Jython
+     versions checked in there.
 
 ``Misc``
      Things that do not belong elsewhere. Typically this is varying kinds of
-     developer-specific documentation.
+     developer-specific tools and documentation.
 
-``src/org/python/core``
-     Code for all built-in types.
+``ast``
+     Code related to the parser. The definition of the AST nodes is also kept
+
+     TODO: It may be a good idea to rename this directory "Parser" to match
+     CPython.
+
+``bugtests``
+     Outdated framework for testing Jython.
+
+     Todo: tests that remain here should be ported to Lib/tests/
+
+``extlibs``
+     External Java dependencies for Jython.
+
+``grammar``
+     ANTLR source for building Jython's grammar.
+
+``maven``
+     Source for including Jython in Maven.
+
+``src``
+     The part of the Jython interpreter that is implemented in Java.
+
+``tests``
+     Tests for Jython implemented in Java.
 
 ``Tools``
-     Various tools that are (or have been) used to maintain Python.
+     Various tools that are (or have been) used to maintain Jython.
 

@@ -7,6 +7,8 @@ Fixing "easy" Issues (and Beyond)
 =================================
 
 .. warning:: At present, this is not much modified from the CPython base.
+   We have intended for a long time to update our tracker so that CPython
+   instructions would in fact apply, but they don't yet.
 
 When you feel comfortable enough to want to help tackle issues by trying to
 create a patch to fix an issue, you can start by looking at the `"easy"
