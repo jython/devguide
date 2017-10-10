@@ -6,8 +6,6 @@
 Where to Get Help
 =================
 
-.. warning:: At present, this is not much modified from the CPython base.
-
 If you are working on Jython it is very possible you will come across an issue
 where you need some assistance to solve it (this happens to core developers
 all the time).
@@ -37,14 +35,16 @@ If you are interested in improving Jython and contributing to its development,
 but don’t yet feel entirely comfortable with the public channels mentioned
 above, `Python Mentors`_ are here to help you.  The Python Mentors list was
 originally created to help with CPython development, but since Jython shares
-most of the same infrastructure (Jython is hosted on python.org a Mercurial
-repository and a Roundup issue tracker) it is a good place to find help for
+most of the same infrastructure (Jython's repository is at hg.python.org
+and uses a related Roundup issue tracker) it is a good place to find help for
 Jython as well. Python is fortunate to have a community of volunteer core
 developers willing to mentor anyone wishing to contribute code, work on bug
 fixes or improve documentation.  Everyone is welcomed and encouraged to
 contribute.
 
 .. _Python Mentors: http://pythonmentors.com
+
+.. FIXME: would Python Mentors count themselves a good place to go fro Jython?
 
 Mailing Lists
 -------------

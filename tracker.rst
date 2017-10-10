@@ -1,15 +1,16 @@
 .. This file is derived from a file of the same name in the CPython devguide
    and will receive updates from the CPython guide by merging.
+
+==============
+Issue Tracking
+==============
+
 .. warning::
     Thes Jython tracker is (slowly) undergoing an upgrade, after which most
     of the following will apply. Until then some of the features mentioned
     below are missing as this is a slightly modified copy from
     `CPython devguide <http://docs.python.org/devguide/>`_ that needs to
     be fully evaluated.
-
-==============
-Issue Tracking
-==============
 
 .. _tracker:
 

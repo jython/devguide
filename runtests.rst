@@ -12,7 +12,6 @@ Running & Writing Tests
 .. note::
 
     This document assumes you are working from an
-    :ref:`in-development <indevbranch>` checkout of Python. If you
     :ref:`in-development <indevbranch>` checkout of Jython. If you
     are not then some things presented here may not work as they may depend
     on new features not available in earlier versions of Jython.

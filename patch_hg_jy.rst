@@ -54,8 +54,9 @@ When creating a patch for submission, there are several things that you should
 do to help ensure that your patch is accepted.
 
 First, make sure to follow Python's style guidelines. For Python code you
-should follow :PEP:`8`, and for Java code you should follow the
-`Style Guide for Java code`_. If you have one or two discrepancies those can be
+should follow :PEP:`8`, and for Java code you should follow Jython's
+`Java coding standard <https://wiki.python.org/jython/CodingStandards>`_.
+If you have one or two discrepancies those can be
 fixed by the core developer who commits your patch. But if you have systematic
 deviations from the style guides your patch will be put on hold until you fix
 the formatting issues.

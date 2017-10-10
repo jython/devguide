@@ -34,12 +34,13 @@ and how various kinds of failures can be explained and diagnosed.
 Checking results of automatic builds
 ------------------------------------
 
-The way to view recent build results is ...
+The way to view recent build results is to go to the list of commits on GitHub
+and click on the little red cross (or whatever the symbol is when a build
+passes). In a PR-based process, the PR page itself contains a panel which shows
+what tests would pass or fail if the PR were merged.
 
-
-When several changesets are pushed in a quick succession in the same
-branch, it often happens that a single build is scheduled for all these
-changesets.
+When several changes are committed in a quick succession in the same
+branch, it often happens that only the latest is tested.
 
 
 Stability

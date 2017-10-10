@@ -1,9 +1,8 @@
-.. This file has been modified from the CPython version.
-   Modifications are extensive, and normally this would mean we should write a
-   new file index_jy.rst, but the expectation is that index.rst is the starting
-   point for the documentation.
-   We therefore keep it as modified, although merging from the CPython devguide
-   is more difficult this way.
+.. This file has been extensively modified from the CPython version.
+   Normally this would mean a new file index_jy.rst, but index.rst is the
+   starting point for the documentation.
+   We therefore keep it as modified, although merging changes from the CPython
+   devguide difficult for this file.
 
 ========================
 Jython Developer's Guide
@@ -16,14 +15,13 @@ bear in mind that:
 
 *  The CPython process is PR-based on GitHub and this guide anticipates our
    adoption of that for Jython.
-*  The existing Jython process uses Mercurial hosted at ``python.org``, and
-   patches via the bug-tracker: you will find that in this guide too.
-*  When the guide says "Python", that section is true for Jython too.
+*  The existing Jython process uses Mercurial so the guide describes that too.
+*  Statements about "Python" should apply to both CPython and Jython.
 *  The adaptation is imperfect: parts of the guide will say (or mean) CPython.
 
 This guide is :ref:`maintained <helping-with-the-developers-guide>` by the same
 community that maintains CPython and Jython.
-We welcome your contributions to both these implementations of Python!
+We welcome your contributions to either implementation of Python!
 
 
 Quick Reference
@@ -32,11 +30,11 @@ Quick Reference
 Mercurial
 ^^^^^^^^^
 
-1. :ref:`Get the source code <checkout>`::
+1. :ref:`Get the source code <checkout-jy>`::
 
       hg clone http://hg.python.org/jython
 
-2. :ref:`Build Jython <compiling>`::
+2. :ref:`Build Jython <compiling-jy>`::
 
       ant
 
@@ -178,10 +176,11 @@ Contributing
 ------------
 
 We encourage everyone to contribute to Python and that's why we have put up this
-We encourage everyone to contribute to Jython and that's why we have put up this
 developer's guide.  If you still have questions after reviewing the material in
 this guide, then the `Python Mentors`_ group is available to help guide new
 contributors through the process.
+
+.. FIXME: do Python Mentors help Jython contributors with process?
 
 A number of individuals from the Python community have contributed to a series
 of excellent guides at `Open Source Guides <https://opensource.guide/>`_.
@@ -193,17 +192,17 @@ Core developers and contributors alike will find the following guides useful:
 
 Guide for contributing to Jython:
 
-* :doc:`setup`
+* :doc:`setup_jy`
 * :doc:`help`
-* :doc:`pullrequest`
-* :doc:`patch_hg_jy`
+* :doc:`patch_hg_jy` (existing process)
+* :doc:`pullrequest` (partly usable future process)
 * :doc:`runtests`
 * Beginner tasks to become familiar with the development process
     * :doc:`docquality`
     * :doc:`coverage`
 * Advanced tasks for once you are comfortable
     * :doc:`silencewarnings`
-    * Fixing issues found by the :doc:`buildbots <buildbots>`
+    * Fixing issues found by the :doc:`buildbots <buildbots_jy>`
     * :doc:`fixingissues`
 * :ref:`tracker` and :ref:`helptriage`
     * :doc:`triaging`
@@ -213,8 +212,7 @@ Guide for contributing to Jython:
     * :doc:`committing`
     * :doc:`committing_hg_jy`
     * :doc:`devcycle`
-    * :doc:`buildbots`
-    * :doc:`coverity`
+    * :doc:`buildbots_jy`
 * :doc:`gitbootcamp`
 
 It is **recommended** that the above documents be read in the order listed.  You
@@ -245,8 +243,8 @@ happen and that process is also described as part of this guide:
 Other Interpreter Implementations
 ---------------------------------
 
-This guide is specifically for contributing to Python on the JVM,
-also known as Jython. (While most of the standard library is written in Python,
+This guide is specifically for contributing to Jython, that is,
+Python on the JVM. (While most of the standard library is written in Python,
 the interpreter core is written in Java and integrates most easily with the Java
 SE and EE ecosystems).
 
@@ -276,8 +274,8 @@ Key Resources
       tracker for the issue tracker)
     * :doc:`experts`
 * Source code
-    * `Browse online <http://hg.python.org/jython/file/default/>`_
-      <https://github.com/jython/jython/>`_
+    * `Browse in Mercurial online <http://hg.python.org/jython/file/default/>`_
+    * `Browse in GitHub <https://github.com/jython/jython/>`_
 
 * PEPs_ (Python Enhancement Proposals)
 * :doc:`help`
@@ -294,7 +292,6 @@ Additional Resources
     * :doc:`grammar_jy`
     * :doc:`compiler_jy`
 * Tool support
-    * Various tools with configuration files as found in the `Misc directory`_
     * Information about editors and their configurations can be found in the
       `wiki <https://wiki.python.org/moin/PythonEditors>`_
 
@@ -350,8 +347,8 @@ Specific to CPython_
 --------------------
 
 These are sections from the CPython guide, retained for reference.
-A comparison with the CPython implementation of a feature can help you
-understand the Jython one.
+A comparison with the CPython implementation of a feature will sometimes help
+you understand the Jython one.
 
 .. We're also keeping these files for the technical reason that changes from
    CPython upstream can only be merged if these CPython files continue to exist.

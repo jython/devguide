@@ -6,30 +6,32 @@
 Following Python's Development
 ==============================
 
-.. warning:: At present, this is not much modified from the CPython base.
-
 Python's development is communicated through a myriad of ways, mostly through
 mailing lists, but also other forms.
+These are all relevant to Jython (even sometimes the content specific to C),
+and Jython has some dedicated channels too.
 
 .. _mailinglists:
 
-Mailing Lists
--------------
+Jython Mailing Lists
+--------------------
 
-The primary mailing list for discussion of Jython's development is jython-dev_.
-The list is open to the public and all core developers subscribe,
-and others interested in Jython's development.
-Technical support questions should not be asked here but on jython-users_.
+The mailing list for discussion of Jython's development is jython-dev_.
+The list is open to the public and the Jython core developers subscribe,
+along with others interested in Jython's development.
+
+Questions about using Jython should not be asked here but on jython-users_.
 
 Jython-checkins_ sends out an email for every commit to Jython's various
-repositories from http://hg.python.org. All core developers
-subscribe to this list and are known to reply to these emails to make comments
-about various issues they catch in the commit.
+repositories from http://hg.python.org.
+All core developers subscribe to this list.
 There is a mailing list related to issues on the `Jython issue tracker`_.
 Subscribe to jython-bugs_ if you want  an email for all changes made to any
 issue.
 
-Developers working on Jython will be interested in the developement of Python
+Python and CPython Mailing Lists
+--------------------------------
+Developers working on Jython will be interested in the development of Python
 (the language) and its reference implementation.
 
 python-dev_ is the primary mailing list for discussions about Python's
