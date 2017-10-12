@@ -49,15 +49,15 @@ GitHub
 ^^^^^^
 .. highlight:: bash
 
-Here are the basic steps needed to get :ref:`set up <setup>` and contribute a
+Here are the basic steps needed to get :ref:`set up <setup-jy>` and contribute a
 patch. This is meant as a checklist, once you know the basics. For complete
-instructions please see the :ref:`setup guide <setup>`.
+instructions please see the :ref:`setup guide <setup-jy>`.
 
-1. Install and set up :ref:`Git <vcsetup>` and other dependencies
-   (see the :ref:`Get Setup <setup>` page for detailed information).
+1. Install and set up :ref:`Git <vcsetup-jy>` and other dependencies
+   (see the :ref:`Get Setup <setup-jy>` page for detailed information).
 
 2. Fork `the Jython repository <https://github.com/jython/jython>`_
-   to your GitHub account and :ref:`get the source code <checkout>` using::
+   to your GitHub account and :ref:`get the source code <checkout-jy>` using::
 
       git clone https://github.com/<your_username>/jython
 
@@ -67,23 +67,21 @@ instructions please see the :ref:`setup guide <setup>`.
 
    issued in the base check-out directory.
    The built application will be in subdirectory ``dist``.
-   See also :ref:`more detailed instructions <compiling>`,
-   :ref:`how to build dependencies <build-dependencies>`, and the
-   plaform-specific pages for :ref:`UNIX <unix-compiling>`,
-   and :ref:`Windows <windows-compiling>`.
+   See also :ref:`more detailed instructions <compiling-jy>`,
+   and :ref:`how to build dependencies <build-dependencies-jy>`.
 
 4. :doc:`Run the tests <runtests>`::
 
       dist/bin/jython -m test -e
 
-   With Jython 2.7, replace ``test`` with ``test.regrtest``.
+   (for Jython 3). With Jython 2.7, replace ``test`` with ``test.regrtest``.
 
 5. Create a new branch where your work for the issue will go, e.g.::
 
       git checkout -b fix-issue-12345 master
 
    If an issue does not already exist, please `create it
-   <https://bugs.python.org/>`_.  Trivial issues (e.g. typo fixes) do not
+   <https://bugs.jpython.org/>`_.  Trivial issues (e.g. typo fixes) do not
    require any issue to be created.
 
 6. Once you fixed the issue, run the tests, and if
@@ -205,12 +203,12 @@ Guide for contributing to Jython:
     * Fixing issues found by the :doc:`buildbots <buildbots_jy>`
     * :doc:`fixingissues`
 * :ref:`tracker` and :ref:`helptriage`
-    * :doc:`triaging`
+    * :doc:`triaging_jy`
     * :doc:`experts`
 * :doc:`communication`
 * :doc:`coredev`
-    * :doc:`committing`
     * :doc:`committing_hg_jy`
+    * :doc:`committing`
     * :doc:`devcycle`
     * :doc:`buildbots_jy`
 * :doc:`gitbootcamp`

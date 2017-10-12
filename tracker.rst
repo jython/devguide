@@ -50,7 +50,7 @@ Being now logged in, you can submit a bug by clicking on the "Create New" link
 in the sidebar.
 
 The submission form has a number of fields, and they are described in detail
-in the :ref:`triaging` page.  This is a short summary:
+in the :ref:`triaging-jy` page.  This is a short summary:
 
 * in the **Title** field, enter a *very* short description of the problem;
   less than ten words is good;

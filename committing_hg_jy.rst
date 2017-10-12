@@ -1,3 +1,6 @@
+.. Jython and Mercurial-specific companion to committing.rst,
+   needed while we use Mercurial.
+
 .. _committing-hg-jy:
 
 Committing and Pushing Changes (Mercurial)
@@ -31,7 +34,7 @@ passes before pushing any code changes.
    or library modules.
 
    Running the entire test suite doesn't guarantee that your changes
-   will pass the :ref:`continuous integration <buildbots>` tests, as those
+   will pass the :ref:`continuous integration <buildbots-jy>` tests, as those
    will exercise more possibilities still (such as different platforms or
    build options).  But it will at least catch non-build specific,
    non-platform specific errors, therefore minimizing the chance for
@@ -321,7 +324,7 @@ clone/directory, but, on the other hand, it requires you to recompile Python
 every time you need to switch branch.  For this reason, this approach is not
 suggested to core developers, but it's usually suitable for contributors.
 
-See :ref:`checkout` to find information about cloning and switching branches.
+See :ref:`checkout-jy` to find information about cloning and switching branches.
 
 .. _multiple-clones:
 
@@ -340,7 +343,7 @@ enabled by adding the following lines to your ``~/.hgrc``::
    [extensions]
    share =
 
-Once you have :ref:`cloned the hg.python.org/jython repository <checkout>`
+Once you have :ref:`cloned the hg.python.org/jython repository <checkout-jy>`
 you can create the other shared clones using::
 
    $ hg share jython 2.7  # create a new shared clone

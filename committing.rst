@@ -53,7 +53,7 @@ passes before merging any code changes.
    or library modules.
 
    Running the entire test suite doesn't guarantee that the changes
-   will pass the :ref:`continuous integration <buildbots>` tests, as those
+   will pass the :ref:`continuous integration <buildbots-jy>` tests, as those
    will exercise more possibilities still (such as different platforms or
    build options).  But it will at least catch non-build specific,
    non-platform specific errors, therefore minimizing the chance for

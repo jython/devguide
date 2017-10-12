@@ -8,6 +8,8 @@ Documenting Python
 ==================
 
 .. warning:: At present, this is not much modified from the CPython base.
+   But that's probably ok, as Jython documentation is largely from CPython,
+   and the section is predominantly a guide to ReStructuredText.
 
 The Python language has a substantial body of documentation, much of it
 contributed by various authors. The markup used for the Python documentation is

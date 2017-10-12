@@ -2,11 +2,10 @@
 
 .. _triaging-jy:
 
-Triaging an Issue
-=================
+Triaging a Jython Issue
+=======================
 
-.. warning:: At present, this is not much more than a copy of the CPython original
-   with the obviously inapplicable crudely hacked out.
+.. warning:: At present, this is not much more than a copy of the CPython original.
 
 When you have the Developer role on the `issue tracker`_ you are able to triage
 issues directly without any assistance.

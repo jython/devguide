@@ -19,6 +19,10 @@ but the strategy requires they be contributes upstream to CPython.
    validated in a Jython context. The section on C is not relevant to Java,
    and we need to write one that is.
 
+.. In the 2017 revision, scoring for C-specific content suggested we create a
+   coverage_jy companion file.
+
+
 Python development follows a practice that all semantic changes and additions
 to the language and :abbr:`stdlib (standard library)` are accompanied by
 appropriate unit tests. Unfortunately Python was in existence for a long time
@@ -258,9 +262,9 @@ times.
 Filing the Issue
 """"""""""""""""
 Once you have increased coverage, you need to create an issue on the
-`Jython issue tracker`_ and submit a :doc:`pull request <pullrequest>`. On the
-issue set the "Components" to "Test" and "Versions" to the version of Jython you
-worked on (i.e., the in-development version).
+`Jython issue tracker`_ and submit a :doc:`pull request or patch <pullrequest>`.
+On the issue set the "Components" to "Test" and "Versions" to the version of
+Jython you worked on (i.e., the in-development version).
 
 .. _Jython issue tracker: http://bugs.jython.org
 

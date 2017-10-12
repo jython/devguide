@@ -109,6 +109,6 @@ Changes to the devguide are normally published within a day, on a schedule
 that may be different from the main documentation.
 
 .. _separate repository:
-.. _devguide repo: https://github.com/python/devguide
-.. _the GitHub tracker: https://github.com/python/devguide/issues
+.. _devguide repo: https://github.com/jython/devguide
+.. _the GitHub tracker: https://github.com/jython/devguide/issues
 .. _Sphinx: http://www.sphinx-doc.org/

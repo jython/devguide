@@ -102,7 +102,7 @@ be executed on that platform.
 Often, the cause is that an optional module hasn't been built due to missing
 build dependencies. In these cases, the missing module reported when the test
 is skipped should match one of the modules reported as failing to build when
-:ref:`compiling`.
+:ref:`compiling-jy`.
 
 In other cases, the skip message should provide enough detail to help figure
 out and resolve the cause of the problem (for example, the default security

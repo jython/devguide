@@ -7,6 +7,10 @@ Lifecycle of a Pull Request
 ===========================
 
 .. warning:: At present, this is not much modified from the CPython base.
+   This describes the PR-based process used by CPython on GitHub, which works
+   for Jython in a limited form. (You can asubmit a PR, but we export a patch.)
+   The traditional Jython process is based on
+   :doc:`patches submitted to the tracker <patch_hg_jy>`.
 
 Creating
 --------
@@ -109,14 +113,14 @@ Here is a quick overview of how you can contribute to CPython on GitHub:
 #. If an issue doesn't exist, `create an Issue`_ that describes your change.
    Trivial issues (e.g. typo fixes) do not require any issue to be created.
 
-#. :ref:`Get started <setup>` and set up your system
+#. :ref:`Get started <setup-jy>` and set up your system
 
-#. :ref:`Fork CPython <fork-cpython>` (using the Fork button in the
+#. :ref:`Fork Jython <fork-jython>` (using the Fork button in the
    upper-right on GitHub)
 
 #. :ref:`Clone your GitHub fork and add an "upstream" remote <clone-your-fork>`
 
-#. :ref:`Build Python <compiling>` on your system
+#. :ref:`Build Jython <compiling-jy>` on your system
 
 #. :ref:`Run tests <runtests>` after you have built Python
 

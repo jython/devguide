@@ -12,7 +12,7 @@ This is a quick guide for people who are interested in learning more about
 Jython's internals.
 It provides a summary of the source code structure
 and contains references to resources providing a more in-depth view.
-Much may al;so be learned by :doc:`exploring CPython's internals <exploring>`.
+Much may also be learned by :doc:`exploring CPython's internals <exploring>`.
 
 
 Jython Source Code Layout

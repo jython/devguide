@@ -54,7 +54,7 @@ under active development for all kinds of changes: new features, semantic
 changes, performance improvements, bug fixes.
 
 In a process based on Mercurial, the branch is identifies as ``default``.
-It is the branch :ref:`checked out <checkout>` by default by Mercurial.
+It is the branch :ref:`checked out <checkout-jy>` by default by Mercurial.
 
 At some point during the life-cycle of a release, a
 new :ref:`maintenance branch <maintbranch>` is created to host all bug fixing
