@@ -50,8 +50,9 @@ Mailing Lists
 -------------
 
 Further options for seeking assistance include the `jython-users`_ and
-`jython-dev`_ mailing lists.  Jython-users contains discussion of the use of
-Jython in development.  Jython-dev contains discussion of current Jython design
+`jython-dev`_ mailing lists.
+Jython-users contains discussion of software developement *using* Jython.
+Jython-dev contains discussion of current Jython design
 issues, release mechanics, and maintenance of existing releases.  Just remember
 that ``jython-dev`` is for questions involving the development *of* Jython
 whereas ``jython-users`` is for questions concerning development *with* Jython.

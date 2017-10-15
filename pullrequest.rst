@@ -8,7 +8,7 @@ Lifecycle of a Pull Request
 
 .. warning:: At present, this is not much modified from the CPython base.
    This describes the PR-based process used by CPython on GitHub, which works
-   for Jython in a limited form. (You can asubmit a PR, but we export a patch.)
+   for Jython in a limited form. (You can submit a PR, but we export a patch.)
    The traditional Jython process is based on
    :doc:`patches submitted to the tracker <patch_hg_jy>`.
 
