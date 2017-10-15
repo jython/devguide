@@ -1,27 +1,7 @@
-.. This file is derived from a file of the same name in the CPython devguide
-   and will receive updates from the CPython guide by merging.
-
 .. _coverage:
-
 
 Increase Test Coverage
 ======================
-
-Jython adopts the Python Standard Library practically wholesale.
-Its quality is taken care of almost entirely by the CPython project,
-while Jython tries to minimise the amount of Jython-specific code either
-in the standard library and our tests,
-or added to the Jython code base to supersede standard modules.
-Improvements to the library and its test coverage may emerge from Jython,
-but the strategy requires they be contributes upstream to CPython.
-
-.. note:: A lot of this section is identical to the CPython guide and not
-   validated in a Jython context. The section on C is not relevant to Java,
-   and we need to write one that is.
-
-.. In the 2017 revision, scoring for C-specific content suggested we create a
-   coverage_jy companion file.
-
 
 Python development follows a practice that all semantic changes and additions
 to the language and :abbr:`stdlib (standard library)` are accompanied by
@@ -262,20 +242,11 @@ times.
 Filing the Issue
 """"""""""""""""
 Once you have increased coverage, you need to create an issue on the
-`Jython issue tracker`_ and submit a :doc:`pull request or patch <pullrequest>`.
-On the issue set the "Components" to "Test" and "Versions" to the version of
-Jython you worked on (i.e., the in-development version).
+`issue tracker`_ and submit a :doc:`pull request <pullrequest>`. On the
+issue set the "Components" to "Test" and "Versions" to the version of Python you
+worked on (i.e., the in-development version).
 
-.. _Jython issue tracker: http://bugs.jython.org
-
-
-
-Measuring coverage of Java code
-"""""""""""""""""""""""""""""""
-
-TODO
-
-
+.. _issue tracker: https://bugs.python.org
 
 
 Measuring coverage of C code with gcov and lcov
@@ -307,5 +278,3 @@ about 20 to 30 minutes on a modern computer.
 
 .. _gcov: http://gcc.gnu.org/onlinedocs/gcc/Gcov.html
 .. _lcov: http://ltp.sourceforge.net/coverage/lcov.php
-
-

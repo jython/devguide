@@ -319,6 +319,7 @@ Full Table of Contents
    patch_hg_jy
    pullrequest
    runtests
+   coverage_jy
    docquality
    documenting
    silencewarnings
