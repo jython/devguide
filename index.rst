@@ -38,7 +38,7 @@ Mercurial
 
       ant
 
-3. :doc:`Run the tests <runtests>`::
+3. :doc:`Run the tests <runtests_jy>`::
 
       ant regrtest
 
@@ -70,7 +70,7 @@ instructions please see the :ref:`setup guide <setup-jy>`.
    See also :ref:`more detailed instructions <compiling-jy>`,
    and :ref:`how to build dependencies <build-dependencies-jy>`.
 
-4. :doc:`Run the tests <runtests>`::
+4. :doc:`Run the tests <runtests_jy>`::
 
       dist/bin/jython -m test -e
 
@@ -194,7 +194,7 @@ Guide for contributing to Jython:
 * :doc:`help`
 * :doc:`patch_hg_jy` (existing process)
 * :doc:`pullrequest` (partly usable future process)
-* :doc:`runtests`
+* :doc:`runtests_jy`
 * Beginner tasks to become familiar with the development process
     * :doc:`docquality`
     * :doc:`coverage`
@@ -318,7 +318,7 @@ Full Table of Contents
    help
    patch_hg_jy
    pullrequest
-   runtests
+   runtests_jy
    coverage_jy
    docquality
    documenting
@@ -356,6 +356,7 @@ you understand the Jython one.
    :maxdepth: 1
 
    setup
+   runtests
    coverage
    triaging
    porting

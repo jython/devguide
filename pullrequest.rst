@@ -75,7 +75,7 @@ developers.
 Third, make sure you have proper tests to verify your pull request works as
 expected. Pull requests will not be accepted without the proper tests!
 
-Fourth, make sure the entire test suite :ref:`runs <runtests>` **without
+Fourth, make sure the entire test suite :ref:`runs <runtests-jy>` **without
 failure** because of your changes.  It is not sufficient to only run whichever
 test seems impacted by your changes, because there might be interferences
 unknown to you between your changes and some other part of the interpreter.
@@ -122,12 +122,12 @@ Here is a quick overview of how you can contribute to CPython on GitHub:
 
 #. :ref:`Build Jython <compiling-jy>` on your system
 
-#. :ref:`Run tests <runtests>` after you have built Python
+#. :ref:`Run tests <runtests-jy>` after you have built Python
 
 #. :ref:`Create a Branch in Git <pullrequest-steps>` where you can work on
    changes
 
-#. :ref:`Run tests <runtests>` again
+#. :ref:`Run tests <runtests-jy>` again
 
 #. :ref:`Commit <commit-changes>` and :ref:`push <push-changes>`
    changes to your GitHub fork

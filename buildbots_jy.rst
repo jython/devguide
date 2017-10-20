@@ -58,7 +58,7 @@ as soon as possible.
 Flags-dependent failures
 ------------------------
 
-Sometimes, while you have run the :doc:`whole test suite <runtests>` before
+Sometimes, while you have run the :doc:`whole test suite <runtests_jy>` before
 committing, you may witness unexpected failures on the buildbots.  One source
 of such discrepancies is if different flags have been passed to the test runner
 or to Python itself.  To reproduce, make sure you use the same flags as the

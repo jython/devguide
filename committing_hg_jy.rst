@@ -25,7 +25,7 @@ ensure your changes fulfill several mandatory criteria.
 Does the test suite still pass?
 '''''''''''''''''''''''''''''''
 
-You must :ref:`run the whole test suite <runtests>` to ensure that it
+You must :ref:`run the whole test suite <runtests-jy>` to ensure that it
 passes before pushing any code changes.
 
 .. note::
@@ -95,7 +95,7 @@ triagers are good to go except maybe lacking ``Misc/ACKS`` and ``Misc/NEWS``
 entries.
 
 Second, make sure the patch does not break backwards-compatibility without a
-good reason. This means :ref:`running the entire test suite <runtests>` to
+good reason. This means :ref:`running the entire test suite <runtests-jy>` to
 make sure everything still passes. It also means that if semantics do change
 there must be a good reason for the breakage of code the change will cause
 (and it **will** break someone's code). If you are unsure if the breakage
