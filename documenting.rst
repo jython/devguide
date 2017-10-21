@@ -1,8 +1,15 @@
+.. This file is derived from a file of the same name in the CPython devguide
+   and will receive updates from the CPython guide by merging.
+
 .. _documenting:
 
 ==================
 Documenting Python
 ==================
+
+.. warning:: At present, this is not much modified from the CPython base.
+   But that's probably ok, as Jython documentation is largely from CPython,
+   and the section is predominantly a guide to ReStructuredText.
 
 The Python language has a substantial body of documentation, much of it
 contributed by various authors. The markup used for the Python documentation is
@@ -456,7 +463,7 @@ the extension mechanisms of reST, and Sphinx makes heavy use of it.
 
 Basically, a directive consists of a name, arguments, options and content. (Keep
 this terminology in mind, it is used in the next chapter describing custom
-directives.)  Looking at this example, ::
+directives.)  Looking at this example,::
 
    .. function:: foo(x)
                  foo(y, z)
@@ -1491,7 +1498,7 @@ Without make
 
 Install the Sphinx package and its dependencies from PyPI.
 
-Then, from the ``Docs`` directory, run ::
+Then, from the ``Docs`` directory, run::
 
    sphinx-build -b<builder> . build/<builder>
 

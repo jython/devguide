@@ -1,7 +1,13 @@
+.. This file is derived from a file of the same name in the CPython devguide
+   and will receive updates from the CPython guide by merging.
+
 .. _committing:
 
 Accepting Pull Requests
 =======================
+
+.. warning:: At present, this is not much modified from the CPython base.
+
 
 This page is aimed to core developers, and covers the steps required to
 accept, merge, and possibly backport a pull request on the main repository.
@@ -30,8 +36,9 @@ merging (details of various steps can be found later in this document):
 .. note::
    If you want to share your work-in-progress code on a feature or bugfix,
    either open a ``WIP``-prefixed PR, publish patches on the
-   `issue tracker`_ or create a public fork of the repository.
+   `Jython issue tracker`_ or create a public fork of the repository.
 
+.. _Jython issue tracker: https://bugs.jython.org
 .. _issue tracker: https://bugs.python.org
 
 
@@ -47,7 +54,7 @@ passes before merging any code changes.
    or library modules.
 
    Running the entire test suite doesn't guarantee that the changes
-   will pass the :ref:`continuous integration <buildbots>` tests, as those
+   will pass the :ref:`continuous integration <buildbots-jy>` tests, as those
    will exercise more possibilities still (such as different platforms or
    build options).  But it will at least catch non-build specific,
    non-platform specific errors, therefore minimizing the chance for

@@ -1,6 +1,16 @@
+.. This file is derived from a file of the same name in the CPython devguide
+   and will receive updates from the CPython guide by merging.
+
 ==============
 Issue Tracking
 ==============
+
+.. warning::
+    Thes Jython tracker is (slowly) undergoing an upgrade, after which most
+    of the following will apply. Until then some of the features mentioned
+    below are missing as this is a slightly modified copy from
+    `CPython devguide <http://docs.python.org/devguide/>`_ that needs to
+    be fully evaluated.
 
 .. _tracker:
 
@@ -40,7 +50,7 @@ Being now logged in, you can submit a bug by clicking on the "Create New" link
 in the sidebar.
 
 The submission form has a number of fields, and they are described in detail
-in the :ref:`triaging` page.  This is a short summary:
+in the :ref:`triaging-jy` page.  This is a short summary:
 
 * in the **Title** field, enter a *very* short description of the problem;
   less than ten words is good;
@@ -212,7 +222,7 @@ instructions on the `Tracker Development`_ page.
       Discussions about the bug tracker.
 
 
-.. _issue tracker: https://bugs.python.org/
+.. _issue tracker: http://bugs.jython.org/
 .. _meta tracker: http://psf.upfronthosting.co.za/roundup/meta/
-.. _advanced search: https://bugs.python.org/issue?@template=search
-.. _Tracker Development: https://wiki.python.org/moin/TrackerDevelopment
+.. _advanced search: http://bugs.jython.org/issue?@template=search
+.. _Tracker Development: http://wiki.python.org/moin/TrackerDevelopment

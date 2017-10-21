@@ -1,13 +1,22 @@
+.. This file is derived from a file of the same name in the CPython devguide
+   and will receive updates from the CPython guide by merging.
+
 .. _devcycle:
 
 Development Cycle
 =================
 
-The responsibilities of a core developer shift based on what kind of branch of
-Python a developer is working on and what stage the branch is in.
+.. warning:: At present, this includes all the material from the Jython guide,
+   but predominantly describes the CPython process with CPython examples.
+   The process is the one Jython will move to: some applies already and the
+   rest is important for us to get clear.
+   It's just that the examples are a bit incongruous for Jython.
 
-To clarify terminology, Python uses a ``major.minor.micro`` nomenclature
-for production-ready releases. So for Python 3.1.2 final, that is a *major
+The responsibilities of a core developer shift based on what kind of branch of
+Jython a developer is working on and what stage the branch is in.
+
+To clarify terminology, Jython uses a ``major.minor.micro`` nomenclature
+for production-ready releases. So for Jython 3.1.2 final, that is a *major
 version* of 3, a *minor version* of 1, and a *micro version* of 2.
 
 * new *major versions* are exceptional; they only come when strongly
@@ -31,7 +40,7 @@ Branches
 ''''''''
 
 There is a branch for each *feature version*, whether released or not (e.g.
-2.7, 3.6).  Development is handled separately for Python 2 and Python 3:
+2.7, 3.5).  Development is handled separately for Python 2 and Python 3:
 no merging happens between 2.x and 3.x branches.
 
 
@@ -43,6 +52,9 @@ In-development (main) branch
 The ``master`` branch is the branch for the next feature release; it is
 under active development for all kinds of changes: new features, semantic
 changes, performance improvements, bug fixes.
+
+In a process based on Mercurial, the branch is identifies as ``default``.
+It is the branch :ref:`checked out <checkout-jy>` by default by Mercurial.
 
 At some point during the life-cycle of a release, a
 new :ref:`maintenance branch <maintbranch>` is created to host all bug fixing
@@ -112,6 +124,8 @@ Summary
 
 There are 6 open branches right now in the Git repository:
 
+.. warning:: CPython-specific
+
 - the ``master`` branch accepts features and bugs fixes for the future
   3.7.0 feature release (RM: Ned Deily)
 - the ``3.6`` branch accepts bug fixes for future 3.6.x maintenance releases
@@ -125,8 +139,14 @@ There are 6 open branches right now in the Git repository:
 - the ``2.7`` branch accepts bug fixes for future 2.7.x maintenance releases
   (RM: Benjamin Peterson)
 
+.. warning:: Jython information out of date.
+
 See also the :ref:`Status of Python branches <branchstatus>`.
 
+- the ``default`` branch holds the future 2.7 version and descends from ``2.5``
+- the ``2.5`` branch holds bug fixes for future 2.5.x maintenance releases and
+  descends from ``2.2``
+- the ``2.2`` branch holds security fixes for future 2.2.x security releases
 
 .. _stages:
 

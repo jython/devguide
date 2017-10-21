@@ -1,8 +1,16 @@
+.. This file is derived from a file of the same name in the CPython devguide
+   and will receive updates from the CPython guide by merging.
+
 .. _patch:
 
 Lifecycle of a Pull Request
 ===========================
 
+.. warning:: At present, this is not much modified from the CPython base.
+   This describes the PR-based process used by CPython on GitHub, which works
+   for Jython in a limited form. (You can submit a PR, but we export a patch.)
+   The traditional Jython process is based on
+   :doc:`patches submitted to the tracker <patch_hg_jy>`.
 
 Creating
 --------
@@ -67,7 +75,7 @@ developers.
 Third, make sure you have proper tests to verify your pull request works as
 expected. Pull requests will not be accepted without the proper tests!
 
-Fourth, make sure the entire test suite :ref:`runs <runtests>` **without
+Fourth, make sure the entire test suite :ref:`runs <runtests-jy>` **without
 failure** because of your changes.  It is not sufficient to only run whichever
 test seems impacted by your changes, because there might be interferences
 unknown to you between your changes and some other part of the interpreter.
@@ -105,21 +113,21 @@ Here is a quick overview of how you can contribute to CPython on GitHub:
 #. If an issue doesn't exist, `create an Issue`_ that describes your change.
    Trivial issues (e.g. typo fixes) do not require any issue to be created.
 
-#. :ref:`Get started <setup>` and set up your system
+#. :ref:`Get started <setup-jy>` and set up your system
 
-#. :ref:`Fork CPython <fork-cpython>` (using the Fork button in the
+#. :ref:`Fork Jython <fork-jython>` (using the Fork button in the
    upper-right on GitHub)
 
 #. :ref:`Clone your GitHub fork and add an "upstream" remote <clone-your-fork>`
 
-#. :ref:`Build Python <compiling>` on your system
+#. :ref:`Build Jython <compiling-jy>` on your system
 
-#. :ref:`Run tests <runtests>` after you have built Python
+#. :ref:`Run tests <runtests-jy>` after you have built Python
 
 #. :ref:`Create a Branch in Git <pullrequest-steps>` where you can work on
    changes
 
-#. :ref:`Run tests <runtests>` again
+#. :ref:`Run tests <runtests-jy>` again
 
 #. :ref:`Commit <commit-changes>` and :ref:`push <push-changes>`
    changes to your GitHub fork

@@ -1,7 +1,17 @@
+.. This file is derived from a file of the same name in the CPython devguide
+   and will receive updates from the CPython guide by merging.
+
 .. _docquality:
 
 Helping with Documentation
 ==========================
+
+.. warning:: At present, this is not much modified from the CPython base.
+
+.. I've not pulled in the old devguide Python to Jython changes as the section
+   is about Python, not CPython. The original (as improved upstream) is valid.
+   And we don't really produce much documentation. (Javadoc is a different
+   kettle of fish.)
 
 Python is known for having good documentation. But maintaining all of it and
 keeping a high level of quality takes a lot of effort. Help is always
@@ -99,6 +109,6 @@ Changes to the devguide are normally published within a day, on a schedule
 that may be different from the main documentation.
 
 .. _separate repository:
-.. _devguide repo: https://github.com/python/devguide
-.. _the GitHub tracker: https://github.com/python/devguide/issues
+.. _devguide repo: https://github.com/jython/devguide
+.. _the GitHub tracker: https://github.com/jython/devguide/issues
 .. _Sphinx: http://www.sphinx-doc.org/

@@ -1,7 +1,12 @@
+.. This file is derived from a file of the same name in the CPython devguide
+   and will receive updates from the CPython guide by merging.
+
 .. _silencewarnings:
 
 Silence Warnings From the Test Suite
 ====================================
+
+.. warning:: At present, this is not much modified from the CPython base.
 
 When running Python's test suite, no warnings should result when you run it
 under :ref:`strenuous testing conditions <strenuous_testing>` (you can ignore

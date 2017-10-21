@@ -1,7 +1,12 @@
+.. This file is derived from a file of the same name in the CPython devguide
+   and will receive updates from the CPython guide by merging.
+
 .. _stdlibchanges:
 
 Adding to the Stdlib
 ====================
+
+.. warning:: At present, this is not much modified from the CPython base.
 
 While the stdlib contains a great amount of useful code, sometimes you want
 more than is provided. This document is meant to explain how you can get either
@@ -83,7 +88,7 @@ it.
 
 
 Requirements
-''''''''''''''
+''''''''''''
 In order for a module to even be considered for inclusion into the stdlib, a
 couple of requirements must be met.
 
