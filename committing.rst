@@ -64,54 +64,8 @@ passes before merging any code changes.
 Patch checklist
 '''''''''''''''
 
-Along with running the tests, a simple automated patch checklist, ``patchcheck``,
-guides a developer through the common patch generation checks. To run
-``patchcheck``:
-
-   On *UNIX* (including Mac OS X)::
-
-      make patchcheck
-
-   On *Windows* (after any successful build)::
-
-      python.bat Tools/scripts/patchcheck.py
-
-The automated patch checklist runs through:
-
-* Are there any whitespace problems in Python files?
-  (using ``Tools/scripts/reindent.py``)
-* Are there any whitespace problems in C files?
-* Are there any whitespace problems in the documentation?
-  (using ``Tools/scripts/reindent-rst.py``)
-* Has the documentation been updated?
-* Has the test suite been updated?
-* Has an entry under ``Misc/NEWS.d/next`` been added?
-* Has ``Misc/ACKS`` been updated?
-* Has ``configure`` been regenerated, if necessary?
-* Has ``pyconfig.h.in`` been regenerated, if necessary?
-
-The automated patch check doesn't actually *answer* all of these
-questions. Aside from the whitespace checks, the tool is
-a memory aid for the various elements that can go into
-making a complete patch.
-
-
-Commit Style
-------------
-
-.. move this to pullrequest
-
-Once a change patch is ready and tested, it can be committed to the repository.
-We usually prefer to put a whole feature or bugfix into a single commit, but no
-more.  In particular:
-
-* Do **not** fix more than one issue in the same commit (except, of course, if
-  one code change fixes all of them).
-* Do **not** do cosmetic changes to unrelated code in the same commit as some
-  feature/bugfix.
-
-It is of course okay to pile up several commits to one branch and merge them
-into another in one commit.
+You should also :ref:`run patchcheck <patchcheck>` to perform a quick
+sanity check on the changes.
 
 
 Handling Others' Code
@@ -245,39 +199,8 @@ allowed here because news entries are meant to be as readable as possible
 unprocessed.)
 
 
-Commit Messages
----------------
-
-.. move to pullrequest
-
-Every commit has a commit message to document why a change was made and to
-communicate that reason to other core developers. Python core developers have
-developed a standard way of formatting commit messages that everyone is
-expected to follow.
-
-Our usual convention mimics that used in news entries (it is actually common to
-start by pasting the news entry into the commit message). The only key
-difference when compared to a news entry is the inclusion of the issue number
-as the beginning of the commit message. Here is an example::
-
-   bpo-42: the spam module is now more spammy.
-
-   The spam module sporadically came up short on spam. This change
-   raises the amount of spam in the module by making it more spammy.
-
-   Thanks to Monty Python for the patch.
-
-The first line or sentence is meant to be a dense, to-the-point explanation
-of what the purpose of the commit is.  If this is not enough detail for a commit,
-a new paragraph(s) can be added to explain in proper depth what has happened
-(detail should be good enough that a core developer reading the commit message
-understands the justification for the change).  Also, if a non-core developer
-contributed to the resolution, it is good practice to credit them.
-
-
-
 Working with Git_
-=================
+-----------------
 
 .. seealso::
    :ref:`gitbootcamp`
@@ -291,13 +214,17 @@ repositories means you have to be more careful with your workflow:
   dedicated to maintenance of the work before the work gets integrated in the
   main repository.
 
-* You should not commit directly into the ``master`` branch, or any of the
-  maintenance branches (``2.7``, ``3.5``, or ``3.6``).  You should commit against
-  your own feature branch, and create a pull request.
+  An exception to this rule: you can make a quick edit through the web UI of
+  GitHub, in which case the branch you create can exist for less than 24 hours.
+  This exception should not be abused and be left only for very simple changes.
 
-It is recommended to keep a fork of the main repository around, as it allows simple
-reversion of all local changes (even "committed" ones) if your local clone gets
-into a state you aren't happy with.
+* You should not commit directly into the ``master`` branch, or any of the
+  maintenance branches (currently ``2.7`` or ``3.6``).
+  You should commit against your own feature branch, and create a pull request.
+
+It is recommended to keep a fork of the main repository around, as it allows
+simple reversion of all local changes (even "committed" ones) if your local
+clone gets into a state you aren't happy with.
 
 
 .. _Git: https://git-scm.com/
@@ -306,7 +233,7 @@ into a state you aren't happy with.
 .. _committing-active-branches:
 
 Active branches
----------------
+'''''''''''''''
 
 If you do ``git branch`` you will see a :ref:`list of branches <listbranch>`.
 ``master`` is the in-development branch, and is the only branch that receives
@@ -316,17 +243,19 @@ new features.  The other branches only receive bug fixes or security fixes.
 .. _branch-merge:
 
 Backporting Changes to an Older Version
----------------------------------------
+'''''''''''''''''''''''''''''''''''''''
 
-When it is determined that a pull request needs to be backported into one or more of
-the maintenance branches, a core developer can apply the labels ``needs backport to X.Y``
-to the pull request.
+When it is determined that a pull request needs to be backported into one or
+more of the maintenance branches, a core developer can apply the labels
+``needs backport to X.Y`` to the pull request.
 
-After the pull request has been merged, it can be backported using cherry_picker.py_.
+After the pull request has been merged, it can be backported using
+cherry_picker.py_.
 
-The commit hash can be obtained from the original pull request, or by using `git log`
-on the ``master`` branch.  To display the 10 most recent commit hashes and their first
-line of the commit message::
+The commit hash can be obtained from the original pull request, or by using
+``git log`` on the ``master`` branch.
+To display the 10 most recent commit hashes and their first line of the commit
+message::
 
    git log -10 --oneline
 
@@ -344,7 +273,7 @@ Developers can apply labels to GitHub pull requests).
 
 
 Reverting a Merged Pull Request
--------------------------------
+'''''''''''''''''''''''''''''''
 
 To revert a merged pull request, press the ``Revert`` button at the bottom of
 the pull request.  It will bring up the page to create a new pull request where
