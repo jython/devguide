@@ -81,7 +81,7 @@ instructions please see the :ref:`setup guide <setup-jy>`.
       git checkout -b fix-issue-12345 master
 
    If an issue does not already exist, please `create it
-   <https://bugs.jpython.org/>`_.  Trivial issues (e.g. typo fixes) do not
+   <https://bugs.jython.org/>`_.  Trivial issues (e.g. typo fixes) do not
    require any issue to be created.
 
 6. Once you fixed the issue, run the tests, and if
@@ -147,14 +147,13 @@ on python-dev (March 2017).
 
 Status:
 
-:features: new features are only added to the default branch, this branch
+:features: new features are only added to the master branch, this branch
     accepts any kind of change.
 :bugfix: bugfixes and security fixes are accepted, new binaries are still
     released.
 :security: only security fixes are accepted and no more binaries are released,
     but new source-only versions can be released
-:end-of-life: branch no longer maintained; no more changes can be pushed to
-    this branch.
+:end-of-life: release cycle is frozen; no further changes can be pushed to it.
 
 Dates in *italic* are scheduled and can be adjusted.
 
@@ -167,6 +166,37 @@ implementation of that version has reached reached end-of-life.
 
 See also :ref:`Security branches <secbranch>`.
 
+Each release of Python is tagged in the source repo with a tag of the form
+``vX.Y.ZTN``, where ``X`` is the major version, ``Y`` is the
+minor version, ``Z`` is the micro version, ``T`` is the release level
+(``a`` for alpha releases, ``b`` for beta, ``rc`` release candidate,
+and *null* for final releases), and ``N`` is the release serial number.
+Some examples of release tags: ``v3.7.0a1``, ``v3.6.3``, ``v2.7.14rc1``.
+
+The code base for a release cycle which has reached end-of-life status
+is frozen and no longer has a branch in the repo.  The final state of
+the end-of-lifed branch is recorded as a tag with the same name as the
+former branch, e.g. ``3.3`` or ``2.6``.  For reference, here are the
+most recently end-of-lifed release cycles:
+
++------------------+--------------+-------------+----------------+----------------+----------------------------------------------------------------------------+
+| Tag              | Schedule     | Status      | First release  | End-of-life    | Comment                                                                    |
++==================+==============+=============+================+================+============================================================================+
+| 3.3              | :pep:`398`   | end-of-life | 2012-09-29     | 2017-09-29     | `Final release: Python 3.3.7                                               |
+|                  |              |             |                |                | <https://www.python.org/downloads/release/python-337/>`_                   |
++------------------+--------------+-------------+----------------+----------------+----------------------------------------------------------------------------+
+| 3.2              | :pep:`392`   | end-of-life | 2011-02-20     | 2016-02-20     | `Final release: Python 3.2.6                                               |
+|                  |              |             |                |                | <https://www.python.org/downloads/release/python-326/>`_                   |
++------------------+--------------+-------------+----------------+----------------+----------------------------------------------------------------------------+
+| 3.1              | :pep:`375`   | end-of-life | 2009-06-27     | 2012-04-11     | `Final release: Python 3.1.5                                               |
+|                  |              |             |                |                | <https://www.python.org/downloads/release/python-315/>`_                   |
++------------------+--------------+-------------+----------------+----------------+----------------------------------------------------------------------------+
+| 3.0              | :pep:`361`   | end-of-life | 2008-12-03     | 2009-01-13     | `Final release: Python 3.0.1                                               |
+|                  |              |             |                |                | <https://www.python.org/download/releases/3.0.1/>`_                        |
++------------------+--------------+-------------+----------------+----------------+----------------------------------------------------------------------------+
+| 2.6              | :pep:`361`   | end-of-life | 2008-10-01     | 2013-10-29     | `Final release: Python 2.6.9                                               |
+|                  |              |             |                |                | <https://www.python.org/download/releases/2.6.9/>`_                        |
++------------------+--------------+-------------+----------------+----------------+----------------------------------------------------------------------------+
 
 .. _contributing:
 
@@ -201,6 +231,8 @@ Guide for contributing to Jython:
 * Advanced tasks for once you are comfortable
     * :doc:`silencewarnings`
     * Fixing issues found by the :doc:`buildbots <buildbots_jy>`
+    * Helping out with reviewing `open pull requests`_.
+      See :ref:`how to review a Pull Request <how-to-review-a-pull-request>`.
     * :doc:`fixingissues`
 * :ref:`tracker` and :ref:`helptriage`
     * :doc:`triaging_jy`
@@ -299,12 +331,14 @@ Additional Resources
 Code of Conduct
 ---------------
 Please note that all interactions on
-`Python Software Foundation <https://www.python.org/psf-landing/>`__-supported infrastructure is
-`covered <https://www.python.org/psf/records/board/minutes/2014-01-06/#management-of-the-psfs-web-properties>`__
-by the `PSF Code of Conduct <https://www.python.org/psf/codeofconduct/>`__, which includes all
-infrastructure used in the development of Python itself (e.g. mailing lists, issue trackers, GitHub, etc.).
-In general this means everyone is expected to be open, considerate, and respectful of others no matter what
-their position is within the project.
+`Python Software Foundation <https://www.python.org/psf-landing/>`__-supported
+infrastructure is `covered
+<https://www.python.org/psf/records/board/minutes/2014-01-06/#management-of-the-psfs-web-properties>`__
+by the `PSF Code of Conduct <https://www.python.org/psf/codeofconduct/>`__,
+which includes all infrastructure used in the development of Python itself
+(e.g. mailing lists, issue trackers, GitHub, etc.).
+In general this means everyone is expected to be open, considerate, and
+respectful of others no matter what their position is within the project.
 
 .. _contents:
 
@@ -385,6 +419,6 @@ you understand the Jython one.
 .. _IronPython: http://ironpython.net/
 .. _Stackless: http://www.stackless.com/
 .. _Issue tracker: https://bugs.python.org/
-
+.. _open pull requests: https://github.com/jython/jython/pulls?utf8=%E2%9C%93&q=is%3Apr%20is%3Aopen%20label%3A%22awaiting%20review%22
 .. _Jython issue tracker: https://bugs.jython.org/
 .. _Style Guide for Java code: http://www.oracle.com/technetwork/java/codeconvtoc-136057.html
