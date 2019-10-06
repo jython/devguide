@@ -3,6 +3,10 @@ How To Release Jython
 =====================
 
 These are the steps needed to make a public release of Jython.
+In the case of a public release, of course,
+you can only do this once the hard work of development and debugging is done,
+and there is a consensus in the project that adequate quality has been achieved.
+
 It will also be a useful guide if you intend to make a snapshot (private) release.
 
 It may be tested, without making a real release, as a check that it works:
@@ -11,16 +15,12 @@ Delete the workspace soon afterwards,
 so as not to leave change sets tagged as a release,
 that might be accidentally built upon or pushed at a later time.
 
-In the case of a public release, of course,
-you can only do this once the hard work of development and debugging is done,
-and there is a consensus in the project that adequate quality has been achieved.
-
 To complete a public release you need the following things:
 
 * Two JDBC driver JARs that we do not track with version control (licensing restrictions):
 
-  * Informix (currently ``jdbc-4.10.12.jar`` for Java 7).
-  * Oracle (currently ``ojdbc6.jar`` for Java 7).
+  * Informix (currently ``jdbc-4.50.1.jar`` for Java 8).
+  * Oracle (currently ``ojdbc8.jar`` for Java 8).
 
 .. Padding. See https://github.com/sphinx-doc/sphinx/issues/2258
 
@@ -85,6 +85,10 @@ Clone the repository to a named sub-directory and ``cd`` into it:
     PS work> hg id -b
     default
 
+
+Changes Preparing for a Release
+-------------------------------
+
 The following files may need to be updated to match the version you are about to release:
 
 * ``build.xml``: The version number appears piece by piece in the target ``common-config``.
@@ -102,7 +106,10 @@ The following files may need to be updated to match the version you are about to
 * ``build.gradle``: The version number appears as a simple string property ``version``,
   near the top of the file.
   Version 2.7.2b1 is simply set like this: ``version = '2.7.2b1'``.
-* ``imp.java``: If there has been any compiler change, increment the magic number ``APIVersion``.
+* ``src/org/python/core/imp.java``: If there has been any compiler change,
+  increment the magicnumber ``APIVersion``.
+  This magic declares old compiled files incompatible, forcing a fresh compilation.
+  (Maybe do it anyway, if it's been a long time.)
 * ``README.txt``: It is possible no change is needed at all,
   and if a change is needed, it will probably only be to the running text.
   A copy of this file is made during the build,
@@ -149,14 +156,12 @@ Get the JARs
 Find the database driver JARs from reputable sources.
 
 The Informix driver may be obtained from Maven Central.
-Version ``jdbc-4.10.12.jar`` is known to work on Java 7.
-(Try ``jdbc-4.50.1.jar`` on Java 8.)
+Version ``jdbc-4.50.1.jar`` is known to work on Java 8.
 
 The Oracle JDBC driver may be found at ``download.oracle.com``.
 An account is required, the same one you use to update your JDK.
 (The JARs on Maven Central seem to be unofficial postings.)
-Version ``ojdbc6.jar`` is known to work on Java 7.
-(It should be ``ojdbc8.jar`` on Java 8.)
+For Java 8 use ``ojdbc8.jar``.
 
 Let's assume we put the JARs in ``D:\hg\support``.
 Create an ``ant.properties`` correspondingly:
@@ -164,8 +169,8 @@ Create an ``ant.properties`` correspondingly:
 ..  code-block:: properties
 
     # Ant properties defined externally to the release build.
-    informix.jar = D:\\hg\\support\\jdbc-4.10.12.jar
-    oracle.jar = D:\\hg\\support\\ojdbc6.jar
+    informix.jar = D\:\\hg\\support\\jdbc-4.50.1.jar
+    oracle.jar = D\:\\hg\\support\\ojdbc8.jar
 
 Note that this file is ephemeral and local:
 it is ignored by Mercurial because it is named in ``.hgignore``.
@@ -181,10 +186,11 @@ Run the ``full-check`` target, which does some simple checks on the repository:
     PS work> ant full-check
     Buildfile: D:\hg\work\build.xml
 
-         [echo] Change set 07553de70e1a is not tagged v2.7.2b1 - build is a snapshot.
+    force-snapshot-if-polluted:
+
+         [echo] Change set b9a86440deb3 is not tagged v2.7.2b1 - build is a snapshot.
 
          [echo] jython.version            = '2.7.2b1-SNAPSHOT'
-
 
 It makes an extensive dump, in which two lines like those above matter particularly.
 See that ``build.xml`` has worked out the version string correctly,
@@ -198,10 +204,13 @@ It would create a snapshot build that identifies itself by the version string ab
 If you want something other than "SNAPSHOT" as the qualifier,
 define the property ``snapshot.name`` on the ``ant`` command line or in ``ant.properties``.
 
+If you see a message along the lines "Workspace contains uncontrolled files"
+then the files listed must be removed (or possibly added to version control) before continuing.
+They may be test-droppings or the by-product of your last-minute changes.
+
 
 Tag the Release
 ---------------
-
 
 Ensure you have committed any outstanding changes (none in this example)
 and tag the final state as the release,
@@ -250,6 +259,10 @@ The artifacts of interest are produced in the ``./dist`` directory and they are:
 #. ``sources.jar``
 #. ``javadoc.jar``
 
+..  note:: At the time of writing, the ``javadoc`` sub-target produces many warnings.
+    Java 8 is much stricter than Java 7 about correct Javadoc.
+    These are not fatal to the build:
+    they are a sign that our documentation is (and lways was) a bit shabby..
 
 Gradle Build for Release
 ------------------------
@@ -264,15 +277,31 @@ working in folder ``./build2``.
 ..  code-block:: ps1con
 
     PS work> .\gradlew --console=plain publish
-
     > Task :generateVersionInfo
-    Change set 338f55da1461 is not tagged v2.7.2b1. - build is a snapshot.
-    This build is for v2.7.2b1-SNAPSHOT.
-    ...
-    BUILD SUCCESSFUL in 4m 12s
-    14 actionable tasks: 14 executed
+    This build is for v2.7.2b1.
+
+    > Task :generatePomFileForMainPublication
+    > Task :generateGrammarSource
+    > Task :compileJava
+    > Task :expose
+    > Task :mergeExposed
+    > Task :mergePythonLib
+    > Task :copyLib
+    > Task :processResources
+    > Task :classes
+    > Task :pycompile
+    > Task :jar
+    > Task :javadoc
+    > Task :javadocJar
+    > Task :sourcesJar
+    > Task :publishMainPublicationToStagingRepoRepository
+    > Task :publish
+
+    BUILD SUCCESSFUL in 6m 59s
+    15 actionable tasks: 15 executed
 
 When the build finishes, a JAR that is potentially fit to publish,
+and its subsidiary artifacts (source, javadoc, checksums),
 will have been created in ``./build2/stagingRepo/org/python/jython-slim/2.7.2b1``.
 
 It can also be published to your local Maven cache (usually ``~/.m2/repository``
@@ -295,27 +324,13 @@ Let's use Java 11, different from the version we built with.
 
     PS 272b-trial> mkdir kit
     PS 272b-trial> copy "D:\hg\work\dist\jython*.jar" .\kit
-    PS 272b-trial> java -jar kit\jython-standalone.jar -V
-    Jython 2.7.2b1
     PS 272b-trial> java -jar kit\jython-installer.jar
     WARNING: An illegal reflective access operation has occurred
     ...
     DEPRECATION: A future version of pip will drop support for Python 2.7.
     ...
     Successfully installed pip-19.1 setuptools-41.0.1
-    PS 272b-trial> inst\bin\jython -V
-    Jython 2.7.2b1
-    PS 272b-trial> inst\bin\jython
-    Jython 2.7.2b1 (v2.7.2b1:07553de70e1a, Aug 26 2019, 22:01:51)
-    [Java HotSpot(TM) 64-Bit Server VM (Oracle Corporation)] on java11.0.3
-    Type "help", "copyright", "credits" or "license" for more information.
-    >>> import sys
-    >>> sys.version_info
-    sys.version_info(major=2, minor=7, micro=2, releaselevel='beta', serial=1)
-    >>> exit()
 
-This version of Jython identifies itself as an official release,
-when signing on (``sys.version``).
 It is worth checking the manifests:
 
 ..  code-block:: ps1con
@@ -324,20 +339,20 @@ It is worth checking the manifests:
     PS 272b-trial> cat .\META-INF\MANIFEST.MF
     Manifest-Version: 1.0
     Ant-Version: Apache Ant 1.9.7
-    Created-By: 1.7.0_80-b15 (Oracle Corporation)
+    Created-By: 1.8.0_211-b12 (Oracle Corporation)
     Main-Class: org.python.util.jython
     Built-By: Jeff
     Implementation-Vendor: Python Software Foundation
     Implementation-Title: Jython fat jar with stdlib
     Implementation-Version: 2.7.2b1
-
+    
     Name: Build-Info
     version: 2.7.2b1
     hg-build: true
     oracle: true
     informix: true
     build-compiler: modern
-    jdk-target-version: 1.7
+    jdk-target-version: 1.8
     debug: true
 
 And similarly in other JARs ``inst\jython.jar``, ``kit\jython-installer.jar``.
@@ -351,7 +366,7 @@ The real test consists in running the regression tests:
 ..  code-block:: ps1con
 
     PS 272b-trial> inst\bin\jython -m test.regrtest -e
-    == 2.7.2b1 (v2.7.2b1:07553de70e1a, Aug 26 2019, 22:01:51)
+    == 2.7.2b1 (v2.7.2b1:328e162ec117, Oct 6 2019, 06:46:46)
     == [Java HotSpot(TM) 64-Bit Server VM (Oracle Corporation)]
     == platform: java11.0.3
     == encodings: stdin=ms936, stdout=ms936, FS=utf-8
@@ -361,7 +376,7 @@ The real test consists in running the regression tests:
     test_dict
     ...
     4 fails unexpected:
-        test_java_visibility test_jy_internals test_sort test_ssl_jy
+        test___all__ test_java_visibility test_jy_internals test_ssl_jy
 
 These failures are false alarms.
 
@@ -375,26 +390,26 @@ Stand-alone ``regrtest``
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 The stand-alone JAR does not include the tests,
-but one may attempt them by supplying a copy of the test modules as below.
-The point of copying (only) the test directory to ``Lib/test``,
+but one may run them by supplying a copy of the test modules as below.
+The point of copying (only) the test directory to ``TestLib/test``,
 rather than putting ``inst/Lib`` on the path,
 is to ensure that other modules are tested from the stand-alone JAR itself.
-There will be many failures (35 when the author last tried).
+There will be many failures (34 when the author last tried).
 
 ..  code-block:: ps1con
 
-    PS 272b-trial> copy -r inst\Lib\test Lib\test
-    PS 272b-trial> $env:JYTHONPATH = ".\Lib"
+    PS 272b-trial> copy -r inst\Lib\test TestLib\test
+    PS 272b-trial> $env:JYTHONPATH = ".\TestLib"
     PS 272b-trial> java -jar .\kit\jython-standalone.jar -m test.regrtest -e
-    == 2.7.2b1 (v2.7.2b1:07553de70e1a, Aug 26 2019, 22:01:51)
+    == 2.7.2b1 (v2.7.2b1:328e162ec117, Oct 6 2019, 06:46:46)
     == [Java HotSpot(TM) 64-Bit Server VM (Oracle Corporation)]
     == platform: java11.0.3
     == encodings: stdin=ms936, stdout=ms936, FS=utf-8
     == locale: default=('en_GB', 'GBK'), actual=(None, None)
     ...
-    35 fails unexpected:
-        test_argparse test_bytes test_classpathimporter test_cmd_line
-        test_cmd_line_script test_codecs_jy test_compile_jy test_email
+    34 fails unexpected:
+        test_argparse test_classpathimporter test_cmd_line
+        test_cmd_line_script test_codecs_jy test_compile_jy test_email_jy
         test_email_renamed test_httpservers test_import test_import_jy
         test_inspect test_java_integration test_java_visibility test_json
         test_jy_internals test_jython_initializer test_jython_launcher
@@ -416,8 +431,8 @@ by chance revealed only in the stand-alone version.)
    reflecting the importance of the JAR file system in Java.
 
 
-.. _jython-slim-regrtest:
 
+.. _jython-slim-regrtest:
 
 Slim (Gradle) ``regrtest``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -476,6 +491,7 @@ Only now is it safe to ``hg push``
 
 If testing convinces you this is a build we should let loose on an unsuspecting public,
 it is time to push these changes and the tag you made upstream to the Jython repository.
+Back in the place where the release was built:
 
 ..  code-block:: ps1con
 
