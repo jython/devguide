@@ -55,7 +55,7 @@ so aim for:
 The examples in this text were made with Windows PowerShell session at ``D:\hg``.
 
 We must build with the right version of Java.
-(At the time of writing we target Java 7.)
+(At the time of writing we target Java 8.)
 At the same time, let's check that we have the tools we need on the path:
 
 .. code-block:: ps1con
@@ -65,7 +65,7 @@ At the same time, let's check that we have the tools we need on the path:
     PS hg> ant -version
     Apache Ant(TM) version 1.9.7 compiled on April 9 2016
     PS hg> java -version
-    java version "1.7.0_80"
+    java version "1.8.0_211"
 
 
 Clone the Repository
