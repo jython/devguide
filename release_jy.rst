@@ -3,13 +3,13 @@ How To Release Jython
 =====================
 
 These are the steps needed to make a public release of Jython.
-In the case of a public release, of course,
+In the case of a public release,
 you can only do this once the hard work of development and debugging is done,
 and there is a consensus in the project that adequate quality has been achieved.
 
-It will also be a useful guide if you intend to make a snapshot (private) release.
-
-It may be tested, without making a real release, as a check that it works:
+These notes will also be a useful guide if you intend to make a snapshot (private) release.
+The process may be tested, without making a real release,
+for example to check that the scripts still work:
 go through the steps but without pushing upstream or publishing.
 Delete the workspace soon afterwards,
 so as not to leave change sets tagged as a release,
@@ -26,6 +26,7 @@ To complete a public release you need the following things:
 
 * Commit rights to the Jython repository (to push the tagged version).
 * The right to publish Jython at Sonatype_.
+* A PGP signing key pair (generated with ``gpg --gen-key``).
 * Access to the channels where we announce releases (e.g. Twitter).
 * Access to modify the bug-tracker configuration.
 
@@ -52,7 +53,7 @@ so aim for:
 * impersonal (not containing company or personal names).
 * ASCII (even though Jython is pretty good with Unicode now).
 
-The examples in this text were made with Windows PowerShell session at ``D:\hg``.
+The examples in this text were made with Windows PowerShell session starting at ``D:\hg``.
 
 We must build with the right version of Java.
 (At the time of writing we target Java 8.)
@@ -63,14 +64,16 @@ At the same time, let's check that we have the tools we need on the path:
     PS hg> hg version -q
     Mercurial Distributed SCM (version 3.9.2)
     PS hg> ant -version
-    Apache Ant(TM) version 1.9.7 compiled on April 9 2016
+    Apache Ant(TM) version 1.9.14 compiled on March 12 2019
     PS hg> java -version
     java version "1.8.0_211"
+    PS hg> gpg --version
+    gpg (GnuPG) 2.2.17
+    libgcrypt 1.8.4
 
 
 Clone the Repository
 --------------------
-
 
 Clone the repository to a named sub-directory and ``cd`` into it:
 
@@ -80,11 +83,14 @@ Clone the repository to a named sub-directory and ``cd`` into it:
 ..  code-block:: ps1con
 
     PS hg> hg clone "ssh://hg@hg.python.org/jython" work
-    4207 files updated, 0 files merged, 0 files removed, 0 files unresolved
+    added 8309 changesets with 33026 changes to 8716 files
+    updating to branch default
+    4212 files updated, 0 files merged, 0 files removed, 0 files unresolved
     PS hg> cd work
     PS work> hg id -b
     default
 
+.. _changes-preparing-for-a-release:
 
 Changes Preparing for a Release
 -------------------------------
@@ -101,35 +107,40 @@ The following files may need to be updated to match the version you are about to
   * ``jython.release_serial``.
 
   In the language of these properties,
-  version 2.7.2b1 is spelled ``2``, ``7``, ``2``, ``${PY_RELEASE_LEVEL_BETA}``, ``1``.
+  version 2.7.2b2 is spelled ``2``, ``7``, ``2``, ``${PY_RELEASE_LEVEL_BETA}``, ``2``.
   Every other expression needing a version number is derived from these 5 values.
 * ``build.gradle``: The version number appears as a simple string property ``version``,
   near the top of the file.
-  Version 2.7.2b1 is simply set like this: ``version = '2.7.2b1'``.
+  Version 2.7.2b2 is simply set like this: ``version = '2.7.2b2'``.
 * ``src/org/python/core/imp.java``: If there has been any compiler change,
-  increment the magicnumber ``APIVersion``.
-  This magic declares old compiled files incompatible, forcing a fresh compilation.
+  increment the magic number ``APIVersion``.
+  This magic declares old compiled files incompatible, forcing a fresh compilation for users.
   (Maybe do it anyway, if it's been a long time.)
 * ``README.txt``: It is possible no change is needed at all,
   and if a change is needed, it will probably only be to the running text.
   A copy of this file is made during the build,
   in which information from ``build.xml`` replaces the place-holders.
   (The place-holders look like ``@jython.version@``, etc..)
-  This is the text a user sees when installing interactively.
+  The resulting text is what a user sees when installing interactively.
   It automatically includes a prominent banner when making a snapshot build.
 * ``NEWS``: First try to ensure we have listed all issues closed since the last release.
-  The top of this file looks like:
+  The top of this file may look like:
 
   ..  code-block:: text
 
-      Development tip
+      Jython <something>
         Bugs fixed
           - [ NNNN ] ...
 
-  Replace "Development tip" with the release you are building e,g, "Jython 2.7.2b1".
+  Replace the first line with the release you are building e,g, "Jython 2.7.2b2".
   Add anything necessary to the section "New Features".
   After publication (not now),
-  we will add a new, empty, section for the "Development tip".
+  we will add a new, empty, section for the version then under development.
+
+These version-settings may already have been made correctly,
+to match the identity of the next release.
+The build script ensures that, until we actually tag a change set as a release,
+the version numbers set here will always appear with a "snapshot" suffix.
 
 You should run the ``ant javatest`` and ``ant regrtest`` targets at this point.
 These should run clean, or at least failures be explained and acceptable,
@@ -143,11 +154,11 @@ fix them in your usual development workbench.
     It produces some failures known to be spurious.
     It also creates files you have to clean up manually before you can build for a release.
 
-Commit this set of changes locally:
+If you changed anything, commit this set of changes locally:
 
 ..  code-block:: ps1con
 
-    PS work> hg commit -m"Prepare for 2.7.2b1 release."
+    PS work> hg commit -m"Prepare for 2.7.2b2 release."
 
 
 Get the JARs
@@ -155,13 +166,13 @@ Get the JARs
 
 Find the database driver JARs from reputable sources.
 
-The Informix driver may be obtained from Maven Central.
-Version ``jdbc-4.50.1.jar`` is known to work on Java 8.
+* The Informix driver may be obtained from Maven Central.
+  Version ``jdbc-4.50.1.jar`` is known to work on Java 8.
 
-The Oracle JDBC driver may be found at ``download.oracle.com``.
-An account is required, the same one you use to update your JDK.
-(The JARs on Maven Central seem to be unofficial postings.)
-For Java 8 use ``ojdbc8.jar``.
+* The Oracle JDBC driver may be found at ``download.oracle.com``.
+  An account is required, the same one you use to update your JDK.
+  (The JARs on Maven Central seem to be unofficial postings.)
+  For Java 8 use ``ojdbc8.jar``.
 
 Let's assume we put the JARs in ``D:\hg\support``.
 Create an ``ant.properties`` correspondingly:
@@ -188,9 +199,9 @@ Run the ``full-check`` target, which does some simple checks on the repository:
 
     force-snapshot-if-polluted:
 
-         [echo] Change set b9a86440deb3 is not tagged v2.7.2b1 - build is a snapshot.
+         [echo] Change set b9b60766cabe is not tagged v2.7.2b2 - build is a snapshot.
 
-         [echo] jython.version            = '2.7.2b1-SNAPSHOT'
+         [echo] jython.version            = '2.7.2b2-SNAPSHOT'
 
 It makes an extensive dump, in which two lines like those above matter particularly.
 See that ``build.xml`` has worked out the version string correctly,
@@ -219,7 +230,7 @@ being careful to observe the conventional pattern
 
 ..  code-block:: ps1con
 
-    PS work> hg tag v2.7.2b1
+    PS work> hg tag v2.7.2b2
 
 Note that ``hg tag`` creates a commit, on top of the one tagged,
 that contains the change to ``.hgtags`` to define the tag.
@@ -233,15 +244,15 @@ Update to the change set you tagged, and run the ``full-check`` target again:
 
 ..  code-block:: ps1con
 
-    PS work> hg update v2.7.2b1
+    PS work> hg update v2.7.2b2
     1 files updated, 0 files merged, 0 files removed, 0 files unresolved
 
     PS work> ant full-check
     Buildfile: D:\hg\work\build.xml
 
-         [echo] Build is for release of 2.7.2b1.
+         [echo] Build is for release of 2.7.2b2.
 
-         [echo] jython.version            = '2.7.2b1'
+         [echo] jython.version            = '2.7.2b2'
 
 This time the script confirms it is a release
 and the version appears without the "SNAPSHOT" qualifier.
@@ -262,7 +273,7 @@ The artifacts of interest are produced in the ``./dist`` directory and they are:
 ..  note:: At the time of writing, the ``javadoc`` sub-target produces many warnings.
     Java 8 is much stricter than Java 7 about correct Javadoc.
     These are not fatal to the build:
-    they are a sign that our documentation is (and lways was) a bit shabby..
+    they are a sign that our documentation is a bit shabby (and always was secretly).
 
 Gradle Build for Release
 ------------------------
@@ -278,7 +289,7 @@ working in folder ``./build2``.
 
     PS work> .\gradlew --console=plain publish
     > Task :generateVersionInfo
-    This build is for v2.7.2b1.
+    This build is for v2.7.2b2.
 
     > Task :generatePomFileForMainPublication
     > Task :generateGrammarSource
@@ -302,7 +313,7 @@ working in folder ``./build2``.
 
 When the build finishes, a JAR that is potentially fit to publish,
 and its subsidiary artifacts (source, javadoc, checksums),
-will have been created in ``./build2/stagingRepo/org/python/jython-slim/2.7.2b1``.
+will have been created in ``./build2/stagingRepo/org/python/jython-slim/2.7.2b2``.
 
 It can also be published to your local Maven cache (usually ``~/.m2/repository``
 with the task ``publishMainPublicationToMavenLocal``.
@@ -338,16 +349,16 @@ It is worth checking the manifests:
     PS 272b-trial> jar -xf .\kit\jython-standalone.jar META-INF
     PS 272b-trial> cat .\META-INF\MANIFEST.MF
     Manifest-Version: 1.0
-    Ant-Version: Apache Ant 1.9.7
+    Ant-Version: Apache Ant 1.9.14
     Created-By: 1.8.0_211-b12 (Oracle Corporation)
     Main-Class: org.python.util.jython
     Built-By: Jeff
     Implementation-Vendor: Python Software Foundation
     Implementation-Title: Jython fat jar with stdlib
-    Implementation-Version: 2.7.2b1
-    
+    Implementation-Version: 2.7.2b2
+
     Name: Build-Info
-    version: 2.7.2b1
+    version: 2.7.2b2
     hg-build: true
     oracle: true
     informix: true
@@ -366,7 +377,7 @@ The real test consists in running the regression tests:
 ..  code-block:: ps1con
 
     PS 272b-trial> inst\bin\jython -m test.regrtest -e
-    == 2.7.2b1 (v2.7.2b1:328e162ec117, Oct 6 2019, 06:46:46)
+    == 2.7.2b2 (v2.7.2b2:b9b60766cabe, Nov 1 2019, 07:46:45)
     == [Java HotSpot(TM) 64-Bit Server VM (Oracle Corporation)]
     == platform: java11.0.3
     == encodings: stdin=ms936, stdout=ms936, FS=utf-8
@@ -401,11 +412,13 @@ There will be many failures (34 when the author last tried).
     PS 272b-trial> copy -r inst\Lib\test TestLib\test
     PS 272b-trial> $env:JYTHONPATH = ".\TestLib"
     PS 272b-trial> java -jar .\kit\jython-standalone.jar -m test.regrtest -e
-    == 2.7.2b1 (v2.7.2b1:328e162ec117, Oct 6 2019, 06:46:46)
+    == 2.7.2b2 (v2.7.2b2:b9b60766cabe, Nov 1 2019, 07:46:45)
     == [Java HotSpot(TM) 64-Bit Server VM (Oracle Corporation)]
     == platform: java11.0.3
     == encodings: stdin=ms936, stdout=ms936, FS=utf-8
     == locale: default=('en_GB', 'GBK'), actual=(None, None)
+    test_grammar
+    test_opcodes
     ...
     34 fails unexpected:
         test_argparse test_classpathimporter test_cmd_line
@@ -421,15 +434,15 @@ There will be many failures (34 when the author last tried).
 Most of these failures are in tests that assume the library is a real file system.
 Others arise because we do not include certain JARs needed for the test.
 It is necessary to pick through the failures carefully to detect which are real.
-(We should do this occasionally, and not just when trying to release.
-Some of the failures shon in the example are genuine problems,
-by chance revealed only in the stand-alone version.)
 
 .. note:: We could probably do this better through skips in the tests,
    sensitive to running stand-alone,
    or (widely useful) a broader interpretation of "file path" in Jython,
    reflecting the importance of the JAR file system in Java.
 
+   We should do this occasionally, and not just when trying to release.
+   Some of the failures are genuine problems,
+   by chance revealed only in the stand-alone version.
 
 
 .. _jython-slim-regrtest:
@@ -445,7 +458,7 @@ For this, it is necessary to publish to a local repository, such as your persona
 
     PS work> .\gradlew --console=plain publishMainPublicationToMavenLocal
 
-This will deliver build artifacts to ``~/.m2/repository/org/python/jython-slim/2.7.2b1``.
+This will deliver build artifacts to ``~/.m2/repository/org/python/jython-slim/2.7.2b2``.
 One can construct an application to run with that as a dependency like this:
 
 ..  code-block:: groovy
@@ -464,7 +477,7 @@ One can construct an application to run with that as a dependency like this:
     }
 
     dependencies {
-        implementation 'org.python:jython-slim:2.7.2b1'
+        implementation 'org.python:jython-slim:2.7.2b2'
     }
 
 The following executes ``test.regrtest`` using the same local copy of the tests
@@ -499,7 +512,7 @@ Back in the place where the release was built:
 
 It *is* possible to recover from tagging the wrong change set,
 even after a push.
-One may force in a duplicate tag (``hg tag -f v2.7.2b1``),
+One may force in a duplicate tag (``hg tag -f v2.7.2b2``),
 and the later one seems to win in common tools,
 but both will be present in ``.hgtags``.
 It is better to avoid downstream confusion by not pushing forced tags.
@@ -519,39 +532,117 @@ The artifacts for Maven are built using a separate script ``maven/build.xml``.
     Total time: 24 seconds
     PS work>
 
-This leaves the following new artifacts in ``~/publications``:
+During the build, ``gpg`` may prompt you (in a dialogue box)
+for the pass-phrase that protects your private signing key.
+This leaves the following new artifacts in ``./publications``:
 
-* ``jython-installer-2.7.2b1-bundle.jar``
-* ``jython-2.7.2b1-bundle.jar``
-* ``jython-slim-2.7.2b1-bundle.jar``
-* ``jython-standalone-2.7.2b1-bundle.jar``
+* ``jython-2.7.2b2-bundle.jar``
+* ``jython-standalone-2.7.2b2-bundle.jar``
+* ``jython-installer-2.7.2b2-bundle.jar``
+* ``jython-slim-2.7.2b2-bundle.jar``
 
 
 Publication
 ===========
 
+Pre-requisites
+--------------
+
+In order to publish the bundles created in ``./publications``,
+it is necessary to have an account with access to ``groupId`` ``org.python``,
+which Sonatype will grant given the support of an existing owner.
+(This is a human process administered through JIRA.)
+There is an extensive `Sonatype OSSRH Guide`_ about getting and using an account.
+These notes indicate a particular path that worked for the author.
+
+You need a PGP signing key pair (generated with ``gpg --gen-key``)
+on the computer where you are working.
+And this must be published through the pool of PGP key servers for Sonatype to pick up,
+as for example here:
+
+..  code-block:: text
+
+    PS work> gpg --list-secret-keys
+    ...
+    pub   rsa2048 2019-10-20 [SC] [expires: 2021-10-19]
+          C8C4B9DC1E031F788B12882B875C3EF9DC4638E3
+    uid           [ultimate] Jeff Allen <ja.py@farowl.co.uk>
+    sub   rsa2048 2019-10-20 [E] [expires: 2021-10-19]
+
+    PS work> gpg -v -a --export C8C4B9DC1E031F788B12882B875C3EF9DC4638E3
+    gpg: writing to stdout
+    -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+    mQENBF2sVzEBCACqCLAn02agm66fsdgfEEDhPGlJv/BhX/GDsw/FwCzpwZLyiFiJ
+    vwcMWgV0OOP3gI2CkzPxFE9/LL3Zjc/vS9J0tGeDBsCPB7TGiToQm63+zyzNCU3R
+    ...
+    6lHuw4ISj/zWIkIcDf7n1JYKitc0L6oVtgnPDFcXKfAhOTOqR8ho
+    =Snxq
+    -----END PGP PUBLIC KEY BLOCK-----
+
+This text could instead have been directed to a file with the option ``-o filename``.
+
+The `OpenPGP key server`_ provides an interface to query or submit a PGP public key.
+Visit there with a browser and choose "Submit Key".
+Paste the text exported into the dialogue,
+including the ``BEGIN`` and ``END`` markers.
+Once the key is published (takes a few minutes),
+the query interface can find the newly-published key from the query ``0xNNNN``,
+where ``NNNN`` is the last 16 hex digits of the UID (``875C3EF9DC4638E3`` here).
+
+PGP servers form a pool.
+It may take a few hours for your key to wash up at the machine Sonatype consults.
+
+..  note:: The method recommended in the Sonatype documentation is:
+
+    ..  code-block:: text
+
+        PS work> gpg --keyserver hkp://pool.sks-keyservers.net --send-keys C8C4...38E3
+
+    This did not result (for the author) in the key being published,
+    even half a day later.
+    This may be a local problem that the web interface circumvents.
+    It may have been a transient problem with ``sks-keyservers.net``.
+
+Generation and publication of a key are one-time actions,
+except that the key has a finite lifetime (2 years here).
+
+.. _Sonatype OSSRH Guide: https://central.sonatype.org/pages/ossrh-guide.html
+.. _OpenPGP key server: http://keys.gnupg.net
+
+
 Publication via Sonatype
 ------------------------
 
-.. note:: This section is slightly modified from Frank's notes, untested recently.
+You are now ready to upload bundles acceptable to Sonatype.
 
-* go to Sonatype_
-* select "Artifact Bundle" for "Upload Mode".
-* Upload the following from ``~/publications``:
+* Go to the Sonatype_ repository manager and log in.
+* Under "Build Promotion" select "Staging Upload".
+* On the "Staging Upload" tab, and the Upload Mode drop-down, select "Artifact Bundle".
+* Navigate to the ``./publications`` folder and upload in turn:
 
-  * ``jython-installer-2.7.2b1-bundle.jar``
-  * ``jython-2.7.2b1-bundle.jar``
-  * ``jython-slim-2.7.2b1-bundle.jar``
-  * ``jython-standalone-2.7.2b1-bundle.jar``
+  * ``jython-2.7.2b2-bundle.jar``
+  * ``jython-standalone-2.7.2b2-bundle.jar``
+  * ``jython-installer-2.7.2b2-bundle.jar``
+  * ``jython-slim-2.7.2b2-bundle.jar``
 
-..  note:: We should probably add: In a fresh directory,
-    download the (as yet private) artifacts from Sonatype and test them,
-    repeating the section :ref:`test-what-you-built`.
-    When you are absolutely satisfied, ...
+  For some reason the display shows a fake file path but the name is correct.
+  Each upload creates a "staging repository".
 
-* "Release" the bundles when they are known to work.
+.. Staging URL has form: https://oss.sonatype.org/content/repositories/orgpython-1073
+
+* Under "Build Promotion" select the "Staging Repositories" tab.
+* Check (on the "Activity" tab) that the upload reached "Close" with good status,
+  If not, it should tell you what is lacking and you have to go back and fix it.
+* In a fresh directory,
+  download the (as yet private) artifacts from Sonatype and test them,
+  repeating the section :ref:`test-what-you-built`.
+* When you are absolutely satisfied, ... "Release" the bundles.
+  This will cause them to appear in the Maven `Central Repository`_ (takes an hour or two).
 
 .. warning:: Release at Sonatype is irreversible.
+
+.. _Central Repository: https://search.maven.org/
 
 
 Announcement
@@ -588,24 +679,35 @@ Announcement
 Ready for new work
 ==================
 
+After a release,
+Jython in the development environment
+should no longer identify itself as the version just released, so we increment the version string.
+We do not know for sure the version next to be publicly released,
+so we use the smallest increment that results in a valid version number.
+
+After an alpha, beta or release candidate,
+assume the successor version to be a one-up serial of the same release level,
+incrementing ``jython.release_serial``.
+After a final release, assume the successor to be an alpha of the next micro-release.
+For example, ``2.7.2b2`` is followed by ``2.7.2b3``, and ``2.7.2`` by ``2.7.3a1``.
+
+The build system will label the code as ``2.7.2b3-DEV`` in the developer build.
+If you build an installer, or dry-run a release, it will be ``2.7.2b3-SNAPSHOT``.
+You can read this as a version that "may eventually become" ``2.7.2b3`` etc..
+
+Make this change in both ``build.xml`` and ``build.gradle``.
+See the section :ref:`changes-preparing-for-a-release` for details.
+
 In ``NEWS``, add a new, empty, section in the development history that looks like this:
 
 ..  code-block:: text
 
-    Development tip
+    Jython <successor version>
       Bugs fixed
 
       New Features
 
 Commit and push this change upstream.
 
-There is nothing to change in ``build.xml`` after publication:
-the Jython from a regular developer build will identify itself as (for example) ``2.7.2b1+``,
-signifying "somewhere beyond" the version just published.
-and a full build or installer will appear as ``2.7.2b1-SNAPSHOT``,
-if not built from the tag as above.
-
-.. note:: It may be better *always* to move the version on at this point,
-   and have the build produce "<version>~DEV" (or something)
-   meaning "somewhere short of" the version we are working towards.
-
+.. note:: Since new features should not be added after ``b1``, this structure doesn't quite work.
+   It places "New Features" a long way from the top of NEWS.
