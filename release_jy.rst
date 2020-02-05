@@ -391,10 +391,12 @@ The real test consists in running the regression tests:
 
 These failures are false alarms.
 
-* ``test_java_visibility`` and ``test_jy_internals`` fail
+* ``test___all__``, ``test_java_visibility`` and ``test_jy_internals`` fail
   because we (deliberately) do not include certain JARs.
 * ``test_sort`` fails intermittently on later versions of Java.
-* ``test_ssl_jy`` fails because of our shading of ``bouncycastle`` classes.
+* ``test_ssl_jy`` fails because of `bjo issue 2858`_.
+
+.. _bjo issue 2858: https://bugs.jython.org/issue2858
 
 
 Stand-alone ``regrtest``

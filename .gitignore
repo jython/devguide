@@ -90,3 +90,7 @@ venv/
 
 # Rope project settings
 .ropeproject
+
+# Eclipse project settings
+.project
+.settings/
