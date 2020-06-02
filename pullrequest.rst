@@ -7,18 +7,16 @@ Lifecycle of a Pull Request
 ===========================
 
 .. warning:: At present, this is not much modified from the CPython base.
-   This describes the PR-based process used by CPython on GitHub, which works
-   for Jython in a limited form. (You can submit a PR, but we export a patch.)
-   The traditional Jython process is based on
-   :doc:`patches submitted to the tracker <patch_hg_jy>`.
+   This describes the PR process used by CPython on GitHub,
+   which works for Jython with some adjustment.
 
 Introduction
 ------------
 
-CPython uses a workflow based on pull requests. What this means is
+Jython uses a workflow based on pull requests. What this means is
 that you create a branch in Git, make your changes, push those changes
 to your fork on GitHub (``origin``), and then create a pull request against
-the official CPython repository (``upstream``).
+the official Jython repository (``upstream``).
 
 
 .. _pullrequest-quickguide:
@@ -27,9 +25,9 @@ Quick Guide
 -----------
 
 `Clear communication`_ is key to contributing to any project, especially an
-`Open Source`_ project like CPython.
+`Open Source`_ project like Jython.
 
-Here is a quick overview of how you can contribute to CPython:
+Here is a quick overview of how you can contribute to Jython:
 
 #. `Create an issue`_ that describes your change [*]_
 
@@ -37,7 +35,7 @@ Here is a quick overview of how you can contribute to CPython:
 
 #. Work on changes (e.g. fix a bug or add a new feature)
 
-#. :ref:`Run tests <runtests>` and ``make patchcheck``
+#. :ref:`Run tests <runtests-jy>` and ``make patchcheck``
 
 #. :ref:`Commit <commit-changes>` and :ref:`push <push-changes>`
    changes to your GitHub fork
@@ -49,14 +47,15 @@ Here is a quick overview of how you can contribute to CPython:
 #. When your changes are merged, you can :ref:`delete the PR branch
    <deleting_branches>`
 
-#. Celebrate contributing to CPython! :)
+#. Celebrate contributing to Jython! :)
 
 .. [*] If an issue is trivial (e.g. typo fixes), or if an issue already exists,
        you can skip this step.
 
 .. _Clear communication: https://opensource.guide/how-to-contribute/#how-to-submit-a-contribution
 .. _Open Source: https://opensource.guide/
-.. _create an issue: https://bugs.python.org/
+.. _create an issue: https://github.com/jython/jython/issues
+.. _Jython: https://github.com/jython/jython
 .. _CPython: https://github.com/python/cpython
 .. _use HTTPS: https://help.github.com/articles/which-remote-url-should-i-use/
 .. _Create Pull Request: https://help.github.com/articles/creating-a-pull-request/
@@ -79,12 +78,11 @@ You should have already :ref:`set up your system <setup>`,
 
   (Learn more about :ref:`good-prs`)
 
-* Make sure the changes are fine and don't cause any test failure::
+* Make sure the changes don't cause any test failure::
 
-     make patchcheck
-     ./python -m test
+     ./python -m test.regrtest -e
 
-  (Learn more about :ref:`patchcheck` and about :doc:`runtests`)
+  (Learn more about :doc:`runtests_jy`)
 
 * Once you are satisfied with the changes, add the files and commit them::
 
@@ -103,9 +101,9 @@ You should have already :ref:`set up your system <setup>`,
      git rebase upstream/master
      git push --force origin <branch-name>
 
-* Finally go on :samp:`https://github.com/{<your-username>}/cpython`: you will
+* Finally go on :samp:`https://github.com/{<your-username>}/jython`: you will
   see a box with the branch you just pushed and a green button that allows
-  you to create a pull request against the official CPython repository.
+  you to create a pull request against the official Jython repository.
 
 * When people start adding review comments, you can address them by switching
   to your branch, making more changes, committing them, and pushing them to
@@ -137,7 +135,8 @@ When creating a pull request for submission, there are several things that you
 should do to help ensure that your pull request is accepted.
 
 First, make sure to follow Python's style guidelines. For Python code you
-should follow :PEP:`8`, and for C code you should follow :PEP:`7`. If you have
+should follow :PEP:`8`, and for Java code you should follow
+the `Java coding standard`_. If you have
 one or two discrepancies those can be fixed by the core developer who merges
 your pull request. But if you have systematic deviations from the style guides
 your pull request will be put on hold until you fix the formatting issues.
@@ -166,41 +165,7 @@ unknown to you between your changes and some other part of the interpreter.
 Fifth, proper :ref:`documentation <documenting>`
 additions/changes should be included.
 
-
-.. _patchcheck:
-
-``patchcheck``
---------------
-
-``patchcheck`` is a simple automated patch checklist that guides a developer
-through the common patch generation checks. To run ``patchcheck``:
-
-   On *UNIX* (including Mac OS X)::
-
-      make patchcheck
-
-   On *Windows* (after any successful build)::
-
-      python.bat Tools/scripts/patchcheck.py
-
-The automated patch checklist runs through:
-
-* Are there any whitespace problems in Python files?
-  (using ``Tools/scripts/reindent.py``)
-* Are there any whitespace problems in C files?
-* Are there any whitespace problems in the documentation?
-  (using ``Tools/scripts/reindent-rst.py``)
-* Has the documentation been updated?
-* Has the test suite been updated?
-* Has an entry under ``Misc/NEWS.d/next`` been added?
-* Has ``Misc/ACKS`` been updated?
-* Has ``configure`` been regenerated, if necessary?
-* Has ``pyconfig.h.in`` been regenerated, if necessary?
-
-The automated patch check doesn't actually *answer* all of these
-questions. Aside from the whitespace checks, the tool is
-a memory aid for the various elements that can go into
-making a complete patch.
+.. _Java coding standard: https://wiki.python.org/jython/CodingStandards
 
 
 .. _good-commits:
@@ -218,7 +183,7 @@ and for each pull request there may be several commits.  In particular:
 
 Commit messages should follow the following structure::
 
-   bpo-42: the spam module is now more spammy. (GH-NNNN)
+   The spam module is now more spammy. (GH-NNNN)
 
    The spam module sporadically came up short on spam. This change
    raises the amount of spam in the module by making it more spammy.
@@ -228,6 +193,8 @@ of what the purpose of the commit is.  If this is not enough detail for a
 commit, a new paragraph(s) can be added to explain in proper depth what has
 happened (detail should be good enough that a core developer reading the
 commit message understands the justification for the change).
+Brevity (<70 characters) in the first line and a blank one following it
+are important to certain tools, including the GitHub format for change sets.
 
 Check :ref:`the git bootcamp <accepting-and-merging-a-pr>` for further
 instructions on how the commit should look like when merging a pull request.
@@ -245,7 +212,7 @@ license your code for use with Python (you retain the copyright).
 
 .. note::
    You only have to sign this document once, it will then apply to all
-   your further contributions to Python.
+   your further contributions to Jython and CPython.
 
 Here are the steps needed in order to sign the CLA:
 
@@ -373,7 +340,7 @@ to be useful, a code review has to be perfect. This is not the case at
 all! It is helpful to just test the pull request and/or play around with the
 code and leave comments in the pull request or issue tracker.
 
-1. If you have not already done so, get a copy of the CPython repository
+1. If you have not already done so, get a copy of the Jython repository
    by following the :ref:`setup guide <setup>`, build it and run the tests.
 
 2. Check the bug tracker to see what steps are necessary to reproduce

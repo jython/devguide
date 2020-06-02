@@ -9,6 +9,7 @@ Lifecycle of a Patch (Mercurial)
 .. note::
    This has been adapted for Jython from an old version of the CPython devguide,
    to describe the Jython process based on Mercurial.
+   We retain this (for the time being) for reference.
 
 Creating
 --------

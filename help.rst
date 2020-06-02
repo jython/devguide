@@ -16,27 +16,14 @@ usage then please check the rest of this guide first as it should answer your
 question.
 
 
-Ask #jython
------------
-
-If you are comfortable with IRC you can try asking on ``#jython`` (on
-the `freenode`_ network). Often there are experienced developers around,
-ranging from triagers to core developers, who can answer questions about
-developing for Jython, although it helps to be patient as it sometimes
-takes a little while for a question to get noticed.
-
-.. _freenode: http://freenode.net/
-
-
 Core Mentorship
 ---------------
 
 If you are interested in improving Jython and contributing to its development,
 but don’t yet feel entirely comfortable with the public channels mentioned
-above, `Python Mentors`_ are here to help you.  The Python Mentors list was
-originally created to help with CPython development, but since Jython shares
-most of the same infrastructure (Jython's repository is at hg.python.org
-and uses a related Roundup issue tracker) it is a good place to find help for
+above, `Python Mentors`_ may be there to help you.  The Python Mentors list was
+originally created to help with CPython development, but since Jython an
+implementation acknowledgef by the PSF, it may be a good place to find help for
 Jython as well. Python is fortunate to have a community of volunteer core
 developers willing to mentor anyone wishing to contribute code, work on bug
 fixes or improve documentation.  Everyone is welcomed and encouraged to
@@ -44,7 +31,7 @@ contribute.
 
 .. _Python Mentors: http://pythonmentors.com
 
-.. FIXME: would Python Mentors count themselves a good place to go fro Jython?
+.. FIXME: would Python Mentors count themselves a good place to go for Jython?
 
 Mailing Lists
 -------------
@@ -63,11 +50,12 @@ File a Bug
 
 If you strongly suspect you have stumbled on a bug (be it in the build
 process, in the test suite, or in other areas), then open an issue on the
-`Jython issue tracker`_.  As with every bug report it is strongly advised that
+`Jython GitHub repository`_.  As with every bug report it is strongly advised that
 you detail which conditions triggered it (including the OS name and version,
 which JVM and version, and what you were trying to do), as well as the exact
 error message you encountered.
 
+.. _Jython GitHub repository: https://github.com/jython/jython
 .. _Jython issue tracker: http://bugs.jython.org
 
 .. _jython-users: https://lists.sourceforge.net/lists/listinfo/jython-users

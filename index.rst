@@ -2,7 +2,7 @@
    Normally this would mean a new file index_jy.rst, but index.rst is the
    starting point for the documentation.
    We therefore keep it as modified, although merging changes from the CPython
-   devguide difficult for this file.
+   devguide will be difficult for this file.
 
 ========================
 Jython Developer's Guide
@@ -10,14 +10,16 @@ Jython Developer's Guide
 
 This guide is a comprehensive resource for :ref:`contributing <contributing>`
 to Jython_ -- for both new and experienced contributors.
-It has been adapted from the CPython Developer's Guide and the reader should
+It has been (somewhat incompletely)
+adapted from the CPython Developer's Guide and the reader should
 bear in mind that:
 
-*  The CPython process is PR-based on GitHub and this guide anticipates our
-   adoption of that for Jython.
-*  The existing Jython process uses Mercurial so the guide describes that too.
+*  The Jython process, like CPython's, is based GitHub PRs,
+   but Jython does not have the same set of tool integrations.
+*  Jython migrated from Mercurial in 2020, much later than CPython,
+   so Jython-specific parts of the guide may refer to the old process.
 *  Statements about "Python" should apply to both CPython and Jython.
-*  The adaptation is imperfect: parts of the guide will say (or mean) CPython.
+   The adaptation is imperfect: parts of the guide will say (or mean) CPython.
 
 This guide is :ref:`maintained <helping-with-the-developers-guide>` by the same
 community that maintains CPython and Jython.
@@ -30,20 +32,9 @@ Quick Reference
 Mercurial
 ^^^^^^^^^
 
-1. :ref:`Get the source code <checkout-jy>`::
+Mercurial is no longer used.
+The previous official repository at ``https://hg.python.org/jython`` is not current.
 
-      hg clone http://hg.python.org/jython
-
-2. :ref:`Build Jython <compiling-jy>`::
-
-      ant
-
-3. :doc:`Run the tests <runtests_jy>`::
-
-      ant regrtest
-
-4. Make the :doc:`patch <patch_hg_jy>`.
-5. Submit it to the `Jython issue tracker`_.
 
 GitHub
 ^^^^^^
@@ -56,7 +47,7 @@ instructions please see the :ref:`setup guide <setup-jy>`.
 1. Install and set up :ref:`Git <vcsetup-jy>` and other dependencies
    (see the :ref:`Get Setup <setup-jy>` page for detailed information).
 
-2. Fork `the Jython repository <https://github.com/jython/jython>`_
+2. Fork the `Jython GitHub repository`_
    to your GitHub account and :ref:`get the source code <checkout-jy>` using::
 
       git clone https://github.com/<your_username>/jython
@@ -72,39 +63,46 @@ instructions please see the :ref:`setup guide <setup-jy>`.
 
 4. :doc:`Run the tests <runtests_jy>`::
 
-      dist/bin/jython -m test -e
+      dist/bin/jython -m test.regrtest -e
 
-   (for Jython 3). With Jython 2.7, replace ``test`` with ``test.regrtest``.
+   This applies for Jython 2.7.
+   To test Jython 3, when it exists, replace ``test.regrtest`` with ``test``.
 
 5. Create a new branch where your work for the issue will go, e.g.::
 
       git checkout -b fix-issue-12345 master
 
-   If an issue does not already exist, please `create it
-   <https://bugs.jython.org/>`_.  Trivial issues (e.g. typo fixes) do not
-   require any issue to be created.
+   If an issue does not already exist, please create it on
+   the `Jython GitHub repository`_.
+   The legacy `bug tracker <https://bugs.jython.org/>`_ still operates
+   (for Jython 2.7 only) but is not preferred.
+   Trivial issues (e.g. typo fixes) do not require any issue to be created:
+   create a PR directly.
 
 6. Once you fixed the issue, run the tests, and if
    everything is ok, commit.
 
-7. Push the branch on your fork on GitHub and :doc:`create a pull request
-   <pullrequest>`.  Include the issue number using ``bpo-NNNN`` in the
-   pull request description.  For example::
-
-      bpo-12345: Fix some bug in spam module
+7. Push the branch to your fork on GitHub and :doc:`create a pull request
+   <pullrequest>`.
+   Include the issue number using GitHub conventions in the pull request
+   description.
+   (Use ``bjo-NNNN`` if it is from the legacy tracker.)
 
 .. note::
 
-   bpo stands for bugs.python.org and these flags are used by CPython's GitHub
-   tools. For Jython we need our own naming convention, and to re-use the
-   CPython tools. It is also worth considering whether we move away from
-   bugs.jython.org to GitHub issues, and how we do that.
+   bpo-NNNN is used by CPython for for bugs.python.org
+   and is picked up by CPython's GitHub tools.
+   For Jython we need our own naming convention, but cannot yet re-use the
+   CPython tools.
+   We intend to move away from bugs.jython.org to GitHub issues more aggressively
+   that CPython has made the switch.
 
 .. note::
 
    First time contributors will need to sign the Contributor Licensing
    Agreement (CLA) as described in the :ref:`Licensing <cla>` section of
    this guide.
+   This requires an account on the CPython's legacy bug tracker.
 
 
 Quick Links
@@ -113,7 +111,7 @@ Quick Links
 Here are some links that you probably will reference frequently while
 contributing to Jython:
 
-* `Jython issue tracker`_
+* `Jython GitHub repository`_ (or maybe the `Jython issue tracker`_)
 * :doc:`help`
 * PEPs_ (Python Enhancement Proposals)
 * :doc:`gitbootcamp`
@@ -123,27 +121,21 @@ contributing to Jython:
 Status of Jython branches
 -------------------------
 
-.. note:: Maybe how it should look in a process based on GitHub,
-   and for Jython 3. Not how it is.
 
-+--------+----------+-------------+---------------+-------------+-----------------------------------------------------------------------------------------------------------------+
-| Branch | Schedule | Status      | First release | End-of-life | Comment                                                                                                         |
-+========+==========+=============+===============+=============+=================================================================================================================+
-| master |          | features    |               |             | The default branch is currently the future Jython 3.5.                                                          |
-+--------+----------+-------------+---------------+-------------+-----------------------------------------------------------------------------------------------------------------+
-| 2.7    |          | bugfix      |               |             | The support has been extended to 2020 (1).                                                                      |
-|        |          |             |               |             | Most recent binary release: `Jython 2.7.1                                                                       |
-|        |          |             |               |             | <http://search.maven.org/remotecontent?filepath=org/python/jython-installer/2.7.1/jython-installer-2.7.1.jar>`_ |
-+--------+----------+-------------+---------------+-------------+-----------------------------------------------------------------------------------------------------------------+
-| 2.5    |          | end-of-life |               |             | Final release: `Jython 2.5.3                                                                                    |
-|        |          |             |               |             | <https://repo1.maven.org/maven2/org/python/jython/2.5.3/>`_                                                     |
-+--------+----------+-------------+---------------+-------------+-----------------------------------------------------------------------------------------------------------------+
++--------+----------+-------------+---------------+-------------+-----------------------------------------------------------------------------+
+| Branch | Schedule | Status      | First release | End-of-life | Comment                                                                     |
++========+==========+=============+===============+=============+=============================================================================+
+| master |          | bugfix      |               |             | PSF support for Python 2 ended in 2020 (see :pep:`373`) but                 |
+|        |          |             |               |             | the most recent release of Jython is still `Jython 2.7.2                    |
+|        |          |             |               |             | <https://search.maven.org/artifact/org.python/jython-installer/2.7.2/jar>`_ |
++--------+----------+-------------+---------------+-------------+-----------------------------------------------------------------------------+
+| 3.8    |          | features    |               |             | This branch is the future of Jython                                         |
+|        |          |             |               |             | (but just a gleam in the eye at present).                                   |
++--------+----------+-------------+---------------+-------------+-----------------------------------------------------------------------------+
+| 2.5    |          | end-of-life |               |             | Final release: `Jython 2.5.3                                                |
+|        |          |             |               |             | <https://repo1.maven.org/maven2/org/python/jython/2.5.3/jar>`_              |
++--------+----------+-------------+---------------+-------------+-----------------------------------------------------------------------------+
 
-(1) The exact date of Python 2.7 end-of-life has not been decided yet. It will
-be decided by Python 2.7 release manager, Benjamin Peterson, who will update
-the :pep:`373`. Read also the `[Python-Dev] Exact date of Python 2 EOL?
-<https://mail.python.org/pipermail/python-dev/2017-March/147655.html>`_ thread
-on python-dev (March 2017).
 
 Status:
 
@@ -163,40 +155,18 @@ have reached end-of-life.
 The Jython project follows the Python Software Foundation in the naming of
 versions of the language (e.g. Jython 2.7 implements Python 2.7), and whether an
 implementation of that version has reached reached end-of-life.
+The third element (micro) has bears no relationship to CPython micro-versions.
 
 See also :ref:`Security branches <secbranch>`.
 
-Each release of Python is tagged in the source repo with a tag of the form
+Jython names its releases in the same scheme as CPython.
+Each release of Jython is tagged in the source repo with a tag of the form
 ``vX.Y.ZTN``, where ``X`` is the major version, ``Y`` is the
 minor version, ``Z`` is the micro version, ``T`` is the release level
 (``a`` for alpha releases, ``b`` for beta, ``rc`` release candidate,
 and *null* for final releases), and ``N`` is the release serial number.
 Some examples of release tags: ``v3.7.0a1``, ``v3.6.3``, ``v2.7.14rc1``.
 
-The code base for a release cycle which has reached end-of-life status
-is frozen and no longer has a branch in the repo.  The final state of
-the end-of-lifed branch is recorded as a tag with the same name as the
-former branch, e.g. ``3.3`` or ``2.6``.  For reference, here are the
-most recently end-of-lifed release cycles:
-
-+------------------+--------------+-------------+----------------+----------------+----------------------------------------------------------------------------+
-| Tag              | Schedule     | Status      | First release  | End-of-life    | Comment                                                                    |
-+==================+==============+=============+================+================+============================================================================+
-| 3.3              | :pep:`398`   | end-of-life | 2012-09-29     | 2017-09-29     | `Final release: Python 3.3.7                                               |
-|                  |              |             |                |                | <https://www.python.org/downloads/release/python-337/>`_                   |
-+------------------+--------------+-------------+----------------+----------------+----------------------------------------------------------------------------+
-| 3.2              | :pep:`392`   | end-of-life | 2011-02-20     | 2016-02-20     | `Final release: Python 3.2.6                                               |
-|                  |              |             |                |                | <https://www.python.org/downloads/release/python-326/>`_                   |
-+------------------+--------------+-------------+----------------+----------------+----------------------------------------------------------------------------+
-| 3.1              | :pep:`375`   | end-of-life | 2009-06-27     | 2012-04-11     | `Final release: Python 3.1.5                                               |
-|                  |              |             |                |                | <https://www.python.org/downloads/release/python-315/>`_                   |
-+------------------+--------------+-------------+----------------+----------------+----------------------------------------------------------------------------+
-| 3.0              | :pep:`361`   | end-of-life | 2008-12-03     | 2009-01-13     | `Final release: Python 3.0.1                                               |
-|                  |              |             |                |                | <https://www.python.org/download/releases/3.0.1/>`_                        |
-+------------------+--------------+-------------+----------------+----------------+----------------------------------------------------------------------------+
-| 2.6              | :pep:`361`   | end-of-life | 2008-10-01     | 2013-10-29     | `Final release: Python 2.6.9                                               |
-|                  |              |             |                |                | <https://www.python.org/download/releases/2.6.9/>`_                        |
-+------------------+--------------+-------------+----------------+----------------+----------------------------------------------------------------------------+
 
 .. _contributing:
 
@@ -297,14 +267,9 @@ Key Resources
 -------------
 
 * Coding style guides
-    * Jython's `Java coding standard <https://wiki.python.org/jython/CodingStandards>`_
+    * Jython's `Java coding standard`_
     * :PEP:`8` (Style Guide for Python Code)
-* `Jython issue tracker`_
-    * `Meta tracker <http://psf.upfronthosting.co.za/roundup/meta>`_ (issue
-      tracker for the issue tracker)
-    * :doc:`experts`
 * Source code
-    * `Browse in Mercurial online <http://hg.python.org/jython/file/default/>`_
     * `Browse in GitHub <https://github.com/jython/jython/>`_
 
 * PEPs_ (Python Enhancement Proposals)
@@ -421,4 +386,6 @@ you understand the Jython one.
 .. _Issue tracker: https://bugs.python.org/
 .. _open pull requests: https://github.com/jython/jython/pulls?utf8=%E2%9C%93&q=is%3Apr%20is%3Aopen%20label%3A%22awaiting%20review%22
 .. _Jython issue tracker: https://bugs.jython.org/
+.. _Jython GitHub repository: https://github.com/jython/jython
+.. _Java coding standard: https://wiki.python.org/jython/CodingStandards
 .. _Style Guide for Java code: http://www.oracle.com/technetwork/java/codeconvtoc-136057.html
