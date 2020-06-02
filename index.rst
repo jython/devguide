@@ -82,7 +82,11 @@ instructions please see the :ref:`setup guide <setup-jy>`.
 6. Once you fixed the issue, run the tests, and if
    everything is ok, commit.
 
-7. Push the branch to your fork on GitHub and :doc:`create a pull request
+7. Push the branch to your fork on GitHub::
+
+      git push -u origin fix-issue-12345
+
+   and :doc:`create a pull request
    <pullrequest>`.
    Include the issue number using GitHub conventions in the pull request
    description.
@@ -129,8 +133,8 @@ Status of Jython branches
 |        |          |             |               |             | the most recent release of Jython is still `Jython 2.7.2                    |
 |        |          |             |               |             | <https://search.maven.org/artifact/org.python/jython-installer/2.7.2/jar>`_ |
 +--------+----------+-------------+---------------+-------------+-----------------------------------------------------------------------------+
-| 3.8    |          | features    |               |             | This branch is the future of Jython                                         |
-|        |          |             |               |             | (but just a gleam in the eye at present).                                   |
+| 3.8    |          | features    |               |             | This branch is the future of Jython.                                        |
+|        |          |             |               |             | (It should be master, but is just a gleam in the eye at present.)           |
 +--------+----------+-------------+---------------+-------------+-----------------------------------------------------------------------------+
 | 2.5    |          | end-of-life |               |             | Final release: `Jython 2.5.3                                                |
 |        |          |             |               |             | <https://repo1.maven.org/maven2/org/python/jython/2.5.3/jar>`_              |
