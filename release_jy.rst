@@ -57,20 +57,6 @@ The examples in this text were mostly made in Windows PowerShell,
 but Git remote operations are in Git Bash.
 
 
-Clone the Repository
---------------------
-
-Clone the repository to a named sub-directory and ``cd`` into it:
-
-..  code-block:: bash
-
-    $ git clone git@github.com:jeff5/jython-nightjar.git work
-    Cloning into 'work'...
-    $ cd work
-    $ git describe --all
-    heads/master
-
-
 Tool Check
 ----------
 
@@ -78,7 +64,7 @@ We must build with the right version of Java.
 (At the time of writing we target Java 8.)
 At the same time, let's check that we have the tools we need on the path:
 
-.. code-block:: ps1con
+..  code-block:: ps1con
 
     PS git> java -version
     java version "1.8.0_241"
@@ -89,6 +75,25 @@ At the same time, let's check that we have the tools we need on the path:
     libgcrypt 1.8.4
     PS git> git --version
     git version 2.26.2.windows.1
+
+
+Clone the Repository
+--------------------
+
+Clone the repository to a named sub-directory and ``cd`` into it (Bash):
+
+..  code-block:: bash
+
+    $ git clone git@github.com:jeff5/jython-nightjar.git work
+    Cloning into 'work'...
+    $ cd work
+    $ git describe --all
+    heads/master
+
+And in Powershell:
+
+..  code-block:: ps1con
+
     PS git> cd work
     PS work> git log --oneline --graph  -3
     * ba16fbc48 (HEAD -> master, origin/master, origin/HEAD) Swap from hg to git as our SCM tool.
@@ -241,10 +246,11 @@ being careful to observe the conventional pattern
 Note that ``git tag -a`` creates a sort of commit.
 It will need to be pushed eventually,
 but the current state of your repository is still at the change set tagged.
-If something goes wrong after this point, but before the eventual push to the repository,
-requiring changes and a fresh commit,
-it is possible to delete the tag with ``git tag -d v2.7.3a1``.
-Do not `delete a tag after the push`_.
+If something goes wrong after this point but before the eventual push to the repository,
+that requires changes and a fresh commit,
+it is possible to delete the tag with ``git tag -d v2.7.3a1``,
+and make it again at the new tip when you're ready.
+The Git book explains why you should not `delete a tag after the push`_.
 
 We follow CPython in signing the tag with GPG as indicated in :pep:`101`
 and the `CPython release-tools`_.
