@@ -84,7 +84,7 @@ Clone the repository to a named sub-directory and ``cd`` into it (Bash):
 
 ..  code-block:: bash
 
-    $ git clone git@github.com:jeff5/jython-nightjar.git work
+    $ git clone git@github.com:jython/jython.git work
     Cloning into 'work'...
     $ cd work
     $ git describe --all
