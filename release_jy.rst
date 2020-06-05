@@ -33,7 +33,7 @@ To complete a public release you need the following things:
 You can dry-run this process with only the first pre-requisite (driver JARs),
 and a Mercurial clone of the official repository.
 In that case, be careful not to push any changes.
-(Hint: if you clone from ``https://hg.python.org/jython``,
+(Hint: if you clone from ``https://github.com/jython/jython.git``,
 that will prevent an unintended push.)
 
 .. _Sonatype: https://oss.sonatype.org
@@ -49,46 +49,57 @@ Start in the Right Place
 The path to this directory can get embedded in published files,
 so aim for:
 
-* short (i.e. near a file system root).
+* short (i.e. near a file system root), in the examples ``D:\git``.
 * impersonal (not containing company or personal names).
 * ASCII (even though Jython is pretty good with Unicode now).
 
-The examples in this text were made with Windows PowerShell session starting at ``D:\hg``.
+The examples in this text were mostly made in Windows PowerShell,
+but Git remote operations are in Git Bash.
+
+
+Tool Check
+----------
 
 We must build with the right version of Java.
 (At the time of writing we target Java 8.)
 At the same time, let's check that we have the tools we need on the path:
 
-.. code-block:: ps1con
+..  code-block:: ps1con
 
-    PS hg> hg version -q
-    Mercurial Distributed SCM (version 3.9.2)
-    PS hg> ant -version
+    PS git> java -version
+    java version "1.8.0_241"
+    PS git> ant -version
     Apache Ant(TM) version 1.9.14 compiled on March 12 2019
-    PS hg> java -version
-    java version "1.8.0_211"
-    PS hg> gpg --version
+    PS git> gpg --version
     gpg (GnuPG) 2.2.17
     libgcrypt 1.8.4
+    PS git> git --version
+    git version 2.26.2.windows.1
 
 
 Clone the Repository
 --------------------
 
-Clone the repository to a named sub-directory and ``cd`` into it:
+Clone the repository to a named sub-directory and ``cd`` into it (Bash):
 
-.. The quotes around arguments in these console sessions are mostly to circumvent
-   shortcomings in the pygments ps1con parser.
+..  code-block:: bash
+
+    $ git clone git@github.com:jython/jython.git work
+    Cloning into 'work'...
+    $ cd work
+    $ git describe --all
+    heads/master
+
+And in Powershell:
 
 ..  code-block:: ps1con
 
-    PS hg> hg clone "ssh://hg@hg.python.org/jython" work
-    added 8309 changesets with 33026 changes to 8716 files
-    updating to branch default
-    4212 files updated, 0 files merged, 0 files removed, 0 files unresolved
-    PS hg> cd work
-    PS work> hg id -b
-    default
+    PS git> cd work
+    PS work> git log --oneline --graph  -3
+    * ba16fbc48 (HEAD -> master, origin/master, origin/HEAD) Swap from hg to git as our SCM tool.
+    * ed4965e5e Begin to identify as Jython 2.7.3a1.
+    * faf935172 Added tag v2.7.2 for changeset 925a3cc3b49d
+
 
 .. _changes-preparing-for-a-release:
 
@@ -107,11 +118,11 @@ The following files may need to be updated to match the version you are about to
   * ``jython.release_serial``.
 
   In the language of these properties,
-  version 2.7.2b2 is spelled ``2``, ``7``, ``2``, ``${PY_RELEASE_LEVEL_BETA}``, ``2``.
+  version 2.7.3a1 is spelled ``2``, ``7``, ``3``, ``${PY_RELEASE_LEVEL_ALPHA}``, ``1``.
   Every other expression needing a version number is derived from these 5 values.
 * ``build.gradle``: The version number appears as a simple string property ``version``,
   near the top of the file.
-  Version 2.7.2b2 is simply set like this: ``version = '2.7.2b2'``.
+  Version 2.7.3a1 is simply set like this: ``version = '2.7.3a1'``.
 * ``src/org/python/core/imp.java``: If there has been any compiler change,
   increment the magic number ``APIVersion``.
   This magic declares old compiled files incompatible, forcing a fresh compilation for users.
@@ -132,7 +143,7 @@ The following files may need to be updated to match the version you are about to
         Bugs fixed
           - [ NNNN ] ...
 
-  Replace the first line with the release you are building e,g, "Jython 2.7.2b2".
+  Replace the first line with the release you are building e,g, "Jython 2.7.3a1".
   Add anything necessary to the section "New Features".
   After publication (not now),
   we will add a new, empty, section for the version then under development.
@@ -158,7 +169,7 @@ If you changed anything, commit this set of changes locally:
 
 ..  code-block:: ps1con
 
-    PS work> hg commit -m"Prepare for 2.7.2b2 release."
+    PS work> git commit -m"Prepare for 2.7.3a1 release."
 
 
 Get the JARs
@@ -174,17 +185,17 @@ Find the database driver JARs from reputable sources.
   (The JARs on Maven Central seem to be unofficial postings.)
   For Java 8 use ``ojdbc8.jar``.
 
-Let's assume we put the JARs in ``D:\hg\support``.
+Let's assume we put the JARs in ``D:\git\support``.
 Create an ``ant.properties`` correspondingly:
 
 ..  code-block:: properties
 
     # Ant properties defined externally to the release build.
-    informix.jar = D\:\\hg\\support\\jdbc-4.50.1.jar
-    oracle.jar = D\:\\hg\\support\\ojdbc8.jar
+    informix.jar = D\:\\git\\support\\jdbc-4.50.1.jar
+    oracle.jar = D\:\\git\\support\\ojdbc8.jar
 
 Note that this file is ephemeral and local:
-it is ignored by Mercurial because it is named in ``.hgignore``.
+it is ignored by Mercurial because it is named in ``.gitignore``.
 
 
 Check the Configuration of the Build
@@ -195,13 +206,13 @@ Run the ``full-check`` target, which does some simple checks on the repository:
 ..  code-block:: ps1con
 
     PS work> ant full-check
-    Buildfile: D:\hg\work\build.xml
+    Buildfile: D:\git\work\build.xml
 
     force-snapshot-if-polluted:
 
-         [echo] Change set b9b60766cabe is not tagged v2.7.2b2 - build is a snapshot.
+         [echo] Change set ba16fbc48 is not tagged v2.7.3a1 - build is a snapshot.
 
-         [echo] jython.version            = '2.7.2b2-SNAPSHOT'
+         [echo] jython.version            = '2.7.3a1-SNAPSHOT'
 
 It makes an extensive dump, in which two lines like those above matter particularly.
 See that ``build.xml`` has worked out the version string correctly,
@@ -230,35 +241,58 @@ being careful to observe the conventional pattern
 
 ..  code-block:: ps1con
 
-    PS work> hg tag v2.7.2b2
+    PS work> git tag -a -s v2.7.3a1 -m"Jython 2.7.3a1"
 
-Note that ``hg tag`` creates a commit, on top of the one tagged,
-that contains the change to ``.hgtags`` to define the tag.
-This means that the current state of your repository is one commit beyond the one tagged.
+Note that ``git tag -a`` creates a sort of commit.
+It will need to be pushed eventually,
+but the current state of your repository is still at the change set tagged.
+If something goes wrong after this point but before the eventual push to the repository,
+that requires changes and a fresh commit,
+it is possible to delete the tag with ``git tag -d v2.7.3a1``,
+and make it again at the new tip when you're ready.
+The Git book explains why you should not `delete a tag after the push`_.
+
+We follow CPython in signing the tag with GPG as indicated in :pep:`101`
+and the `CPython release-tools`_.
+See the section :ref:`PGP-signing` for how to generate a key.
+(If you are doing a dry-run you can avoid the signing by dropping the `-s` option.)
+
+As explained in `signing Git commits with GPG`_,
+``gpg`` as supplied with *Git for Windows*
+and *GnuPG for Windows* disagree about the location of your keys.
+In order for signing to work,
+it may be necessary to prepare your installation of Git (one time only)
+to select the full version of *GnuPG for Windows* as follows.
+
+..  code-block:: ps1con
+
+    git config --global gpg.program $env:localappdata\gnupg\bin\gpg.exe
+
+
+.. _signing Git commits with GPG: https://jamesmckay.net/2016/02/signing-git-commits-with-gpg-on-windows/
+.. _CPython release-tools: https://github.com/python/release-tools
+.. _delete a tag after the push: https://git-scm.com/docs/git-tag#_discussion
 
 
 Ant Build for Release
 ---------------------
 
-Update to the change set you tagged, and run the ``full-check`` target again:
+Run the ``full-check`` target again:
 
 ..  code-block:: ps1con
 
-    PS work> hg update v2.7.2b2
-    1 files updated, 0 files merged, 0 files removed, 0 files unresolved
-
     PS work> ant full-check
-    Buildfile: D:\hg\work\build.xml
+    Buildfile: D:\git\work\build.xml
 
-         [echo] Build is for release of 2.7.2b2.
+         [echo] Build is for release of 2.7.3a1.
 
-         [echo] jython.version            = '2.7.2b2'
+         [echo] jython.version            = '2.7.3a1'
 
 This time the script confirms it is a release
 and the version appears without the "SNAPSHOT" qualifier.
+
 If all remains well with the properties dumped, run the ``full-build`` target.
 This outputs the same dump as ``full-check`` and goes on to build the release artifacts.
-
 ``build.xml`` does not force a snapshot build on you now
 because the source tree is clean and the tag corresponds to the version.
 
@@ -275,6 +309,7 @@ The artifacts of interest are produced in the ``./dist`` directory and they are:
     These are not fatal to the build:
     they are a sign that our documentation is a bit shabby (and always was secretly).
 
+
 Gradle Build for Release
 ------------------------
 
@@ -289,7 +324,7 @@ working in folder ``./build2``.
 
     PS work> .\gradlew --console=plain publish
     > Task :generateVersionInfo
-    This build is for v2.7.2b2.
+    This build is for v2.7.3a1.
 
     > Task :generatePomFileForMainPublication
     > Task :generateGrammarSource
@@ -313,7 +348,7 @@ working in folder ``./build2``.
 
 When the build finishes, a JAR that is potentially fit to publish,
 and its subsidiary artifacts (source, javadoc, checksums),
-will have been created in ``./build2/stagingRepo/org/python/jython-slim/2.7.2b2``.
+will have been created in ``./build2/stagingRepo/org/python/jython-slim/2.7.3a1``.
 
 It can also be published to your local Maven cache (usually ``~/.m2/repository``
 with the task ``publishMainPublicationToMavenLocal``.
@@ -333,9 +368,9 @@ Let's use Java 11, different from the version we built with.
 
 ..  code-block:: ps1con
 
-    PS 272b-trial> mkdir kit
-    PS 272b-trial> copy "D:\hg\work\dist\jython*.jar" .\kit
-    PS 272b-trial> java -jar kit\jython-installer.jar
+    PS 273a1-trial> mkdir kit
+    PS 273a1-trial> copy "D:\git\work\dist\jython*.jar" .\kit
+    PS 273a1-trial> java -jar kit\jython-installer.jar
     WARNING: An illegal reflective access operation has occurred
     ...
     DEPRECATION: A future version of pip will drop support for Python 2.7.
@@ -346,20 +381,20 @@ It is worth checking the manifests:
 
 ..  code-block:: ps1con
 
-    PS 272b-trial> jar -xf .\kit\jython-standalone.jar META-INF
-    PS 272b-trial> cat .\META-INF\MANIFEST.MF
+    PS 273a1-trial> jar -xf .\kit\jython-standalone.jar META-INF
+    PS 273a1-trial> cat .\META-INF\MANIFEST.MF
     Manifest-Version: 1.0
     Ant-Version: Apache Ant 1.9.14
-    Created-By: 1.8.0_211-b12 (Oracle Corporation)
+    Created-By: 1.8.0_241-b07 (Oracle Corporation)
     Main-Class: org.python.util.jython
     Built-By: Jeff
     Implementation-Vendor: Python Software Foundation
     Implementation-Title: Jython fat jar with stdlib
-    Implementation-Version: 2.7.2b2
+    Implementation-Version: 2.7.3a1
 
     Name: Build-Info
-    version: 2.7.2b2
-    hg-build: true
+    version: 2.7.3a1
+    git-build: true
     oracle: true
     informix: true
     build-compiler: modern
@@ -376,10 +411,10 @@ The real test consists in running the regression tests:
 
 ..  code-block:: ps1con
 
-    PS 272b-trial> inst\bin\jython -m test.regrtest -e
-    == 2.7.2b2 (v2.7.2b2:b9b60766cabe, Nov 1 2019, 07:46:45)
+    PS 273a1-trial> inst\bin\jython -m test.regrtest -e
+    == 2.7.3a1 (tags/v2.7.3a1:625fdf3b1, Jun 2 2020, 20:06:45)
     == [Java HotSpot(TM) 64-Bit Server VM (Oracle Corporation)]
-    == platform: java11.0.3
+    == platform: java11.0.6
     == encodings: stdin=ms936, stdout=ms936, FS=utf-8
     == locale: default=('en_GB', 'GBK'), actual=(None, None)
     test_grammar
@@ -411,15 +446,14 @@ There will be many failures (34 when the author last tried).
 
 ..  code-block:: ps1con
 
-    PS 272b-trial> copy -r inst\Lib\test TestLib\test
-    PS 272b-trial> $env:JYTHONPATH = ".\TestLib"
-    PS 272b-trial> java -jar .\kit\jython-standalone.jar -m test.regrtest -e
-    == 2.7.2b2 (v2.7.2b2:b9b60766cabe, Nov 1 2019, 07:46:45)
+    PS 273a1-trial> copy -r inst\Lib\test TestLib\test
+    PS 273a1-trial> $env:JYTHONPATH = ".\TestLib"
+    PS 273a1-trial> java -jar .\kit\jython-standalone.jar -m test.regrtest -e
+    == 2.7.3a1 (tags/v2.7.3a1:625fdf3b1, Jun 2 2020, 20:06:45)
     == [Java HotSpot(TM) 64-Bit Server VM (Oracle Corporation)]
-    == platform: java11.0.3
+    == platform: java11.0.6
     == encodings: stdin=ms936, stdout=ms936, FS=utf-8
-    == locale: default=('en_GB', 'GBK'), actual=(None, None)
-    test_grammar
+    == locale: default=('en_GB', 'GBK'), actual=(None, None)    test_grammar
     test_opcodes
     ...
     34 fails unexpected:
@@ -460,7 +494,7 @@ For this, it is necessary to publish to a local repository, such as your persona
 
     PS work> .\gradlew --console=plain publishMainPublicationToMavenLocal
 
-This will deliver build artifacts to ``~/.m2/repository/org/python/jython-slim/2.7.2b2``.
+This will deliver build artifacts to ``~/.m2/repository/org/python/jython-slim/2.7.3a1``.
 One can construct an application to run with that as a dependency like this:
 
 ..  code-block:: groovy
@@ -479,7 +513,7 @@ One can construct an application to run with that as a dependency like this:
     }
 
     dependencies {
-        implementation 'org.python:jython-slim:2.7.2b2'
+        implementation 'org.python:jython-slim:2.7.3a1'
     }
 
 The following executes ``test.regrtest`` using the same local copy of the tests
@@ -501,23 +535,22 @@ and has about the same success rate.
     }
 
 
-Only now is it safe to ``hg push``
-----------------------------------
+Only now is it safe to ``git push``
+-----------------------------------
 
 If testing convinces you this is a build we should let loose on an unsuspecting public,
 it is time to push these changes and the tag you made upstream to the Jython repository.
-Back in the place where the release was built:
+Back in the place where the release was built (and using Bash):
 
-..  code-block:: ps1con
+..  code-block:: bash
 
-    PS work> hg push
+    $ git push --follow-tags
 
-It *is* possible to recover from tagging the wrong change set,
-even after a push.
-One may force in a duplicate tag (``hg tag -f v2.7.2b2``),
-and the later one seems to win in common tools,
-but both will be present in ``.hgtags``.
-It is better to avoid downstream confusion by not pushing forced tags.
+Try very hard not to push a tag you later regret
+(e.g. on the wrong change set or a version still needing a fix).
+It is problematic to `delete a tag after the push`_.
+It is better to increment the version,
+which is painless if it is an ``a``, ``b``, or ``rc`` release.
 
 
 Build the Bundles to Publish
@@ -528,7 +561,7 @@ The artifacts for Maven are built using a separate script ``maven/build.xml``.
 ..  code-block:: text
 
     PS work> ant -f maven\build.xml
-    Buildfile: D:\hg\work\maven\build.xml
+    Buildfile: D:\git\work\maven\build.xml
     ...
     BUILD SUCCESSFUL
     Total time: 24 seconds
@@ -538,17 +571,17 @@ During the build, ``gpg`` may prompt you (in a dialogue box)
 for the pass-phrase that protects your private signing key.
 This leaves the following new artifacts in ``./publications``:
 
-* ``jython-2.7.2b2-bundle.jar``
-* ``jython-standalone-2.7.2b2-bundle.jar``
-* ``jython-installer-2.7.2b2-bundle.jar``
-* ``jython-slim-2.7.2b2-bundle.jar``
+* ``jython-2.7.3a1-bundle.jar``
+* ``jython-standalone-2.7.3a1-bundle.jar``
+* ``jython-installer-2.7.3a1-bundle.jar``
+* ``jython-slim-2.7.3a1-bundle.jar``
 
 
 Publication
 ===========
 
-Pre-requisites
---------------
+Account
+-------
 
 In order to publish the bundles created in ``./publications``,
 it is necessary to have an account with access to ``groupId`` ``org.python``,
@@ -556,6 +589,11 @@ which Sonatype will grant given the support of an existing owner.
 (This is a human process administered through JIRA.)
 There is an extensive `Sonatype OSSRH Guide`_ about getting and using an account.
 These notes indicate a particular path that worked for the author.
+
+.. _PGP-signing:
+
+PGP Signing
+-----------
 
 You need a PGP signing key pair (generated with ``gpg --gen-key``)
 on the computer where you are working.
@@ -623,10 +661,10 @@ You are now ready to upload bundles acceptable to Sonatype.
 * On the "Staging Upload" tab, and the Upload Mode drop-down, select "Artifact Bundle".
 * Navigate to the ``./publications`` folder and upload in turn:
 
-  * ``jython-2.7.2b2-bundle.jar``
-  * ``jython-standalone-2.7.2b2-bundle.jar``
-  * ``jython-installer-2.7.2b2-bundle.jar``
-  * ``jython-slim-2.7.2b2-bundle.jar``
+  * ``jython-2.7.3a1-bundle.jar``
+  * ``jython-standalone-2.7.3a1-bundle.jar``
+  * ``jython-installer-2.7.3a1-bundle.jar``
+  * ``jython-slim-2.7.3a1-bundle.jar``
 
   For some reason the display shows a fake file path but the name is correct.
   Each upload creates a "staging repository".
@@ -693,9 +731,9 @@ incrementing ``jython.release_serial``.
 After a final release, assume the successor to be an alpha of the next micro-release.
 For example, ``2.7.2b2`` is followed by ``2.7.2b3``, and ``2.7.2`` by ``2.7.3a1``.
 
-The build system will label the code as ``2.7.2b3-DEV`` in the developer build.
-If you build an installer, or dry-run a release, it will be ``2.7.2b3-SNAPSHOT``.
-You can read this as a version that "may eventually become" ``2.7.2b3`` etc..
+The build system will label the code as ``2.7.3a2-DEV`` in the developer build.
+If you build an installer, or dry-run a release, it will be ``2.7.3a2-SNAPSHOT``.
+You can read this as a version that "may eventually become" ``2.7.3a2`` etc..
 
 Make this change in both ``build.xml`` and ``build.gradle``.
 See the section :ref:`changes-preparing-for-a-release` for details.
