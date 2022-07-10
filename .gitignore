@@ -81,9 +81,8 @@ celerybeat-schedule
 .env
 
 # virtualenv
-venv/
+venv*/
 ENV/
-venv/
 
 # Spyder project settings
 .spyderproject
@@ -94,3 +93,8 @@ venv/
 # Eclipse project settings
 .project
 .settings/
+
+# PyCharm project settings
+.idea/
+
+
