@@ -96,10 +96,10 @@ the last commits should be the same as in the project repository:
 ..  code-block:: ps1con
 
     PS work> git log --oneline --graph -4
-    * c6a7d5754 (HEAD -> master, origin/master, origin/HEAD) Exclude Guava META-INF
-    * 2c3834e21 Check Contributor Agreement (#308)
-    * f0afabba2 Fix shading (#317)
-    * bc9d8592a Updates to NEWS and README
+    * d9e1d72e7 (HEAD -> master, origin/master, origin/HEAD) Pin launcher tests to MacOS 12 for Java 8
+    * f3d868433 Add upward compatibility to Java 9 Modularity (#325)
+    * 668a95e83 Begin to identify as version 2.7.4b2
+    * 228fe9ef9 (tag: v2.7.4b1) Prepare for 2.7.4b1 release.
 
 .. _changes-preparing-for-a-release:
 
@@ -118,11 +118,11 @@ The following files may need to be updated to match the version you are about to
   * ``jython.release_serial``.
 
   In the language of these properties,
-  version 2.7.4b1 is spelled ``2``, ``7``, ``4``, ``${PY_RELEASE_LEVEL_BETA}``, ``1``.
+  version 2.7.4b2 is spelled ``2``, ``7``, ``4``, ``${PY_RELEASE_LEVEL_BETA}``, ``2``.
   Every other expression needing a version number is derived from these 5 values.
 * ``build.gradle``: The version number appears as a simple string property ``version``,
   near the top of the file.
-  Version 2.7.4b1 is simply set like this: ``version = '2.7.4b1'``.
+  Version 2.7.4b2 is simply set like this: ``version = '2.7.4b2'``.
 * ``src/org/python/core/imp.java``: If there has been any compiler change,
   increment the magic number ``APIVersion``.
   This magic declares old compiled files incompatible, forcing a fresh compilation for users.
@@ -139,12 +139,11 @@ The following files may need to be updated to match the version you are about to
 
   ..  code-block:: text
 
-      Jython <something>
-        Bugs fixed
+      Jython <something> Bugs fixed and features added
           - [ NNNN ] ...
 
   Replace the first line with the release you are building
-  e.g. "Jython 2.7.4b1".
+  e.g. "Jython 2.7.4b2".
   Add anything necessary to the section "New Features".
   After publication (not now),
   we will add a new, empty, section for the version then under development.
@@ -174,15 +173,15 @@ If you changed anything, commit this set of changes locally:
     $ git status
     On branch master
     Your branch is up to date with 'origin/master'.
+
     Changes to be committed:
       (use "git restore --staged <file>..." to unstage)
             modified:   NEWS
-            modified:   build.gradle
-            modified:   build.xml
 
-    $ git commit -m"Prepare for 2.7.4b1 release."
-    [master 228fe9ef9] Prepare for 2.7.4b1 release.
-     3 files changed, 4 insertions(+), 4 deletions(-)
+
+    $ git commit -m"Prepare for 2.7.4b2 release."
+    [master 30d2f859a] Prepare for 2.7.4b2 release.
+     1 file changed, 7 insertions(+), 8 deletions(-)
 
 
 Get the JARs
@@ -222,13 +221,13 @@ Run the ``full-check`` target, which does some simple checks on the repository:
 
     force-snapshot-if-polluted:
          [echo]
-         [echo] Change set 228fe9ef9 is not tagged 'v2.7.4b1' - build is a snapshot.
+         [echo] Change set 30d2f859a is not tagged 'v2.7.4b2' - build is a snapshot.
 
     dump:
          [echo] --- build Jython version ---
          [echo] jython.version.short      = '2.7.4'
-         [echo] jython.release            = '2.7.4b1'
-         [echo] jython.version            = '2.7.4b1-SNAPSHOT'
+         [echo] jython.release            = '2.7.4b2'
+         [echo] jython.version            = '2.7.4b2-SNAPSHOT'
          [echo] --- optional libraries ---
          [echo] informix                  = '../support/jdbc-4.50.8.jar'
          [echo] oracle                    = '../support/ojdbc8-19.14.0.0.jar'
@@ -262,7 +261,7 @@ being careful to observe the conventional pattern
 
 ..  code-block:: ps1con
 
-    PS work> git tag -a -s v2.7.4b1 -m"Jython 2.7.4b1"
+    PS work> git tag -a -s v2.7.4b2 -m"Jython 2.7.4b2"
 
 This may open a pop-up from GPG
 that requires a password to unlock your signing key
@@ -273,7 +272,7 @@ It will need to be pushed eventually,
 but the current state of your repository is still at the change set tagged.
 If something goes wrong after this point but before the eventual push to the repository,
 that requires changes and a fresh commit,
-it is possible to delete the tag with ``git tag -d v2.7.4b1``,
+it is possible to delete the tag with ``git tag -d v2.7.4b2``,
 and make it again at the new tip when you're ready.
 The Git book explains why you should not `delete a tag after the push`_.
 
@@ -309,9 +308,9 @@ Run the ``full-check`` target again:
     PS work> ant full-check
     Buildfile: D:\git\work\build.xml
 
-         [echo] Build is for release of 2.7.4b1.
+         [echo] Build is for release of 2.7.4b2.
 
-         [echo] jython.version            = '2.7.4b1'
+         [echo] jython.version            = '2.7.4b2'
 
 This time the script confirms it is a release
 and the version appears without the "SNAPSHOT" qualifier.
@@ -351,7 +350,7 @@ working in folder ``./build2``.
 
     PS work> .\gradlew --console=plain publish
     > Task :generateVersionInfo
-    This build is for v2.7.4b1.
+    This build is for v2.7.4b2.
 
     > Task :generateGrammarSource
     ...
@@ -379,7 +378,7 @@ working in folder ``./build2``.
 Don't worry, this doesn't actually *publish* Jython.
 When the build finishes, a JAR that is potentially fit to publish,
 and its subsidiary artifacts (source, javadoc, checksums),
-will have been created in ``./build2/stagingRepo/org/python/jython-slim/2.7.4b1``.
+will have been created in ``./build2/stagingRepo/org/python/jython-slim/2.7.4b2``.
 
 It can also be "published" to your local Maven cache (usually ``~/.m2/repository``
 with the task ``publishMainPublicationToMavenLocal``.
@@ -413,18 +412,19 @@ It is worth checking the manifests:
 ..  code-block:: ps1con
 
     PS 274b1-trial> jar -xf .\kit\jython-standalone.jar META-INF
-    PS 274b1-trial> cat .\META-INF\MANIFEST.MF
+    PS 274b2-trial> cat .\META-INF\MANIFEST.MF
     Manifest-Version: 1.0
     Ant-Version: Apache Ant 1.10.12
     Created-By: 1.8.0_321-b07 (Oracle Corporation)
     Main-Class: org.python.util.jython
     Built-By: Jeff
+    Automatic-Module-Name: org.python.jython2.standalone
     Implementation-Vendor: Python Software Foundation
     Implementation-Title: Jython fat jar with stdlib
-    Implementation-Version: 2.7.4b1
+    Implementation-Version: 2.7.4b2
 
     Name: Build-Info
-    version: 2.7.4b1
+    version: 2.7.4b2
     git-build: true
     oracle: true
     informix: true
@@ -442,8 +442,8 @@ The real test consists in running the regression tests:
 
 ..  code-block:: ps1con
 
-    PS 274b1-trial> inst\bin\jython -m test.regrtest -e
-    == 2.7.4b1 (tags/v2.7.4b1:228fe9ef9, Apr 1 2024, 20:04:13)
+    PS 274b2-trial> inst\bin\jython -m test.regrtest -e
+    == 274b2 (tags/v2.7.4b2:30d2f859a, May 4 2024, 13:46:27)
     == [Java HotSpot(TM) 64-Bit Server VM (Oracle Corporation)]
     == platform: java11.0.22
     == encodings: stdin=ms936, stdout=ms936, FS=utf-8
@@ -479,10 +479,10 @@ When the author last tried, they were these:
 
 ..  code-block:: ps1con
 
-    PS 274b1-trial> copy -r inst\Lib\test TestLib\test
-    PS 274b1-trial> $env:JYTHONPATH = ".\TestLib"
-    PS 274b1-trial> java -jar kit\jython-standalone.jar -m test.regrtest -e
-    == 2.7.4b1 (tags/v2.7.4b1:228fe9ef9, Apr 1 2024, 20:04:13)
+    PS 274b2-trial> copy -r inst\Lib\test TestLib\test
+    PS 274b2-trial> $env:JYTHONPATH = ".\TestLib"
+    PS 274b2-trial> java -jar kit\jython-standalone.jar -m test.regrtest -e
+    == 274b2 (tags/v2.7.4b2:30d2f859a, May 4 2024, 13:46:27)
     == [Java HotSpot(TM) 64-Bit Server VM (Oracle Corporation)]
     == platform: java11.0.22
     == encodings: stdin=ms936, stdout=ms936, FS=utf-8
@@ -554,7 +554,7 @@ such as your personal Maven cache:
     PS work> .\gradlew --console=plain publishMainPublicationToMavenLocal
 
 This will deliver build artifacts to
-``~/.m2/repository/org/python/jython-slim/2.7.4b1``.
+``~/.m2/repository/org/python/jython-slim/2.7.4b2``.
 One can construct an application to run with that as a dependency like this:
 
 ..  code-block:: groovy
@@ -570,7 +570,7 @@ One can construct an application to run with that as a dependency like this:
     }
 
     dependencies {
-        implementation 'org.python:jython-slim:2.7.4b1'
+        implementation 'org.python:jython-slim:2.7.4b2'
     }
 
     application {
@@ -664,10 +664,10 @@ During the build, ``gpg`` may prompt you (in a dialogue box)
 for the pass-phrase that protects your private signing key.
 This leaves the following new artifacts in ``./publications``:
 
-* ``jython-2.7.4b1-bundle.jar``
-* ``jython-standalone-2.7.4b1-bundle.jar``
-* ``jython-installer-2.7.4b1-bundle.jar``
-* ``jython-slim-2.7.4b1-bundle.jar``
+* ``jython-2.7.4b2-bundle.jar``
+* ``jython-standalone-2.7.4b2-bundle.jar``
+* ``jython-installer-2.7.4b2-bundle.jar``
+* ``jython-slim-2.7.4b2-bundle.jar``
 
 
 Publication
@@ -744,10 +744,10 @@ You are now ready to upload bundles acceptable to Sonatype.
   select "Artifact Bundle".
 * Navigate to the ``./publications`` folder and upload in turn:
 
-  * ``jython-slim-2.7.4b1-bundle.jar``
-  * ``jython-2.7.4b1-bundle.jar``
-  * ``jython-standalone-2.7.4b1-bundle.jar``
-  * ``jython-installer-2.7.4b1-bundle.jar``
+  * ``jython-slim-2.7.4b2-bundle.jar``
+  * ``jython-2.7.4b2-bundle.jar``
+  * ``jython-standalone-2.7.4b2-bundle.jar``
+  * ``jython-installer-2.7.4b2-bundle.jar``
 
   For some reason (privacy?) the display shows a fake file path
   but the name is correct.
@@ -832,16 +832,16 @@ assume the successor to be an alpha of the next micro-release.
 For example, ``2.7.2b2`` is followed by ``2.7.2b3``,
 and ``2.7.2`` by ``2.7.3a1``.
 
-If the version under development is ``2.7.4b2``,
-the build system will label the code as ``2.7.4b2-DEV`` in the developer build.
-If you build an installer, or dry-run a release, it will be ``2.7.4b2-SNAPSHOT``.
-You can read this as a version that "may eventually become" ``2.7.4b2`` etc..
+If the version under development is ostensibly ``2.7.4b3``,
+the build system will label the code as ``2.7.4b3-DEV`` in builds.
+If you build an installer, or dry-run a release, it will be ``2.7.4b3-SNAPSHOT``.
+You can read this as a version that "may eventually become" ``2.7.4b3`` etc..
 
-However, the version under development in this scheme will often be one that
-never sees a release.
-E.g. when we are apparently working on ``2.7.4b2``,
-the next release is quite likely to be ``2.7.4rc1`` instead,
-but we can't guarantee that things will go that well.
+The version under development in this scheme will often be one that never sees a release.
+E.g. when we are apparently working on ``2.7.4b3``,
+the next release is quite likely to be ``2.7.4rc1`` instead.
+The build files will have to be edited to produce that when that time comes.
+We always hope that the version string printed in regression tests will ultimately be wrong.
 It's a harmless paradox.
 
 Make this change in both ``build.xml`` and ``build.gradle``.
@@ -852,13 +852,10 @@ In ``NEWS``, add a new, empty, section in the development history that looks lik
 ..  code-block:: text
 
     Jython <successor version>
-      Bugs fixed
 
-      New Features
+      Bugs fixed
 
 Commit and push this change upstream.
 
-.. note:: New features should probably be associated with the final release,
-   not the feature-freeze ``b1``.
-   This present structure doesn't work well from this point of view:
-   it places "New Features" a long way from the top of NEWS.
+.. note:: The new features are associated with the prospective final release,
+   not the alpha or beta that introduced them.
