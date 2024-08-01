@@ -19,8 +19,8 @@ To complete a public release you need the following things:
 
 * Two JDBC driver JARs that we do not track with version control (licensing restrictions):
 
-  * Informix (currently ``jdbc-4.50.8.jar`` for Java 8).
-  * Oracle (currently ``ojdbc8-19.14.0.0.jar`` for Java 8).
+  * Informix (currently ``jdbc-4.50.11.jar`` for Java 8).
+  * Oracle (currently ``ojdbc8-23.4.0.24.05.jar`` for Java 8).
 
 .. Padding. See https://github.com/sphinx-doc/sphinx/issues/2258
 
@@ -69,7 +69,7 @@ At the same time, let's check that we have the tools we need on the path:
     PS git> java -version
     java version "1.8.0_321"
     PS git> ant -version
-    Apache Ant(TM) version 1.10.12 compiled on October 13 2021
+    Apache Ant(TM) version 1.10.14 compiled on August 16 2023
     PS git> gpg --version
     gpg (GnuPG) 2.3.3
     libgcrypt 1.9.4
@@ -96,10 +96,10 @@ the last commits should be the same as in the project repository:
 ..  code-block:: ps1con
 
     PS work> git log --oneline --graph -4
-    * d9e1d72e7 (HEAD -> master, origin/master, origin/HEAD) Pin launcher tests to MacOS 12 for Java 8
-    * f3d868433 Add upward compatibility to Java 9 Modularity (#325)
-    * 668a95e83 Begin to identify as version 2.7.4b2
-    * 228fe9ef9 (tag: v2.7.4b1) Prepare for 2.7.4b1 release.
+    * 245deba51 (HEAD -> master, origin/master, origin/HEAD) Now with sensible timeouts.
+    * 66600ad7e Impose timeout on regrtest workflows
+    * f14a91e6a Note blocked from updating Netty by issue 349
+    * 7df6cbd34 Update Bouncy Castle JARs to 1.78.1
 
 .. _changes-preparing-for-a-release:
 
@@ -118,11 +118,11 @@ The following files may need to be updated to match the version you are about to
   * ``jython.release_serial``.
 
   In the language of these properties,
-  version 2.7.4b2 is spelled ``2``, ``7``, ``4``, ``${PY_RELEASE_LEVEL_BETA}``, ``2``.
+  version 2.7.4rc1 is spelled ``2``, ``7``, ``4``, ``${PY_RELEASE_LEVEL_GAMMA}``, ``1``.
   Every other expression needing a version number is derived from these 5 values.
 * ``build.gradle``: The version number appears as a simple string property ``version``,
   near the top of the file.
-  Version 2.7.4b2 is simply set like this: ``version = '2.7.4b2'``.
+  Version 2.7.4rc1 is simply set like this: ``version = '2.7.4rc1'``.
 * ``src/org/python/core/imp.java``: If there has been any compiler change,
   increment the magic number ``APIVersion``.
   This magic declares old compiled files incompatible, forcing a fresh compilation for users.
@@ -143,7 +143,7 @@ The following files may need to be updated to match the version you are about to
           - [ NNNN ] ...
 
   Replace the first line with the release you are building
-  e.g. "Jython 2.7.4b2".
+  e.g. "Jython 2.7.4rc1".
   Add anything necessary to the section "New Features".
   After publication (not now),
   we will add a new, empty, section for the version then under development.
@@ -177,11 +177,12 @@ If you changed anything, commit this set of changes locally:
     Changes to be committed:
       (use "git restore --staged <file>..." to unstage)
             modified:   NEWS
+            modified:   build.gradle
+            modified:   build.xml
 
-
-    $ git commit -m"Prepare for 2.7.4b2 release."
-    [master 30d2f859a] Prepare for 2.7.4b2 release.
-     1 file changed, 7 insertions(+), 8 deletions(-)
+    $ git commit -m"Prepare for 2.7.4rc1 release."
+    [master 3562755e5] Prepare for 2.7.4rc1 release.
+     3 files changed, 6 insertions(+), 4 deletions(-)
 
 
 Get the JARs
@@ -190,7 +191,7 @@ Get the JARs
 Find the database driver JARs from reputable sources.
 
 * The Informix driver may be obtained from Maven Central.
-  Version ``jdbc-4.50.8.jar`` is known to work on Java 8.
+  Version ``jdbc-4.50.11.jar`` is known to work on Java 8.
 
 * The Oracle JDBC driver may also be found at Maven Central.
   (The Oracle JARs on Maven Central are now official.)
@@ -202,8 +203,8 @@ Create an ``ant.properties`` correspondingly:
 ..  code-block:: properties
 
     # Ant properties defined externally to the release build.
-    informix.jar = ../support/jdbc-4.50.8.jar
-    oracle.jar = ../support/ojdbc8-19.14.0.0.jar
+    informix.jar = ../support/jdbc-4.50.11.jar
+    oracle.jar = ../support/ojdbc8-23.4.0.24.05.jar
 
 Note that this file is ephemeral and local:
 it is ignored by Git because it is named in ``.gitignore``.
@@ -221,16 +222,16 @@ Run the ``full-check`` target, which does some simple checks on the repository:
 
     force-snapshot-if-polluted:
          [echo]
-         [echo] Change set 30d2f859a is not tagged 'v2.7.4b2' - build is a snapshot.
+         [echo] Change set 3562755e5 is not tagged 'v2.7.4rc1' - build is a snapshot.
 
     dump:
          [echo] --- build Jython version ---
          [echo] jython.version.short      = '2.7.4'
-         [echo] jython.release            = '2.7.4b2'
-         [echo] jython.version            = '2.7.4b2-SNAPSHOT'
+         [echo] jython.release            = '2.7.4rc1'
+         [echo] jython.version            = '2.7.4rc1-SNAPSHOT'
          [echo] --- optional libraries ---
-         [echo] informix                  = '../support/jdbc-4.50.8.jar'
-         [echo] oracle                    = '../support/ojdbc8-19.14.0.0.jar'
+         [echo] informix                  = '../support/jdbc-4.50.11.jar'
+         [echo] oracle                    = '../support/ojdbc8-23.4.0.24.05.jar'
 
 It makes an extensive dump,
 in which lines like those above matter particularly.
@@ -261,7 +262,7 @@ being careful to observe the conventional pattern
 
 ..  code-block:: ps1con
 
-    PS work> git tag -a -s v2.7.4b2 -m"Jython 2.7.4b2"
+    PS work> git tag -a -s v2.7.4rc1 -m"Jython 2.7.4rc1"
 
 This may open a pop-up from GPG
 that requires a password to unlock your signing key
@@ -308,9 +309,9 @@ Run the ``full-check`` target again:
     PS work> ant full-check
     Buildfile: D:\git\work\build.xml
 
-         [echo] Build is for release of 2.7.4b2.
+         [echo] Build is for release of 2.7.4rc1.
 
-         [echo] jython.version            = '2.7.4b2'
+         [echo] jython.version            = '2.7.4rc1'
 
 This time the script confirms it is a release
 and the version appears without the "SNAPSHOT" qualifier.
@@ -350,7 +351,7 @@ working in folder ``./build2``.
 
     PS work> .\gradlew --console=plain publish
     > Task :generateVersionInfo
-    This build is for v2.7.4b2.
+    This build is for v2.7.4rc1.
 
     > Task :generateGrammarSource
     ...
@@ -372,13 +373,13 @@ working in folder ``./build2``.
     > Task :publishMainPublicationToStagingRepoRepository
     > Task :publish
 
-    BUILD SUCCESSFUL in 7m 1s
+    BUILD SUCCESSFUL in 10m 10s
     16 actionable tasks: 16 executed
 
 Don't worry, this doesn't actually *publish* Jython.
 When the build finishes, a JAR that is potentially fit to publish,
 and its subsidiary artifacts (source, javadoc, checksums),
-will have been created in ``./build2/stagingRepo/org/python/jython-slim/2.7.4b2``.
+will have been created in ``./build2/stagingRepo/org/python/jython-slim/2.7.4rc1``.
 
 It can also be "published" to your local Maven cache (usually ``~/.m2/repository``
 with the task ``publishMainPublicationToMavenLocal``.
@@ -398,9 +399,9 @@ Let's use Java 11, different from the version we built with.
 
 ..  code-block:: ps1con
 
-    PS 274b1-trial> mkdir kit
-    PS 274b1-trial> copy "D:\git\work\dist\jython*.jar" .\kit
-    PS 274b1-trial> java -jar kit\jython-installer.jar
+    PS 274rc1-trial> mkdir kit
+    PS 274rc1-trial> copy "D:\git\work\dist\jython*.jar" .\kit
+    PS 274rc1-trial> java -jar kit\jython-installer.jar
     WARNING: An illegal reflective access operation has occurred
     ...
     DEPRECATION: A future version of pip will drop support for Python 2.7.
@@ -411,20 +412,20 @@ It is worth checking the manifests:
 
 ..  code-block:: ps1con
 
-    PS 274b1-trial> jar -xf .\kit\jython-standalone.jar META-INF
-    PS 274b2-trial> cat .\META-INF\MANIFEST.MF
+    PS 274rc1-trial> jar -xf .\kit\jython-standalone.jar META-INF
+    PS 274rc1-trial> cat .\META-INF\MANIFEST.MF
     Manifest-Version: 1.0
-    Ant-Version: Apache Ant 1.10.12
+    Ant-Version: Apache Ant 1.10.14
     Created-By: 1.8.0_321-b07 (Oracle Corporation)
     Main-Class: org.python.util.jython
     Built-By: Jeff
     Automatic-Module-Name: org.python.jython2.standalone
     Implementation-Vendor: Python Software Foundation
     Implementation-Title: Jython fat jar with stdlib
-    Implementation-Version: 2.7.4b2
+    Implementation-Version: 2.7.4rc1
 
     Name: Build-Info
-    version: 2.7.4b2
+    version: 2.7.4rc1
     git-build: true
     oracle: true
     informix: true
@@ -442,12 +443,12 @@ The real test consists in running the regression tests:
 
 ..  code-block:: ps1con
 
-    PS 274b2-trial> inst\bin\jython -m test.regrtest -e
-    == 274b2 (tags/v2.7.4b2:30d2f859a, May 4 2024, 13:46:27)
+    PS 274rc1-trial> inst\bin\jython -m test.regrtest -e
+    == 2.7.4rc1 (tags/v2.7.4rc1:3562755e5, Jul 29 2024, 14:01:55)
     == [Java HotSpot(TM) 64-Bit Server VM (Oracle Corporation)]
     == platform: java11.0.22
     == encodings: stdin=ms936, stdout=ms936, FS=utf-8
-    == locale: default=('en_GB', 'windows-1254'), actual=(None, None)
+    == locale: default=('en_GB', 'windows-1252'), actual=(None, None)
     test_grammar
     test_opcodes
     test_dict
@@ -479,14 +480,14 @@ When the author last tried, they were these:
 
 ..  code-block:: ps1con
 
-    PS 274b2-trial> copy -r inst\Lib\test TestLib\test
-    PS 274b2-trial> $env:JYTHONPATH = ".\TestLib"
-    PS 274b2-trial> java -jar kit\jython-standalone.jar -m test.regrtest -e
-    == 274b2 (tags/v2.7.4b2:30d2f859a, May 4 2024, 13:46:27)
+    PS 274rc1-trial> copy -r inst\Lib\test TestLib\test
+    PS 274rc1-trial> $env:JYTHONPATH = ".\TestLib"
+    PS 274rc1-trial> java -jar kit\jython-standalone.jar -m test.regrtest -e
+    == 2.7.4rc1 (tags/v2.7.4rc1:3562755e5, Jul 29 2024, 14:01:55)
     == [Java HotSpot(TM) 64-Bit Server VM (Oracle Corporation)]
     == platform: java11.0.22
     == encodings: stdin=ms936, stdout=ms936, FS=utf-8
-    == locale: default=('en_GB', 'windows-1254'), actual=(None, None)
+    == locale: default=('en_GB', 'windows-1252'), actual=(None, None)
     test_grammar
     test_opcodes
     ...
@@ -554,7 +555,7 @@ such as your personal Maven cache:
     PS work> .\gradlew --console=plain publishMainPublicationToMavenLocal
 
 This will deliver build artifacts to
-``~/.m2/repository/org/python/jython-slim/2.7.4b2``.
+``~/.m2/repository/org/python/jython-slim/2.7.4rc1``.
 One can construct an application to run with that as a dependency like this:
 
 ..  code-block:: groovy
@@ -570,7 +571,7 @@ One can construct an application to run with that as a dependency like this:
     }
 
     dependencies {
-        implementation 'org.python:jython-slim:2.7.4b2'
+        implementation 'org.python:jython-slim:2.7.4rc1'
     }
 
     application {
@@ -588,11 +589,13 @@ prepared for the stand-alone Jython.
     import org.python.util.PythonInterpreter;
     public class RegressionTest {
         public static void main(String[] args) {
-            PythonInterpreter interp = new PythonInterpreter();
-            interp.exec("import sys, os");
-            interp.exec("sys.path[0] = os.sep.join(['.', 'TestLib'])");
-            interp.exec("from test import regrtest as rt");
-            interp.exec("rt.main(expected=True)");
+            try (PythonInterpreter interp = new PythonInterpreter()) {
+                interp.exec("import sys, os");
+                interp.exec("sys.path[0] = os.sep.join(['.', 'TestLib'])");
+                interp.exec("sys.argv[1:] = ['-e']");
+                interp.exec("from test import regrtest as rt");
+                interp.exec("rt.main()");
+            }
         }
     }
 
@@ -603,21 +606,19 @@ Bouncy Castle JAR is on the path.
 Tests end with a failure status under Gradle, even when all tests pass,
 because ``regrtest`` calls ``sys.exit``,
 which raises ``SystemExit``.
-They look like:
+It looks like:
 
 ..  code-block:: text
 
-
-    All 2 tests OK.
+    333 tests OK.
+    ...
+    33 tests failed:
+    ...
     Exception in thread "MainThread" Traceback (most recent call last):
       File "<string>", line 1, in <module>
       File ".\TestLib\test\regrtest.py", line 521, in main
         sys.exit(surprises > 0)
-    SystemExit: False
-
-    > Task :run FAILED
-
-    FAILURE: Build failed with an exception.
+    SystemExit: True
 
 One could improve the driver program, but it is complicated to do properly.
 
@@ -664,10 +665,10 @@ During the build, ``gpg`` may prompt you (in a dialogue box)
 for the pass-phrase that protects your private signing key.
 This leaves the following new artifacts in ``./publications``:
 
-* ``jython-2.7.4b2-bundle.jar``
-* ``jython-standalone-2.7.4b2-bundle.jar``
-* ``jython-installer-2.7.4b2-bundle.jar``
-* ``jython-slim-2.7.4b2-bundle.jar``
+* ``jython-2.7.4rc1-bundle.jar``
+* ``jython-standalone-2.7.4rc1-bundle.jar``
+* ``jython-installer-2.7.4rc1-bundle.jar``
+* ``jython-slim-2.7.4rc1-bundle.jar``
 
 
 Publication
@@ -744,10 +745,10 @@ You are now ready to upload bundles acceptable to Sonatype.
   select "Artifact Bundle".
 * Navigate to the ``./publications`` folder and upload in turn:
 
-  * ``jython-slim-2.7.4b2-bundle.jar``
-  * ``jython-2.7.4b2-bundle.jar``
-  * ``jython-standalone-2.7.4b2-bundle.jar``
-  * ``jython-installer-2.7.4b2-bundle.jar``
+  * ``jython-slim-2.7.4rc1-bundle.jar``
+  * ``jython-2.7.4rc1-bundle.jar``
+  * ``jython-standalone-2.7.4rc1-bundle.jar``
+  * ``jython-installer-2.7.4rc1-bundle.jar``
 
   For some reason (privacy?) the display shows a fake file path
   but the name is correct.
@@ -772,7 +773,7 @@ from the "Staging Repositories" tab in the repository manager.
   download the (as yet unreleased) artifacts from Sonatype and test them,
   repeating the section :ref:`test-what-you-built`.
   A staging URL has form:
-  ``https://oss.sonatype.org/content/repositories/orgpython-1110``
+  ``https://oss.sonatype.org/content/repositories/orgpython-1105``
   where the final number increments with each upload.
 * When you are absolutely satisfied ... "Release" the bundles.
   This will cause them to appear in the Maven `Central Repository`_
