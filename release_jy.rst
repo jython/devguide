@@ -11,9 +11,43 @@ These notes will also be a useful guide if you intend to make a snapshot (privat
 The process may be tested, without making a real release,
 for example to check that the scripts still work:
 go through the steps but without pushing upstream or publishing.
+
 Delete the workspace soon afterwards,
 so as not to leave change sets tagged as a release,
 that might be accidentally built upon or pushed at a later time.
+
+
+Before you start
+================
+
+Is Jython Ready?
+----------------
+
+These things are better dealt with in the development environment,
+by issues and PRs,
+rather than during the release process:
+
+* Are the JARs we reference or embed sufficiently up to date?
+  The security vunverabilities (CVEs) reported against Jython come
+  almost entirely from the JARs we cite or embed.
+* Is the Unicode reference data sufficiently up to date?
+  See ``~/Misc/makeucnhashdat.py`` and ``unchash.dat``.
+* ``src/org/python/core/imp.java``: If there has been any compiler change,
+  increment the magic number ``APIVersion``.
+  This magic declares old compiled files incompatible, forcing a fresh compilation for users.
+  (Maybe do it anyway, if it's been a long time.)
+
+Consider *not* doing some of these actions until a release candidate is imminent.
+The way we manage dependencies means the repository history contains
+a copy of every version of every JAR we ever used.
+This is a lot of space.
+``unchash.dat`` is also large.
+Refreshing a dependency will seldom impact our own code materially,
+but if it will, it is fine to de-risk the change earlier.
+
+
+Local Necessities
+-----------------
 
 To complete a public release you need the following things:
 
@@ -96,10 +130,10 @@ the last commits should be the same as in the project repository:
 ..  code-block:: ps1con
 
     PS work> git log --oneline --graph -4
-    * 245deba51 (HEAD -> master, origin/master, origin/HEAD) Now with sensible timeouts.
+    * d04ff7f62 (HEAD -> master, origin/master, origin/HEAD) Begin to identify as v2.7.4rc2
+    * 3562755e5 (tag: v2.7.4rc1) Prepare for 2.7.4rc1 release.
+    * 245deba51 Now with sensible timeouts.
     * 66600ad7e Impose timeout on regrtest workflows
-    * f14a91e6a Note blocked from updating Netty by issue 349
-    * 7df6cbd34 Update Bouncy Castle JARs to 1.78.1
 
 .. _changes-preparing-for-a-release:
 
@@ -118,15 +152,11 @@ The following files may need to be updated to match the version you are about to
   * ``jython.release_serial``.
 
   In the language of these properties,
-  version 2.7.4rc1 is spelled ``2``, ``7``, ``4``, ``${PY_RELEASE_LEVEL_GAMMA}``, ``1``.
+  version 2.7.4 final is spelled ``2``, ``7``, ``4``, ``${PY_RELEASE_LEVEL_FINAL}``, ``0``.
   Every other expression needing a version number is derived from these 5 values.
 * ``build.gradle``: The version number appears as a simple string property ``version``,
   near the top of the file.
-  Version 2.7.4rc1 is simply set like this: ``version = '2.7.4rc1'``.
-* ``src/org/python/core/imp.java``: If there has been any compiler change,
-  increment the magic number ``APIVersion``.
-  This magic declares old compiled files incompatible, forcing a fresh compilation for users.
-  (Maybe do it anyway, if it's been a long time.)
+  Version 2.7.4 is simply set like this: ``version = '2.7.4'``.
 * ``README.txt``: It is possible no change is needed at all,
   and if a change is needed, it will probably only be to the running text.
   A copy of this file is made during the build,
@@ -143,7 +173,10 @@ The following files may need to be updated to match the version you are about to
           - [ NNNN ] ...
 
   Replace the first line with the release you are building
-  e.g. "Jython 2.7.4rc1".
+  e.g. "Jython 2.7.4".
+  For a final release,
+  it will probably say it is the same as the release candidate,
+  rather than listing bugs fixed.
   Add anything necessary to the section "New Features".
   After publication (not now),
   we will add a new, empty, section for the version then under development.
@@ -180,9 +213,9 @@ If you changed anything, commit this set of changes locally:
             modified:   build.gradle
             modified:   build.xml
 
-    $ git commit -m"Prepare for 2.7.4rc1 release."
-    [master 3562755e5] Prepare for 2.7.4rc1 release.
-     3 files changed, 6 insertions(+), 4 deletions(-)
+    $ git commit -m"Prepare for 2.7.4 release."
+    [master 3f256f4a7] Prepare for 2.7.4 release.
+     3 files changed, 4 insertions(+), 6 deletions(-)
 
 
 Get the JARs
@@ -222,13 +255,13 @@ Run the ``full-check`` target, which does some simple checks on the repository:
 
     force-snapshot-if-polluted:
          [echo]
-         [echo] Change set 3562755e5 is not tagged 'v2.7.4rc1' - build is a snapshot.
+         [echo] Change set 3f256f4a7 is not tagged 'v2.7.4' - build is a snapshot.
 
     dump:
          [echo] --- build Jython version ---
          [echo] jython.version.short      = '2.7.4'
-         [echo] jython.release            = '2.7.4rc1'
-         [echo] jython.version            = '2.7.4rc1-SNAPSHOT'
+         [echo] jython.release            = '2.7.4'
+         [echo] jython.version            = '2.7.4-SNAPSHOT'
          [echo] --- optional libraries ---
          [echo] informix                  = '../support/jdbc-4.50.11.jar'
          [echo] oracle                    = '../support/ojdbc8-23.4.0.24.05.jar'
@@ -262,7 +295,7 @@ being careful to observe the conventional pattern
 
 ..  code-block:: ps1con
 
-    PS work> git tag -a -s v2.7.4rc1 -m"Jython 2.7.4rc1"
+    PS work> git tag -a -s v2.7.4 -m"Jython 2.7.4 final"
 
 This may open a pop-up from GPG
 that requires a password to unlock your signing key
@@ -273,7 +306,7 @@ It will need to be pushed eventually,
 but the current state of your repository is still at the change set tagged.
 If something goes wrong after this point but before the eventual push to the repository,
 that requires changes and a fresh commit,
-it is possible to delete the tag with ``git tag -d v2.7.4b2``,
+it is possible to delete the tag with ``git tag -d v2.7.4``,
 and make it again at the new tip when you're ready.
 The Git book explains why you should not `delete a tag after the push`_.
 
@@ -309,9 +342,9 @@ Run the ``full-check`` target again:
     PS work> ant full-check
     Buildfile: D:\git\work\build.xml
 
-         [echo] Build is for release of 2.7.4rc1.
+         [echo] Build is for release of 2.7.4.
 
-         [echo] jython.version            = '2.7.4rc1'
+         [echo] jython.version            = '2.7.4'
 
 This time the script confirms it is a release
 and the version appears without the "SNAPSHOT" qualifier.
@@ -351,7 +384,7 @@ working in folder ``./build2``.
 
     PS work> .\gradlew --console=plain publish
     > Task :generateVersionInfo
-    This build is for v2.7.4rc1.
+    This build is for v2.7.4.
 
     > Task :generateGrammarSource
     ...
@@ -373,13 +406,13 @@ working in folder ``./build2``.
     > Task :publishMainPublicationToStagingRepoRepository
     > Task :publish
 
-    BUILD SUCCESSFUL in 10m 10s
+    BUILD SUCCESSFUL in 6m 41s
     16 actionable tasks: 16 executed
 
 Don't worry, this doesn't actually *publish* Jython.
 When the build finishes, a JAR that is potentially fit to publish,
 and its subsidiary artifacts (source, javadoc, checksums),
-will have been created in ``./build2/stagingRepo/org/python/jython-slim/2.7.4rc1``.
+will have been created in ``./build2/stagingRepo/org/python/jython-slim/2.7.4``.
 
 It can also be "published" to your local Maven cache (usually ``~/.m2/repository``
 with the task ``publishMainPublicationToMavenLocal``.
@@ -399,9 +432,9 @@ Let's use Java 11, different from the version we built with.
 
 ..  code-block:: ps1con
 
-    PS 274rc1-trial> mkdir kit
-    PS 274rc1-trial> copy "D:\git\work\dist\jython*.jar" .\kit
-    PS 274rc1-trial> java -jar kit\jython-installer.jar
+    PS 274-trial> mkdir kit
+    PS 274-trial> copy "D:\git\work\dist\jython*.jar" .\kit
+    PS 274-trial> java -jar kit\jython-installer.jar
     WARNING: An illegal reflective access operation has occurred
     ...
     DEPRECATION: A future version of pip will drop support for Python 2.7.
@@ -412,8 +445,8 @@ It is worth checking the manifests:
 
 ..  code-block:: ps1con
 
-    PS 274rc1-trial> jar -xf .\kit\jython-standalone.jar META-INF
-    PS 274rc1-trial> cat .\META-INF\MANIFEST.MF
+    PS 274-trial> jar -xf .\kit\jython-standalone.jar META-INF
+    PS 274-trial> cat .\META-INF\MANIFEST.MF
     Manifest-Version: 1.0
     Ant-Version: Apache Ant 1.10.14
     Created-By: 1.8.0_321-b07 (Oracle Corporation)
@@ -422,10 +455,10 @@ It is worth checking the manifests:
     Automatic-Module-Name: org.python.jython2.standalone
     Implementation-Vendor: Python Software Foundation
     Implementation-Title: Jython fat jar with stdlib
-    Implementation-Version: 2.7.4rc1
+    Implementation-Version: 2.7.4
 
     Name: Build-Info
-    version: 2.7.4rc1
+    version: 2.7.4
     git-build: true
     oracle: true
     informix: true
@@ -443,8 +476,8 @@ The real test consists in running the regression tests:
 
 ..  code-block:: ps1con
 
-    PS 274rc1-trial> inst\bin\jython -m test.regrtest -e
-    == 2.7.4rc1 (tags/v2.7.4rc1:3562755e5, Jul 29 2024, 14:01:55)
+    PS 274-trial> inst\bin\jython -m test.regrtest -e
+    == 2.7.4 (tags/v2.7.4:3f256f4a7, Aug 18 2024, 10:30:53)
     == [Java HotSpot(TM) 64-Bit Server VM (Oracle Corporation)]
     == platform: java11.0.22
     == encodings: stdin=ms936, stdout=ms936, FS=utf-8
@@ -480,10 +513,10 @@ When the author last tried, they were these:
 
 ..  code-block:: ps1con
 
-    PS 274rc1-trial> copy -r inst\Lib\test TestLib\test
-    PS 274rc1-trial> $env:JYTHONPATH = ".\TestLib"
-    PS 274rc1-trial> java -jar kit\jython-standalone.jar -m test.regrtest -e
-    == 2.7.4rc1 (tags/v2.7.4rc1:3562755e5, Jul 29 2024, 14:01:55)
+    PS 274-trial> copy -r inst\Lib\test TestLib\test
+    PS 274-trial> $env:JYTHONPATH = ".\TestLib"
+    PS 274-trial> java -jar kit\jython-standalone.jar -m test.regrtest -e
+    == 2.7.4 (tags/v2.7.4:3f256f4a7, Aug 18 2024, 10:30:53)
     == [Java HotSpot(TM) 64-Bit Server VM (Oracle Corporation)]
     == platform: java11.0.22
     == encodings: stdin=ms936, stdout=ms936, FS=utf-8
@@ -555,7 +588,7 @@ such as your personal Maven cache:
     PS work> .\gradlew --console=plain publishMainPublicationToMavenLocal
 
 This will deliver build artifacts to
-``~/.m2/repository/org/python/jython-slim/2.7.4rc1``.
+``~/.m2/repository/org/python/jython-slim/2.7.4``.
 One can construct an application to run with that as a dependency like this:
 
 ..  code-block:: groovy
@@ -571,7 +604,7 @@ One can construct an application to run with that as a dependency like this:
     }
 
     dependencies {
-        implementation 'org.python:jython-slim:2.7.4rc1'
+        implementation 'org.python:jython-slim:2.7.4'
     }
 
     application {
@@ -623,28 +656,6 @@ It looks like:
 One could improve the driver program, but it is complicated to do properly.
 
 
-.. _jython-push-with-tag:
-
-Only now is it safe to ``git push``
------------------------------------
-
-If testing convinces you this is a build we should let loose
-on an unsuspecting public,
-it is time to push these changes and the tag you made
-upstream to the Jython repository.
-Back in the place where the release was built (and using Bash):
-
-..  code-block:: bash
-
-    $ git push --follow-tags
-
-Try very hard not to push a tag you later regret
-(e.g. on the wrong change set or a version still needing a fix).
-It is problematic to `delete a tag after the push`_.
-It is better to increment the version,
-which is painless if it is an ``a``, ``b``, or ``rc`` release.
-
-
 Build the Bundles to Publish
 ----------------------------
 
@@ -665,10 +676,10 @@ During the build, ``gpg`` may prompt you (in a dialogue box)
 for the pass-phrase that protects your private signing key.
 This leaves the following new artifacts in ``./publications``:
 
-* ``jython-2.7.4rc1-bundle.jar``
-* ``jython-standalone-2.7.4rc1-bundle.jar``
-* ``jython-installer-2.7.4rc1-bundle.jar``
-* ``jython-slim-2.7.4rc1-bundle.jar``
+* ``jython-2.7.4-bundle.jar``
+* ``jython-standalone-2.7.4-bundle.jar``
+* ``jython-installer-2.7.4-bundle.jar``
+* ``jython-slim-2.7.4-bundle.jar``
 
 
 Publication
@@ -745,22 +756,25 @@ You are now ready to upload bundles acceptable to Sonatype.
   select "Artifact Bundle".
 * Navigate to the ``./publications`` folder and upload in turn:
 
-  * ``jython-slim-2.7.4rc1-bundle.jar``
-  * ``jython-2.7.4rc1-bundle.jar``
-  * ``jython-standalone-2.7.4rc1-bundle.jar``
-  * ``jython-installer-2.7.4rc1-bundle.jar``
+  * ``jython-slim-2.7.4-bundle.jar``
+  * ``jython-2.7.4-bundle.jar``
+  * ``jython-standalone-2.7.4-bundle.jar``
+  * ``jython-installer-2.7.4-bundle.jar``
 
   For some reason (privacy?) the display shows a fake file path
   but the name is correct.
   Each upload creates a "staging repository".
 
 .. note:: You may get a report (e-mail) from Sonatype Lift at this point
-  reporting potential vulnerabilities in dependencies.
-  (It seems only to work on the ``-slim`` JAR, which is why we upload it first.)
-  If any vulnerability is sufficiently serious to warrant upgrading JARs,
-  treat this as a late test failure:
-  assuming you pushed the tag (`jython-push-with-tag`_ above),
-  increment the patch level number and repeat the release process (this page).
+    reporting potential vulnerabilities in dependencies.
+    (It seems only to work on the ``-slim`` JAR, which is why we upload it first.)
+    If any vulnerability is sufficiently serious to warrant upgrading JARs,
+    treat this as a late test failure:
+    fix it in your normal development environment with a PR and repeat the process.
+    Assuming you have deferred pushing the tag no publicly visible harm has been done.
+    (See :ref:`jython-push-with-tag` below.)
+    If you already pushed the tag,
+    repeat the release process with an appropriate increment on the version number.
 
 You may discard (drop) Repositories that you decide not to publish
 from the "Staging Repositories" tab in the repository manager.
@@ -782,6 +796,27 @@ from the "Staging Repositories" tab in the repository manager.
 .. warning:: Release at Sonatype is irreversible.
 
 .. _Central Repository: https://search.maven.org/
+
+.. _jython-push-with-tag:
+
+Only now is it safe to ``git push``
+-----------------------------------
+
+If testing convinces you this is a build we should let loose
+on an unsuspecting public,
+it is time to push these changes and the tag you made
+upstream to the Jython repository.
+Back in the place where the release was built (and using Bash):
+
+..  code-block:: bash
+
+    $ git push --follow-tags
+
+Try very hard not to push a tag you later regret
+(e.g. on the wrong change set or a version still needing a fix).
+It is problematic to `delete a tag after the push`_.
+It is better to increment the version,
+which is painless if it is an ``a``, ``b``, or ``rc`` release.
 
 
 Announcement
@@ -841,9 +876,8 @@ You can read this as a version that "may eventually become" ``2.7.4b3`` etc..
 The version under development in this scheme will often be one that never sees a release.
 E.g. when we are apparently working on ``2.7.4b3``,
 the next release is quite likely to be ``2.7.4rc1`` instead.
-The build files will have to be edited to produce that when that time comes.
-We always hope that the version string printed in regression tests will ultimately be wrong.
-It's a harmless paradox.
+It's a harmless idiosyncrasy of the process that
+the version may only be chosen accurately when the time comes to release it.
 
 Make this change in both ``build.xml`` and ``build.gradle``.
 See the section :ref:`changes-preparing-for-a-release` for details.
@@ -852,11 +886,23 @@ In ``NEWS``, add a new, empty, section in the development history that looks lik
 
 ..  code-block:: text
 
-    Jython <successor version>
+    Jython <successor version> Bugs fixed
 
-      Bugs fixed
+If you've just built a final release, the new material will look like:
+
+..  code-block:: text
+
+    ==============================================================================
+    Jython <successor version>
+    ==============================================================================
+
+    New Features
+
+    Jython <successor version>a1 Bugs fixed
+
 
 Commit and push this change upstream.
 
-.. note:: The new features are associated with the prospective final release,
-   not the alpha or beta that introduced them.
+.. note:: The description of a new feature is associated with
+   the prospective final release,
+   not the alpha or beta that introduced it.
